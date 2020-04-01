@@ -6,24 +6,18 @@
       <li>
         <a
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
           >babel</a
         >
       </li>
       <li>
         <a
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
           >eslint</a
         >
       </li>
       <li>
         <a
           href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha"
-          target="_blank"
-          rel="noopener"
           >unit-mocha</a
         >
       </li>
@@ -31,33 +25,23 @@
     <h3>Essential Links</h3>
     <ul>
       <li>
-        <a href="https://mevn.madlabs.xyz" target="_blank" rel="noopener"
-          >Core Docs</a
-        >
+        <a href="https://mevn.madlabs.xyz">Core Docs</a>
       </li>
       <li>
-        <a
-          href="https://github.com/madlabsinc/mevn-cli"
-          target="_blank"
-          rel="noopener"
+        <a href="https://github.com/madlabsinc/mevn-cli" rel="noopener"
           >GitHub Repo</a
         >
       </li>
       <li>
-        <a href="https://spectrum.chat/mevn-cli" target="_blank" rel="noopener"
+        <a href="https://spectrum.chat/mevn-cli" rel="noopener"
           >Community Chat</a
         >
       </li>
       <li>
-        <a href="https://twitter.com/mevn_cli" target="_blank" rel="noopener"
-          >Twitter</a
-        >
+        <a href="https://twitter.com/mevn_cli" rel="noopener">Twitter</a>
       </li>
       <li>
-        <a
-          href="https://opencollective.com/mevn-cli"
-          target="_blank"
-          rel="noopener"
+        <a href="https://opencollective.com/mevn-cli" rel="noopener"
           >Open Collective</a
         >
       </li>
@@ -65,31 +49,23 @@
     <h3>Ecosystem</h3>
     <ul>
       <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
+        <a href="https://router.vuejs.org" rel="noopener">vue-router</a>
       </li>
       <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
+        <a href="https://vuex.vuejs.org" rel="noopener">vuex</a>
       </li>
       <li>
         <a
           href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
           rel="noopener"
           >vue-devtools</a
         >
       </li>
       <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
+        <a href="https://vue-loader.vuejs.org" rel="noopener">vue-loader</a>
       </li>
       <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
+        <a href="https://github.com/vuejs/awesome-vue" rel="noopener"
           >awesome-vue</a
         >
       </li>
