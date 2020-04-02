@@ -1,13 +1,20 @@
-// Define your routes
-import express from 'express';
-import path from 'path';
+const express = require('express');
 const router = express.Router();
+const Routine = require('../models/Exercise');
 
-// Routes go here.
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views', 'index.html'));
+/* GET home page. */
+router.get('/', (req, res, next) => {
+  Ticket.find({}).exec()
+    .then((tickets) => {
+      let user;
+      if (req.user) user = req.user;
+      res.render('index', {
+        title: 'Fit Training',
+        tickets: tickets,
+        user: user || 'Fit Training'
+      });
+    })
+    .catch( err => console.log(err));
 });
-
-// Use localhost:9000/api followed by the required path.
 
 module.exports = router;

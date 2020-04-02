@@ -1,22 +1,27 @@
 const mongoose = require('mongoose');
-const categories = ['Chest', 'Back', 'Shoulder', 'Leg', 'Abdominal', 'Biceps', 'Triceps', 'Full body'];
+
+const sports = ['Fitness', 'Boxing', 'HIIT', 'Core'];
+const bodyPart = ['Chest', 'Back', 'Shoulder', 'Leg', 'Abdominal', 'Biceps', 'Triceps', 'Full body'];
 const levels = ['Beginner', 'Intermediate', 'Advanced']
-const targets = ['Velocity', 'Strength', 'Volume', 'Endurance', 'Definition']
+const targets = ['Strength', 'Volume', 'Definition', 'Endurance', 'Speed', 'Technique', 'Footwork']
 
 const ExerciseSchema = mongoose.Schema({
   name: { type: String, required: true },
-  category: { type: String, enum: categories },
+  sport: { type: String, enum: sports },
+  bodyPart: { type: String, enum: bodyPart },
   level: { type: String, enum: levels },
   target: { type: String, enum: targets },
-  moveType: String,
+  moveType: String,  // ??? Isometric, Aerobic
   description: String,
-  time: Number, // minutes
+  time: Number, // seconds
+  rest: Number, // seconds
   series: Number,
   reps: String,
-  image: String,
-  image2: String,
-  video: String,
-  creatorExerciseId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  image: { type: Object },
+  imageUrl: String,
+  videoUrl: String,
+  isWarmUp: Boolean,
+  observations: String
 }, {
   timestamps: {
     createdAt: "created_at",
