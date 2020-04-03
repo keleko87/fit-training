@@ -21,12 +21,18 @@
                     :to="{ name: 'ticket-detail', params: { id: ticket._id } }"
                     class=""
                   >
-                    {{ ticket.title }}
+                    {{ ticket.name }}
                   </router-link>
                 </h5>
                 <div class="content card-text">
-                  <!-- {{ ticket.content }} -->
+                  {{ ticket.description }}
                   <!-- <p v-html="ticket.content"></p> -->
+                  <iframe
+                    title="video url"
+                    width="420"
+                    height="345"
+                    :src="ticket.videoUrl"
+                  ></iframe>
                 </div>
               </div>
 
@@ -44,7 +50,7 @@
               </div>
               <div class="tag">
                 <span class="tag-text">
-                  {{ ticket.tags }}
+                  {{ ticket.level }}
                 </span>
               </div>
             </div>
@@ -67,9 +73,6 @@
                     question</span -->
                   >
                 </div>
-                <small class="text-muted time"
-                  >asked:{{ ticket.created_at | date }}</small
-                >
               </div>
             </div>
           </div>
@@ -124,7 +127,7 @@ export default {
 
   computed: {
     tickets() {
-      const items = this.list;
+      const items = this.$store.state.exercise.totalExercises;
       // Return just page of items needed
       return items.slice(
         (this.pagination.currentPage - 1) * this.pagination.perPage,
@@ -133,7 +136,7 @@ export default {
     },
 
     totalRows() {
-      return this.$store.getters.loadedLists.length;
+      return this.$store.getters.getTotalExercises.length;
     }
   },
 
@@ -144,8 +147,14 @@ export default {
   methods: {
     fetchExercises() {
       this.$store.dispatch('GET_EXERCISES');
-      console.log('ticketList', this.$store.state.exercise.totalExercises)
+      console.log('ticketList', this.$store.state.exercise.totalExercises);
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.ticket-container.content {
+  height: auto;
+}
+</style>

@@ -5,21 +5,19 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cors = require("cors");
-const passport  = require('passport');
-const session = require('express-session');
 const debug = require('debug')(`fit-training:${path.basename(__filename).split('.')[0]}`);
+const cors = require('cors');
 
 // Connect to mongo database
 const dburl = process.env.MONGO_DB_URL;
 console.log(`fit-training:${path.basename(__filename).split('.')[0]}`,'connecting....', dburl);
 
 debug(`Connecting to ${dburl}`);
+mongoose.Promise = global.Promise;
 mongoose.connect(dburl, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('connected to', dburl))
-
+})
 // Init server
 const app = express();
 
@@ -31,6 +29,8 @@ app.options('*', cors());
 app.set('views', path.join(__dirname, 'views'));
 
 // uncomment after placing your favicon in /public
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
