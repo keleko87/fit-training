@@ -1,32 +1,24 @@
 <template>
-  <div class="ticket-container">
-    <div v-if="tickets.length === 0" class="ticket-preview">
+  <div class="ft-exercise-list__container container">
+
+    <div v-if="tickets.length === 0" class="row">
       No tickets are here... yet.
     </div>
 
-    <div class="row" v-if="tickets.length">
-      <div class="col-md-10">
-        <div
-          class="card"
-          v-for="ticket in tickets"
-          :ticket="ticket"
-          :key="ticket._id"
-        >
-
-          <exercise-card></exercise-card>
-
-        </div>
+    <div v-else class="row">
+      <div v-for="ticket in tickets" :key="ticket._id" class="col-6">
+        <exercise-card :data="ticket"></exercise-card>
       </div>
     </div>
 
-
-    <div class="row" v-if="ticketsCount > 0">
+    <div class="row" v-if="exercisesCount > 0">
       <div class="mx-auto">
+        Pagination total: {{ exercisesCount }}
         <!-- <b-pagination
           v-model="pagination.currentPage"
-          :total-rows="ticketsCount"
+          :total-rows="exercisesCount"
           :per-page="pagination.perPage"
-          aria-controls="ticket-list"
+          aria-controls="
         ></b-pagination> -->
       </div>
     </div>
@@ -35,6 +27,7 @@
 
 <script>
 // import { BPagination } from 'bootstrap-vue';
+import { mapGetters } from 'vuex';
 import ExerciseCard from './ExerciseCard';
 
 export default {
@@ -58,7 +51,7 @@ export default {
 
   data() {
     return {
-      ticketsCount: 0,
+      // exercisesCount: 0,
       pagination: {
         currentPage: 1,
         rows: 4,
@@ -68,18 +61,22 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['exercisesCount']),
+
     tickets() {
-      const items = this.$store.state.exercise.totalExercises;
+      // const items = this.$store.state.exercise.totalExercises;
+      const items = this.list;
+      console.log('exerciseList', items);
       // Return just page of items needed
       return items.slice(
         (this.pagination.currentPage - 1) * this.pagination.perPage,
         this.pagination.currentPage * this.pagination.perPage
       );
-    },
-
-    totalRows() {
-      return this.$store.getters.getTotalExercises.length;
     }
+
+    // totalRows() {
+    //   return this.$store.getters.getTotalExercises.length;
+    // }
   },
 
   mounted() {

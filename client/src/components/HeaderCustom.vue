@@ -9,9 +9,9 @@
         <mdb-nav-item href="#">Crear Entrenamiento</mdb-nav-item>
         <mdb-nav-item href="#">Ejercicios</mdb-nav-item>
       </mdb-navbar-nav>
-       <form>
+       <!-- <form>
         <mdb-input type="text" class="text-white" placeholder="Search" aria-label="Search" label navInput waves waves-fixed/>
-      </form>
+      </form> -->
     </mdb-navbar-toggler>
   </mdb-navbar>
 </template>

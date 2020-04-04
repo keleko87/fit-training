@@ -28,6 +28,9 @@ const getters = {
   },
   getTotalExercises(state) {
     return state.totalExercises;
+  },
+  exercisesCount(state) {
+    return state.totalExercises.length;
   }
 };
 

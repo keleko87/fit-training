@@ -1,115 +1,33 @@
 <template>
-  <div class="ticket-new my-5">
+  <div class="ft-exercise container">
 
-    <div class="container mt-4">
-      <div class="row">
-        <div class="col-12">
-          <h5>{{ filteredTickets.length }} questions</h5>
-
-          <ticket-list :list="filteredTickets" :type="'all'"></ticket-list>
-        </div>
+    <div class="row">
+      <div class="col-12" v-if="filteredTickets.length">
+        <h5>{{ filteredTickets.length }} questions</h5>
+        <exercise-list :list="filteredTickets" :type="'all'"></exercise-list>
       </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-md-8 col-md-offset-2 mx-auto">
-          <h2>Create New ticket</h2>
-
-          <div class="well">
-            <div>
-              <div class="form-group control-label">
-                <label for="title">Title</label>
-                <input
-                  type="text"
-                  v-model.trim="$v.form.title.$model"
-                  class="form-control"
-                  id="title"
-                  placeholder="Enter a title for your post"
-                  name="title"
-                />
-              </div>
-              <div class="form-group">
-                <label for="content">Content</label>
-                <textarea
-                  v-model.trim="$v.form.content.$model"
-                  class="form-control"
-                  rows="5"
-                  id="content"
-                  placeholder="Write your issue"
-                  name="content"
-                >
-                </textarea>
-
-                <!-- <quill-editor @input="onInput($event)"></quill-editor> -->
-              </div>
-              <div class="form-group">
-                <label for="tags">Tags</label>
-                <select
-                  v-model.trim="$v.form.tags.$model"
-                  class="form-control"
-                  id="tags"
-                  placeholder="Choose your tag"
-                  name="tags"
-                >
-                  <option v-for="tag in tags" :key="tag">
-                    {{ tag }}
-                  </option>
-                </select>
-              </div>
-
-              <!-- <div v-if="photoUrl" class="preview-container col-6 p-2 mb-2">
-                <div class="preview mx-auto">
-                  <img :src="photoUrl" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <input
-                  id="photo"
-                  type="file"
-                  ref="photo"
-                  name="photo"
-                  @change="onSelect"
-                />
-              </div> -->
-
-              <!-- <div class="form-group">
-                <input
-                  type="text"
-                  id="imageUrl"
-                  ref="imageUrl"
-                  name="imageUrl"
-                  readonly
-                  v-model.trim="$v.form.imageUrl.$model"
-                />
-              </div> -->
-
-              <button
-                type="button"
-                @click.prevent="onSubmit"
-                class="btn btn-success"
-              >
-                Send Ticket
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- create toggle or popup to show -->
+    <div class="row">
+      <exercise-new></exercise-new>
     </div>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import TicketList from '../components/TicketList';
+import ExerciseList from '../components/ExerciseList';
+import ExerciseNew from '../components/ExerciseNew';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 
 export default {
   name: 'exercise',
 
   components: {
-    TicketList
+    ExerciseList,
+    ExerciseNew
   },
 
   mounted() {
@@ -133,7 +51,7 @@ export default {
   computed: {
     ...mapGetters(['getTotalExercises']),
     tickets() {
-      console.log(this.$store.state);
+      console.log(this.$store.state.exercise.totalExercises);
       return this.$store.state.exercise.totalExercises;
     },
 

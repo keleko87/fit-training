@@ -3,7 +3,7 @@
     <header-custom />
     <div class="ft-app__container">
       <div class="row h-100 draggable-container">
-        <div class="col-md-8 white">
+        <div class="col-md-8 grey">
           <!-- <div class="row">
             <div class="col-md-4 col-4">
               <div
