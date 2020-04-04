@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="ft-app">
-    <Header />
+    <header-custom />
     <div class="ft-app__container">
       <div class="row h-100 draggable-container">
-        <div class="col-md-8 blue">
+        <div class="col-md-8 white">
           <!-- <div class="row">
             <div class="col-md-4 col-4">
               <div
@@ -21,7 +21,7 @@
           <router-view class="view content" name="list"></router-view>
         </div>
 
-        <div class="col-md-4 mdb-color">
+        <div class="col-md-4 elegant-color">
           <router-view class="view workout" name="create"></router-view>
         </div>
       </div>
@@ -30,24 +30,17 @@
 </template>
 
 <script>
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import Header from './components/Header';
+import HeaderCustom from './components/HeaderCustom';
 
 export default {
   name: 'App',
   components: {
-    Header
+    HeaderCustom
   }
 };
 </script>
 
 <style lang="scss" scoped>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
 .ft-app {
   &__container {
     height: 100vh;
@@ -55,13 +48,6 @@ export default {
     .row {
       margin: 0;
     }
-  }
-  .blue {
-    background-color: #fff;
-  }
-
-  .mdb-color {
-    background-color: #494949;
   }
 }
 </style>

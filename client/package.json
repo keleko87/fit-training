@@ -1,6 +1,6 @@
 {
-  "name": "fit-traniing",
-  "version": "0.1.0",
+  "name": "fit-traning",
+  "version": "1.0.0",
   "private": true,
   "author": "Mario Martin <mariomarsan7@gmail.com>",
   "scripts": {
@@ -14,16 +14,12 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.2.2",
     "date-fns": "^1.30.1",
     "marked": "^0.7.0",
+    "mdbvue": "6.6.0",
     "register-service-worker": "^1.6.2",
-    "tiptap": "^1.26.6",
-    "tiptap-extensions": "^1.28.6",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
-    "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.1.3",
     "vuelidate": "^0.7.5",
     "vuex": "^3.1.1"

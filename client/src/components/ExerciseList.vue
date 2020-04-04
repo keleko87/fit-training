@@ -5,7 +5,6 @@
     </div>
 
     <div class="row" v-if="tickets.length">
-      <div class="col-md-1"></div>
       <div class="col-md-10">
         <div
           class="card"
@@ -13,94 +12,37 @@
           :ticket="ticket"
           :key="ticket._id"
         >
-          <div class="card-body">
-            <div class="d-flex justify-content-between ">
-              <div class="card-message">
-                <h5 class="card-title">
-                  <router-link
-                    :to="{ name: 'ticket-detail', params: { id: ticket._id } }"
-                    class=""
-                  >
-                    {{ ticket.name }}
-                  </router-link>
-                </h5>
-                <div class="content card-text">
-                  {{ ticket.description }}
-                  <!-- <p v-html="ticket.content"></p> -->
-                  <iframe
-                    title="video url"
-                    width="420"
-                    height="345"
-                    :src="ticket.videoUrl"
-                  ></iframe>
-                </div>
-              </div>
 
-              <div class="ticket-comments pt-1">
-                <div class="comments text-center">23</div>
-                <small>answers</small>
-              </div>
-            </div>
+          <exercise-card></exercise-card>
 
-            <div class="actions">
-              <div>
-                <a href="#" class="card-link">Like</a>
-                <a href="#" class="card-link">Reply</a>
-                <a href="#" class="card-link">Share</a>
-              </div>
-              <div class="tag">
-                <span class="tag-text">
-                  {{ ticket.level }}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-footer">
-            <div class="row">
-              <div class="col-auto">
-                <!-- <img
-                  :src="ticket.creatorId[0].imgAvatar"
-                  alt="image avatar"
-                  class="image-avatar float-left rounded-circle"
-                /> -->
-              </div>
-
-              <div class="col-auto p-0">
-                <div class="">
-                  <!-- <span
-                    ><b>{{ ticket.creatorId[0].username }} </b>posted a
-                    question</span -->
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
+
     <div class="row" v-if="ticketsCount > 0">
       <div class="mx-auto">
-        <b-pagination
+        <!-- <b-pagination
           v-model="pagination.currentPage"
           :total-rows="ticketsCount"
           :per-page="pagination.perPage"
           aria-controls="ticket-list"
-        ></b-pagination>
+        ></b-pagination> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { BPagination } from 'bootstrap-vue';
+// import { BPagination } from 'bootstrap-vue';
+import ExerciseCard from './ExerciseCard';
 
 export default {
-  name: 'ticket-list',
+  name: 'exercise-list',
 
   components: {
-    BPagination
+    // BPagination
+    ExerciseCard
   },
 
   props: {

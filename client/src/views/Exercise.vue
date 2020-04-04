@@ -106,7 +106,7 @@ import TicketList from '../components/TicketList';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'Ticket',
+  name: 'exercise',
 
   components: {
     TicketList
@@ -177,7 +177,7 @@ export default {
         formData.append('photo', this.form.photo);
       }
 
-      this.$store.dispatch(SAVE_TICKET, formData);
+      this.$store.dispatch('SAVE_TICKET', formData);
       this.$router.push({ name: 'home' });
     }
   },

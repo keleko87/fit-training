@@ -37,17 +37,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .ft-home {
-//   &__container {
-//     height: 100vh;
-//   }
-// }
-
-// .blue {
-//   background-color: #2196f3 !important;
-// }
-
-// .mdb-color {
-//   background-color: #45526e !important;
-// }
 </style>

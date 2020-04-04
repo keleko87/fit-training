@@ -79,25 +79,25 @@
 
     <div class="row" v-if="ticketsCount > 0">
       <div class="mx-auto">
-        <b-pagination
+        <!-- <b-pagination
           v-model="pagination.currentPage"
           :total-rows="ticketsCount"
           :per-page="pagination.perPage"
           aria-controls="ticket-list"
-        ></b-pagination>
+        ></b-pagination> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { BPagination } from 'bootstrap-vue';
+// import { BPagination } from 'bootstrap-vue';
 
 export default {
   name: 'ticket-list',
 
   components: {
-    BPagination
+    // BPagination
   },
 
   props: {
