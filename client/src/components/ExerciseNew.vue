@@ -3,36 +3,44 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-8 col-md-offset-2 mx-auto">
-          <h2>Create New ticket</h2>
+          <h2>Nuevo Ejercicio</h2>
 
           <div class="well">
             <div>
               <div class="form-group control-label">
-                <label for="title">Title</label>
+                <label for="name">Nombre</label>
                 <input
                   type="text"
-                  v-model.trim="$v.form.title.$model"
+                  v-model.trim="$v.form.name.$model"
                   class="form-control"
-                  id="title"
-                  placeholder="Enter a title for your post"
-                  name="title"
+                  id="exercise-name"
+                  placeholder="Enter a name for your post"
+                  name="name"
                 />
               </div>
               <div class="form-group">
-                <label for="content">Content</label>
+                <label for="description">Descripción</label>
                 <textarea
-                  v-model.trim="$v.form.content.$model"
+                  v-model.trim="$v.form.description.$model"
                   class="form-control"
                   rows="5"
-                  id="content"
+                  id="description"
                   placeholder="Write your issue"
-                  name="content"
+                  name="description"
                 >
                 </textarea>
-
-                <!-- <quill-editor @input="onInput($event)"></quill-editor> -->
               </div>
+
               <div class="form-group">
+                <input
+                  id="photo"
+                  type="file"
+                  ref="photo"
+                  name="photo"
+                  @change="onSelect($event)"
+                />
+              </div>
+              <!-- <div class="form-group">
                 <label for="tags">Tags</label>
                 <select
                   v-model.trim="$v.form.tags.$model"
@@ -45,7 +53,7 @@
                     {{ tag }}
                   </option>
                 </select>
-              </div>
+              </div> -->
 
               <button
                 type="button"
@@ -76,18 +84,18 @@ export default {
   data() {
     return {
       form: {
-        title: '',
-        content: '',
-        tags: [''],
+        name: '',
+        description: '',
+        tags: ['tag exe'],
         imageUrl: '',
         photo: {}
       },
-      photoUrl: '',
+      photoUrl: ''
     };
   },
 
   computed: {
-    ...mapGetters(['getTotalExercises']),
+    ...mapGetters(['totalExercises']),
     tickets() {
       console.log(this.$store.state);
       return this.$store.state.exercise.totalExercises;
@@ -103,7 +111,7 @@ export default {
     },
 
     onInput(ev) {
-      this.form.content = ev.getHTML;
+      this.form.description = ev.getHTML;
       this.form.photo = ev.file;
       this.form.imageUrl = ev.file.photoUrl;
     },
@@ -111,27 +119,27 @@ export default {
     onSubmit() {
       const formData = new FormData();
 
-      formData.append('title', this.form.title);
-      formData.append('content', this.form.content);
-      formData.append('tags', this.form.tags);
+      formData.append('name', this.form.name);
+      formData.append('description', this.form.description);
+      // formData.append('tags', this.form.tags);
       formData.append('imageUrl', this.form.imageUrl);
 
       if (this.form.photo) {
         formData.append('photo', this.form.photo);
       }
 
-      this.$store.dispatch('SAVE_TICKET', formData);
-      this.$router.push({ name: 'home' });
+      this.$store.dispatch('SAVE_EXERCISE', formData);
+      // this.$router.push({ name: 'home' });
     }
   },
 
   validations: {
     form: {
-      title: {
+      name: {
         required,
         minLength: minLength(5)
       },
-      content: {
+      description: {
         required,
         minLength: minLength(10),
         maxLength: maxLength(500)

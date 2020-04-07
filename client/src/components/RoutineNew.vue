@@ -87,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getTotalExercises']),
+    ...mapGetters(['totalExercises']),
     tickets() {
       console.log(this.$store.state);
       return this.$store.state.exercise.totalExercises;
@@ -120,7 +120,7 @@ export default {
         formData.append('photo', this.form.photo);
       }
 
-      this.$store.dispatch('SAVE_TICKET', formData);
+      this.$store.dispatch('SAVE_EXERCISE', formData);
       this.$router.push({ name: 'home' });
     }
   },

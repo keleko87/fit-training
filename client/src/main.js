@@ -14,6 +14,7 @@ import './styles/bootstrap.min.css';
 // MDBVue
 import 'mdbvue/lib/css/mdb.min.css';
 
+// PENDING IMPORT WEBPACK FOR ALL PROJECT
 import './styles/main.scss';
 import './registerServiceWorker';
 

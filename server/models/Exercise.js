@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const sports = ['Fitness', 'Boxing', 'HIIT', 'Core'];
 const bodyPart = ['Chest', 'Back', 'Shoulder', 'Leg', 'Abdominal', 'Biceps', 'Triceps', 'Full body'];
 const levels = ['Beginner', 'Intermediate', 'Advanced']
-const targets = ['Strength', 'Volume', 'Definition', 'Endurance', 'Speed', 'Technique', 'Footwork']
+const targets = ['Strength', 'Volume', 'Definition', 'Endurance', 'Speed', 'Agility', 'Technique', 'Power', 'Footwork']
 
 const ExerciseSchema = mongoose.Schema({
   name: { type: String, required: true },

@@ -23,10 +23,10 @@ const state = {
 };
 
 const getters = {
-  getExercise(state) {
+  exercise(state) {
     return state.data;
   },
-  getTotalExercises(state) {
+  totalExercises(state) {
     return state.totalExercises;
   },
   exercisesCount(state) {
@@ -48,6 +48,7 @@ const actions = {
 
   async ['SAVE_EXERCISE'](context, form) {
     try {
+      await ExercisesService.saveExercise(form);
       context.commit('SET_EXERCISE', form);
     } catch (err) {
       window.console.log('error', err);

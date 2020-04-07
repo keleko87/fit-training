@@ -1,13 +1,17 @@
 <template>
   <div class="ft-exercise-list__container container">
-
     <div v-if="tickets.length === 0" class="row">
       No tickets are here... yet.
     </div>
 
     <div v-else class="row">
-      <div v-for="ticket in tickets" :key="ticket._id" class="col-6">
-        <exercise-card :data="ticket"></exercise-card>
+      <div
+        v-for="ticket in tickets"
+        :key="ticket._id"
+        class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
+      >
+        <!-- <exercise-card :data="ticket"></exercise-card> -->
+        <exercise-card-animation :data="ticket"></exercise-card-animation>
       </div>
     </div>
 
@@ -28,14 +32,16 @@
 <script>
 // import { BPagination } from 'bootstrap-vue';
 import { mapGetters } from 'vuex';
-import ExerciseCard from './ExerciseCard';
+// import ExerciseCard from './ExerciseCard';
+import ExerciseCardAnimation from './ExerciseCardAnimation';
 
 export default {
   name: 'exercise-list',
 
   components: {
     // BPagination
-    ExerciseCard
+    // ExerciseCard
+    ExerciseCardAnimation
   },
 
   props: {
@@ -55,17 +61,16 @@ export default {
       pagination: {
         currentPage: 1,
         rows: 4,
-        perPage: 2
+        perPage: 10
       }
     };
   },
 
   computed: {
-    ...mapGetters(['exercisesCount']),
+    ...mapGetters(['exercisesCount', 'totalExercises']),
 
     tickets() {
-      // const items = this.$store.state.exercise.totalExercises;
-      const items = this.list;
+      const items = this.list || this.totalExercises;
       console.log('exerciseList', items);
       // Return just page of items needed
       return items.slice(
@@ -75,7 +80,7 @@ export default {
     }
 
     // totalRows() {
-    //   return this.$store.getters.getTotalExercises.length;
+    //   return this.$store.getters.totalExercises.length;
     // }
   },
 

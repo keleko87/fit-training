@@ -13,7 +13,7 @@
                   type="text"
                   v-model.trim="$v.form.title.$model"
                   class="form-control"
-                  id="title"
+                  id="workout-title"
                   placeholder="Enter a title for your post"
                   name="title"
                 />
@@ -32,7 +32,7 @@
 
                 <!-- <quill-editor @input="onInput($event)"></quill-editor> -->
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="tags">Tags</label>
                 <select
                   v-model.trim="$v.form.tags.$model"
@@ -45,7 +45,7 @@
                     {{ tag }}
                   </option>
                 </select>
-              </div>
+              </div> -->
 
               <button
                 type="button"
@@ -78,7 +78,7 @@ export default {
       form: {
         title: '',
         content: '',
-        tags: [''],
+        tags: ['tag 1'],
         imageUrl: '',
         photo: {}
       },
@@ -87,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getTotalExercises']),
+    ...mapGetters(['totalExercises']),
     tickets() {
       console.log(this.$store.state);
       return this.$store.state.exercise.totalExercises;
@@ -120,7 +120,7 @@ export default {
         formData.append('photo', this.form.photo);
       }
 
-      this.$store.dispatch('SAVE_TICKET', formData);
+      this.$store.dispatch('SAVE_EXERCISE', formData);
       this.$router.push({ name: 'home' });
     }
   },
