@@ -1,5 +1,5 @@
 <template>
-  <mdb-navbar class="ft-nav" color="black" dark>
+  <mdb-navbar class="ft-navbar" color="black" dark>
     <mdb-navbar-brand href="#">
       Fit Training
     </mdb-navbar-brand>
@@ -51,8 +51,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ft-navbar {
-  .nav-pills {
-    margin-top: 0;
-  }
+  // background-color: #375a7f;
 }
 </style>
