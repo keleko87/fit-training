@@ -8,14 +8,11 @@ import DateFilter from './common/date.filter';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 // import 'bootstrap-css-only/css/bootstrap.min.css';
-
 // Darkly Bootswatch theme
 import './styles/bootstrap.min.css';
 // MDBVue
 import 'mdbvue/lib/css/mdb.min.css';
 
-// PENDING IMPORT WEBPACK FOR ALL PROJECT
-import './styles/main.scss';
 import './registerServiceWorker';
 
 Vue.use(Vuelidate);

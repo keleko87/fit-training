@@ -9,15 +9,15 @@ const state = {
     target: '',
     moveType: '',
     description: '',
+    observations: '',
     time: null, // seconds
     rest: null, // seconds
     series: null, // number
-    reps: '',
+    reps: null, // number
     image: {},
     imageUrl: '',
     videoUrl: '',
-    isWarmUp: false,
-    observations: ''
+    isWarmUp: false
   },
   totalExercises: []
 };

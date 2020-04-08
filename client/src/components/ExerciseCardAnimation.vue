@@ -1,16 +1,12 @@
 <template>
-  <!-- <div class="container"> -->
-  <!-- <div class="content"> -->
   <div class="grid">
     <figure :class="effectClass">
-      <!-- src="http://localhost:9000/uploads/61acb654-a044-44fc-9c66-4ff842f74fab" -->
-      <img :src="getImage(data.imageUrl)" alt="img02" />
+      <img :src="getImage(data.imageUrl)" alt="image url" />
       <figcaption>
         <h6>{{ data.name }}</h6>
         <div>
           <div class="d-flex space-between">
             <div @click="selectExercise()">
-              <!-- <mdb-icon icon="info" size="2x" /> -->
               <mdb-icon icon="info-circle" size="5x" />
             </div>
             <div @click="selectExercise()">
@@ -24,8 +20,6 @@
       </figcaption>
     </figure>
   </div>
-  <!-- </div> -->
-  <!-- </div> -->
 </template>
 <script>
 import { mdbIcon } from 'mdbvue';
@@ -55,6 +49,7 @@ export default {
 
   methods: {
     getImage(imageUrl) {
+      // http://localhost:9000/uploads/61acb654-a044-44fc-9c66-4ff842f74fab
       return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     },
     showExercesice() {},
@@ -68,16 +63,6 @@ export default {
 
 <style lang="scss" scoped>
 /** Source:  https://bootsnipp.com/snippets/3Meen **/
-
-// MOVE TO main.scss
-$dark-blue: #375a7f;
-$second-dark-grey: #444;
-$grid-grey: #151515; // equals to third-dark-grey
-$figcaption-grey: #303030;
-$white: #fff;
-$mandarine: #f39c12;
-$mandarine-gradient: #7f4e00;
-
 .grid {
   position: relative;
   margin: 0 auto;
@@ -85,8 +70,8 @@ $mandarine-gradient: #7f4e00;
   min-height: 205px;
   max-width: 300px;
   max-height: 300px;
-  border: 1px solid #2c2c2c;
-  background-color: $grid-grey;
+  border: 1px solid $second-dark-grey;
+  background-color: $gray-900;
   list-style: none;
   text-align: center;
 }
@@ -177,11 +162,6 @@ figure.effect-sadie figcaption::before {
     rgba(72, 76, 97, 0) 0%,
     rgba(72, 76, 97, 0.8) 75%
   );
-  // background: linear-gradient(
-  //   to bottom,
-  //   rgba(72, 76, 97, 0) 0%,
-  //   rgba(72, 76, 97, 0.8) 75%
-  // );
   background: linear-gradient(
     to bottom,
     rgba(72, 76, 97, 0) 0%,
@@ -212,6 +192,7 @@ figure.effect-sadie div {
 }
 
 figure.effect-sadie div {
+  color: $gray-800;
   position: relative;
   bottom: 0;
   top: 10px;
@@ -224,7 +205,7 @@ figure.effect-sadie div {
 }
 
 figure.effect-sadie:hover h6 {
-  color: #fff;
+  color: $gray-800;
   -webkit-transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
   transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
 }

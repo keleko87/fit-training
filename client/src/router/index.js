@@ -20,7 +20,7 @@ export default new Router({
     },
     {
       path: '/workout/new',
-      name: 'workout',
+      name: 'workoutNew',
       components: {
         list: Exercise,
         create: WorkoutNew
@@ -28,7 +28,7 @@ export default new Router({
     },
     {
       path: '/routine/new',
-      name: 'routine',
+      name: 'routineNew',
       components: {
         list: WorkoutList,
         create: RoutineNew
@@ -36,7 +36,7 @@ export default new Router({
     },
     {
       path: '/routine/list',
-      name: 'routineList',
+      name: 'routines',
       components: {
         list: RoutineList,
         create: Home

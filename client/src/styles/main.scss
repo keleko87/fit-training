@@ -1,6 +1,16 @@
 @import "./_variables";
 @import "./_bootswatch";
 
-.bg-create-section {
-  background-color: $third-dark-grey;
+body {
+  #app {
+    .router-link {
+      color: $white;
+    }
+    .router-link:hover {
+      color: $mandarine;
+    }
+    .bg-create-section {
+      background-color: $third-dark-grey;
+    }
+  }
 }
