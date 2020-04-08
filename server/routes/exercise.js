@@ -92,7 +92,8 @@ router.post('/new', (req, res) => {
     exercise.save((err, exercise) => {
       if (err) {
         console.log('errorrrrr', err);
-        if (statusCode >= 100 && statusCode < 600) res.status(statusCode);
+        const { status } = err;
+        if (status >= 100 && status < 600) res.status(status);
         else res.status(500);
       }
       res.status(201).json('Created ok!');

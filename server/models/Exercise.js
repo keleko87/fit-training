@@ -13,15 +13,15 @@ const ExerciseSchema = mongoose.Schema({
   target: { type: String, enum: targets },
   moveType: String,  // ??? Isometric, Aerobic
   description: String,
+  observations: String,
   time: Number, // seconds
   rest: Number, // seconds
   series: Number,
-  reps: String,
+  reps: Number,
   image: { type: Object },
   imageUrl: String,
   videoUrl: String,
-  isWarmUp: Boolean,
-  observations: String
+  isWarmUp: Boolean
 }, {
   timestamps: {
     createdAt: "created_at",
