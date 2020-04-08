@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'header',
+  name: 'ft-header',
   computed: {},
 
   methods: {

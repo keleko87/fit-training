@@ -1,287 +1,274 @@
 <template>
-  <div class="ticket-new my-5">
+  <div class="ft-exercise-new my-5">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-8 col-md-offset-2 mx-auto">
-          <h2>Nuevo Ejercicio</h2>
+        <div class="mx-auto">
+          <h3>Crear Ejercicio</h3>
+        </div>
+      </div>
 
-          <div class="well">
-            <div>
-              <div class="form-group control-label">
-                <label for="name">Nombre</label>
-                <input
-                  type="text"
-                  v-model.trim="$v.form.name.$model"
-                  class="form-control"
-                  id="exercise-name"
-                  placeholder="Enter a name for your post"
-                  name="name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="description">Descripción</label>
-                <textarea
-                  v-model.trim="$v.form.description.$model"
-                  class="form-control"
-                  rows="5"
-                  id="description"
-                  placeholder="Write your issue"
-                  name="description"
-                >
-                </textarea>
-              </div>
+      <form novalidate @submit.prevent="checkForm">
+        <div class="form-row">
+          <div class="col-md-6">
+            <md-field>
+              <!-- NAME -->
+              <label>Nombre</label>
+              <md-input
+                type="text"
+                id="name"
+                v-model.trim="$v.form.name.$model"
+              ></md-input>
+            </md-field>
+          </div>
+          <div class="col-md-6">
+            <!-- MOVE TYPE -->
+            <md-field>
+              <!-- NAME -->
+              <label>Tipo de ejercicio</label>
+              <md-input
+                type="text"
+                id="move-type"
+                v-model.trim="$v.form.moveType.$model"
+              ></md-input>
+            </md-field>
+          </div>
+        </div>
 
-              <div class="form-group">
-                <input
-                  id="photo"
-                  type="file"
-                  ref="photo"
-                  name="photo"
-                  @change="onSelect($event)"
-                />
-              </div>
-              <!-- <div class="form-group">
-                <label for="tags">Tags</label>
-                <select
-                  v-model.trim="$v.form.tags.$model"
-                  class="form-control"
-                  id="tags"
-                  placeholder="Choose your tag"
-                  name="tags"
-                >
-                  <option v-for="tag in tags" :key="tag">
-                    {{ tag }}
-                  </option>
-                </select>
-              </div> -->
-
-              <button
-                type="button"
-                @click.prevent="onSubmit"
-                class="btn btn-success"
+        <div class="form-row">
+          <div class="col-md-6">
+            <!-- SPORT -->
+            <!-- <md-autocomplete v-model="form.sport" :md-options="sports">
+              <label>Actividad / Deporte</label>
+            </md-autocomplete> -->
+            <md-field>
+              <label for="sport">Actividad / Deporte</label>
+              <md-select
+                v-model.trim="$v.form.sport.$model"
+                id="sport"
+                name="sport"
               >
-                Send Ticket
-              </button>
-            </div>
+                <md-option v-for="sport in sports" :key="sport" :value="sport">
+                  {{ sport }}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+
+          <div class="col-md-6">
+            <!-- BODY PART -->
+            <md-field>
+              <label for="bodyPart">Parte del cuerpo</label>
+              <md-select
+                v-model.trim="$v.form.bodyPart.$model"
+                id="bodyPart"
+                name="bodyPart"
+              >
+                <md-option
+                  v-for="bodyPart in bodyParts"
+                  :key="bodyPart"
+                  :value="bodyPart"
+                >
+                  {{ bodyPart }}
+                </md-option>
+              </md-select>
+            </md-field>
           </div>
         </div>
-      </div>
-    </div>
 
-    <form novalidate @submit.prevent="checkForm">
-      <div class="form-row">
-        <div class="col-md-6">
-          <!-- NAME -->
-          <mdb-input
-            type="text"
-            id="name"
-            label="Nombre"
-            :required="$v.form.name.$model.required"
-            v-model.trim="$v.form.name.$model"
-          />
-        </div>
-        <div class="col-md-6">
-          <!-- MOVE TYPE -->
-          <mdb-input
-            type="text"
-            id="move-type"
-            label="Tipo de ejercicio"
-            v-model.trim="$v.form.moveType.$model"
-          />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-6">
-          <!-- SPORT -->
-          <label for="sport">Actividad / Deporte</label>
-          <select
-            v-model.trim="$v.form.sport.$model"
-            class="form-control"
-            id="sport"
-            name="sport"
-          >
-            <option v-for="sport in sports" :key="sport">
-              {{ sport }}
-            </option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <!-- BODY PART -->
-          <label for="bodyPart">Parte del cuerpo</label>
-          <select
-            v-model.trim="$v.form.bodyPart.$model"
-            class="form-control"
-            id="bodyPart"
-            name="bodyPart"
-          >
-            <option v-for="bodyPart in bodyParts" :key="bodyPart">
-              {{ bodyPart }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-6">
-          <!-- TARGET -->
-          <label for="target">Objetivo</label>
-          <select
-            v-model.trim="$v.form.target.$model"
-            class="form-control"
-            id="target"
-            name="target"
-          >
-            <option v-for="target in targets" :key="target">
-              {{ target }}
-            </option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <!-- LEVEL -->
-          <label for="level">Nivel</label>
-          <select
-            v-model.trim="$v.form.level.$model"
-            class="form-control"
-            id="level"
-            name="level"
-          >
-            <option v-for="level in levels" :key="level">
-              {{ level }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-6">
-          <!-- DESCRIPTION -->
-          <mdb-input
-            type="textarea"
-            id="descripton"
-            label="Descripción"
-            v-model.trim="$v.form.description.$model"
-          />
-        </div>
-        <div class="col-md-6">
-          <!-- OBSERVATIONS -->
-          <mdb-input
-            type="textarea"
-            id="observations"
-            label="Observaciones"
-            v-model.trim="$v.form.observations.$model"
-          />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-3">
-          <!-- TIME -->
-          <mdb-input
-            type="number"
-            id="time"
-            label="Duración"
-            v-model.trim="$v.form.time.$model"
-          />
-        </div>
-        <div class="col-md-3">
-          <!-- REST -->
-          <mdb-input
-            type="number"
-            id="rest"
-            label="Descanso"
-            v-model.trim="$v.form.rest.$model"
-          />
-        </div>
-        <div class="col-md-3">
-          <!-- SERIES -->
-          <mdb-input
-            type="number"
-            id="series"
-            label="Series"
-            v-model.trim="$v.form.series.$model"
-          />
-        </div>
-        <div class="col-md-3">
-          <!-- REPS -->
-          <mdb-input
-            type="number"
-            id="reps"
-            label="Repeticiones"
-            v-model.trim="$v.form.reps.$model"
-          />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <!-- IMAGE URL-->
-        <div class="col-md-6">
-          <mdb-input
-            type="url"
-            id="imageUrl"
-            placeholder="http://example.com"
-            label="Imagen (URL)"
-            v-model.trim="$v.form.imageUrl.$model"
-          />
+        <div class="form-row">
+          <div class="col-md-6">
+            <!-- TARGET -->
+            <md-field>
+              <label for="movie">Objetivo</label>
+              <md-select
+                v-model.trim="$v.form.target.$model"
+                id="target"
+                name="target"
+              >
+                <md-option
+                  v-for="target in targets"
+                  :key="target"
+                  :value="target"
+                >
+                  {{ target }}</md-option
+                >
+              </md-select>
+            </md-field>
+          </div>
+          <div class="col-md-6">
+            <!-- LEVEL -->
+            <md-field>
+              <label for="level">Nivel</label>
+              <md-select
+                v-model.trim="$v.form.level.$model"
+                id="level"
+                name="level"
+              >
+                <md-option v-for="level in levels" :key="level" :value="level">
+                  {{ level }}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
         </div>
 
-        <!-- VIDEO -->
-        <div class="col-md-6">
-          <mdb-input
-            type="url"
-            id="videoUrl"
-            placeholder="http://example.com"
-            label="Video (URL)"
-            v-model.trim="$v.form.videoUrl.$model"
-          />
+        <div class="form-row">
+          <div class="col-md-6">
+            <!-- DESCRIPTION -->
+            <md-field>
+              <!-- NAME -->
+              <label>Descripción</label>
+              <md-input
+                type="textarea"
+                id="descripton"
+                v-model.trim="$v.form.description.$model"
+              ></md-input>
+            </md-field>
+          </div>
+          <div class="col-md-6">
+            <!-- OBSERVATIONS -->
+            <md-field>
+              <!-- NAME -->
+              <label>Observaciones</label>
+              <md-input
+                type="textarea"
+                id="observations"
+                v-model.trim="$v.form.observations.$model"
+              ></md-input>
+            </md-field>
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <!-- FILE UPLOAD -->
-        <div class="col-md-6">
-          <mdb-input
-            type="file"
-            id="photo"
-            ref="photo"
-            name="photo"
-            @change="onSelect($event)"
-          />
+        <div class="form-row">
+          <div class="col-md-3">
+            <!-- TIME -->
+            <md-field>
+              <!-- NAME -->
+              <label>Duración</label>
+              <md-input
+                type="number"
+                id="time"
+                v-model.trim="$v.form.time.$model"
+              ></md-input>
+            </md-field>
+          </div>
+          <div class="col-md-3">
+            <!-- REST -->
+            <md-field>
+              <!-- NAME -->
+              <label>Descanso</label>
+              <md-input
+                type="number"
+                id="rest"
+                v-model.trim="$v.form.rest.$model"
+              ></md-input>
+            </md-field>
+          </div>
+          <div class="col-md-3">
+            <!-- SERIES -->
+            <md-field>
+              <!-- NAME -->
+              <label>Series</label>
+              <md-input
+                type="number"
+                id="series"
+                v-model.trim="$v.form.series.$model"
+              ></md-input>
+            </md-field>
+          </div>
+          <div class="col-md-3">
+            <!-- REPS -->
+            <md-field>
+              <!-- NAME -->
+              <label>Repeticiones</label>
+              <md-input
+                type="number"
+                id="reps"
+                v-model.trim="$v.form.reps.$model"
+              ></md-input>
+            </md-field>
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <!-- IS WARM UP -->
-        <div class="col-md-6">
-          <div class="custom-control custom-switch">
+        <div class="form-row">
+          <!-- IMAGE URL-->
+          <div class="col-md-6">
+            <md-field>
+              <!-- NAME -->
+              <label>Imagen (URL)</label>
+              <md-input
+                type="url"
+                id="imageUrl"
+                v-model.trim="$v.form.imageUrl.$model"
+              ></md-input>
+            </md-field>
+          </div>
+
+          <!-- VIDEO -->
+          <div class="col-md-6">
+            <md-field>
+              <!-- NAME -->
+              <label>Video (URL)</label>
+              <md-input
+                type="url"
+                id="videoUrl"
+                placeholder="http://example.com"
+                v-model.trim="$v.form.videoUrl.$model"
+              ></md-input>
+            </md-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <!-- FILE UPLOAD -->
+          <div class="col-md-6">
             <input
-              type="checkbox"
-              class="custom-control-input"
-              id="is-warmup"
-              :checked="$v.form.isWarmUp.$model"
-              v-model.trim="$v.form.isWarmUp.$model"
+              id="photo"
+              type="file"
+              ref="photo"
+              name="photo"
+              @change="onSelect($event)"
             />
-            <label class="custom-control-label" for="is-warmup"
-              >Ejercicio de calentamiento</label
-            >
+            <!-- <md-field>
+              <label>Subir Imagen</label>
+              <md-file
+                id="photo"
+                ref="photo"
+                name="photo"
+                @change="onSelect($event)"
+              ></md-file>
+            </md-field> -->
           </div>
         </div>
-      </div>
 
-      <div class="form-row mt-3 text-center">
-        <div class="col">
-          <mdb-btn type="submit" @click.prevent="onSubmit">Guardar</mdb-btn>
+        <div class="form-row">
+          <!-- IS WARM UP -->
+          <div class="col-md-6">
+            <md-checkbox
+              id="is-warmup"
+              :value="$v.form.isWarmUp.$model"
+              v-model.trim="$v.form.isWarmUp.$model"
+            >
+              Ejercicio de calentamiento
+            </md-checkbox>
+          </div>
         </div>
-      </div>
 
-    </form>
+        <div class="form-row mt-3 text-center">
+          <div class="col">
+            <md-button type="submit" @click.prevent="onSubmit()">
+              Guardar
+            </md-button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
-import { mdbBtn, mdbInput } from 'mdbvue';
 import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../common/constants';
 
 export default {
@@ -291,15 +278,10 @@ export default {
     this.$store.dispatch('GET_EXERCISES');
   },
 
-  components: {
-    mdbBtn,
-    mdbInput
-  },
-
   data() {
     return {
       form: {
-        name: '',
+        name: 'Flexiones inclinadas',
         sport: '',
         bodyPart: '',
         level: '',
@@ -307,10 +289,10 @@ export default {
         moveType: '',
         description: '',
         observations: '',
-        time: null, // seconds
-        rest: null, // seconds
-        series: null, // number
-        reps: null, // number
+        time: 0, // seconds
+        rest: 0, // seconds
+        series: 0, // number
+        reps: 0, // number
         image: {},
         photo: {}, // REMOVE THIS
         imageUrl: '',
@@ -419,13 +401,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.preview-container {
-  border: 1px solid #ccc;
-
-  .preview {
-    img {
-      width: 100%;
-    }
-  }
+.ft-exercise-new {
 }
 </style>

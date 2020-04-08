@@ -1,0 +1,52 @@
+// @import "./_variables";
+// @import "./_custom-variables";
+// @import "./_bootswatch";
+
+
+// MY CUSTOM VARS
+$white: #fff;
+$gray-900: #333;
+$gray-800: #555;
+$table-active-bg: #dee2e6;
+$second-dark-grey: #555;
+$third-dark-grey: #151515;
+$mandarine: #f39c12;
+$mandarine-gradient: #e08f0e;
+
+// Vue-material
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+
+@include md-register-theme("default", (
+  primary: $mandarine, // The primary color of your application
+  accent: $gray-900, // The accent or secondary color
+  theme: dark // This can be dark or light
+));
+
+@import "~vue-material/dist/theme/all"; // Apply the theme
+
+body {
+  #app {
+    // font-family: 'Lucida Sans', 'Lucida Sans Regular';
+    .router-link {
+      color: $white;
+    }
+    .router-link:hover {
+      color: $mandarine;
+    }
+    .bg-create-section {
+      background-color: $third-dark-grey;
+    }
+    .elegant-color {
+      background-color: $gray-900;
+    }
+
+    // Fix autocomplete styles in webkit browsers
+    .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
+    .md-field.md-theme-default.md-focused .md-textarea:-webkit-autofill, 
+    .md-field.md-theme-default.md-has-value .md-input:-webkit-autofill, 
+    .md-field.md-theme-default.md-has-value .md-textarea:-webkit-autofill {
+      -webkit-text-fill-color: $white;
+      -webkit-box-shadow: 0 0 0 30px $gray-800 inset;
+    }
+  }
+}

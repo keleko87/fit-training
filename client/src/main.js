@@ -3,18 +3,22 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Vuelidate from 'vuelidate';
+import VueMaterial from 'vue-material';
 import ApiService from './common/api.service';
 import DateFilter from './common/date.filter';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-// import 'bootstrap-css-only/css/bootstrap.min.css';
-// Darkly Bootswatch theme
-import './styles/bootstrap.min.css';
+// Bootswatch theme
+// import '../src/assets/css/bootstrap-darkly.min.css';
 // MDBVue
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbvue/lib/css/mdb.min.css';
-
+// Vue Material
+import 'vue-material/dist/vue-material.min.css';
+import './assets/scss/main.scss';
 import './registerServiceWorker';
 
+Vue.use(VueMaterial);
 Vue.use(Vuelidate);
 Vue.filter('date', DateFilter);
 
