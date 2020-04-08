@@ -7,10 +7,10 @@
         </div>
       </div>
 
-      <form novalidate @submit.prevent="checkForm">
+      <form novalidate @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col-md-6">
-            <md-field>
+            <md-field :class="getValidationClass('name')">
               <!-- NAME -->
               <label>Nombre</label>
               <md-input
@@ -18,11 +18,17 @@
                 id="name"
                 v-model.trim="$v.form.name.$model"
               ></md-input>
+              <span class="md-error" v-if="!$v.form.name.required">{{
+                requiredField
+              }}</span>
+              <span class="md-error" v-else-if="!$v.form.name.minlength">{{
+                invalidField
+              }}</span>
             </md-field>
           </div>
           <div class="col-md-6">
             <!-- MOVE TYPE -->
-            <md-field>
+            <md-field :class="getValidationClass('moveType')">
               <!-- NAME -->
               <label>Tipo de ejercicio</label>
               <md-input
@@ -40,7 +46,7 @@
             <!-- <md-autocomplete v-model="form.sport" :md-options="sports">
               <label>Actividad / Deporte</label>
             </md-autocomplete> -->
-            <md-field>
+            <md-field :class="getValidationClass('sport')">
               <label for="sport">Actividad / Deporte</label>
               <md-select
                 v-model.trim="$v.form.sport.$model"
@@ -51,12 +57,15 @@
                   {{ sport }}
                 </md-option>
               </md-select>
+              <span class="md-error" v-if="!$v.form.sport.required">{{
+                requiredField
+              }}</span>
             </md-field>
           </div>
 
           <div class="col-md-6">
             <!-- BODY PART -->
-            <md-field>
+            <md-field :class="getValidationClass('bodyPart')">
               <label for="bodyPart">Parte del cuerpo</label>
               <md-select
                 v-model.trim="$v.form.bodyPart.$model"
@@ -71,6 +80,9 @@
                   {{ bodyPart }}
                 </md-option>
               </md-select>
+              <span class="md-error" v-if="!$v.form.bodyPart.required">{{
+                requiredField
+              }}</span>
             </md-field>
           </div>
         </div>
@@ -78,7 +90,7 @@
         <div class="form-row">
           <div class="col-md-6">
             <!-- TARGET -->
-            <md-field>
+            <md-field :class="getValidationClass('target')">
               <label for="movie">Objetivo</label>
               <md-select
                 v-model.trim="$v.form.target.$model"
@@ -93,11 +105,14 @@
                   {{ target }}</md-option
                 >
               </md-select>
+              <span class="md-error" v-if="!$v.form.target.required">{{
+                requiredField
+              }}</span>
             </md-field>
           </div>
           <div class="col-md-6">
             <!-- LEVEL -->
-            <md-field>
+            <md-field :class="getValidationClass('level')">
               <label for="level">Nivel</label>
               <md-select
                 v-model.trim="$v.form.level.$model"
@@ -108,6 +123,9 @@
                   {{ level }}
                 </md-option>
               </md-select>
+              <span class="md-error" v-if="!$v.form.level.required">{{
+                requiredField
+              }}</span>
             </md-field>
           </div>
         </div>
@@ -115,20 +133,26 @@
         <div class="form-row">
           <div class="col-md-6">
             <!-- DESCRIPTION -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('description')"> 
               <label>Descripción</label>
               <md-input
                 type="textarea"
                 id="descripton"
                 v-model.trim="$v.form.description.$model"
               ></md-input>
+              <span class="md-error" v-if="!$v.form.description.required">{{
+                requiredField
+              }}</span>
+              <span
+                class="md-error"
+                v-else-if="!$v.form.description.minlength"
+                >{{ invalidField }}</span
+              >
             </md-field>
           </div>
           <div class="col-md-6">
             <!-- OBSERVATIONS -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('observations')">
               <label>Observaciones</label>
               <md-input
                 type="textarea"
@@ -142,8 +166,7 @@
         <div class="form-row">
           <div class="col-md-3">
             <!-- TIME -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('time')">
               <label>Duración</label>
               <md-input
                 type="number"
@@ -154,8 +177,7 @@
           </div>
           <div class="col-md-3">
             <!-- REST -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('rest')">
               <label>Descanso</label>
               <md-input
                 type="number"
@@ -166,8 +188,7 @@
           </div>
           <div class="col-md-3">
             <!-- SERIES -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('series')">
               <label>Series</label>
               <md-input
                 type="number"
@@ -178,8 +199,7 @@
           </div>
           <div class="col-md-3">
             <!-- REPS -->
-            <md-field>
-              <!-- NAME -->
+            <md-field :class="getValidationClass('reps')">
               <label>Repeticiones</label>
               <md-input
                 type="number"
@@ -193,7 +213,7 @@
         <div class="form-row">
           <!-- IMAGE URL-->
           <div class="col-md-6">
-            <md-field>
+            <md-field :class="getValidationClass('imageUrl')">
               <!-- NAME -->
               <label>Imagen (URL)</label>
               <md-input
@@ -201,6 +221,9 @@
                 id="imageUrl"
                 v-model.trim="$v.form.imageUrl.$model"
               ></md-input>
+              <span class="md-error" v-if="!$v.form.imageUrl.required">{{
+                requiredField
+              }}</span>
             </md-field>
           </div>
 
@@ -229,15 +252,6 @@
               name="photo"
               @change="onSelect($event)"
             />
-            <!-- <md-field>
-              <label>Subir Imagen</label>
-              <md-file
-                id="photo"
-                ref="photo"
-                name="photo"
-                @change="onSelect($event)"
-              ></md-file>
-            </md-field> -->
           </div>
         </div>
 
@@ -246,19 +260,25 @@
           <div class="col-md-6">
             <md-checkbox
               id="is-warmup"
-              :value="$v.form.isWarmUp.$model"
-              v-model.trim="$v.form.isWarmUp.$model"
+              v-model="form.isWarmUp"
+              class="md-primary"
             >
-              Ejercicio de calentamiento
+              <span class="checkbox-text">Ejercicio de calentamiento ?</span>
             </md-checkbox>
           </div>
         </div>
 
         <div class="form-row mt-3 text-center">
           <div class="col">
-            <md-button type="submit" @click.prevent="onSubmit()">
+            <md-button class="btn btn-primary" type="submit">
               Guardar
             </md-button>
+            <p class="success" v-if="submitStatus === 'OK'">
+              Ejercicio creado correctamente!
+            </p>
+            <p class="info" v-if="submitStatus === 'PENDING'">
+              Enviando...
+            </p>
           </div>
         </div>
       </form>
@@ -281,7 +301,7 @@ export default {
   data() {
     return {
       form: {
-        name: 'Flexiones inclinadas',
+        name: '',
         sport: '',
         bodyPart: '',
         level: '',
@@ -289,16 +309,19 @@ export default {
         moveType: '',
         description: '',
         observations: '',
-        time: 0, // seconds
-        rest: 0, // seconds
-        series: 0, // number
-        reps: 0, // number
+        time: '', // seconds
+        rest: '', // seconds
+        series: '', // number
+        reps: '', // number
         image: {},
         photo: {}, // REMOVE THIS
         imageUrl: '',
         videoUrl: '',
         isWarmUp: false
       },
+      invalidField: 'Campo incorrecto',
+      requiredField: 'Campo obligatorio',
+      submitStatus: null,
       photoUrl: '',
       sports: SPORTS,
       targets: TARGETS,
@@ -316,6 +339,15 @@ export default {
   },
 
   methods: {
+    getValidationClass(fieldName) {
+      const field = this.$v.form[fieldName];
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        };
+      }
+    },
     onSelect() {
       const photo = this.$refs.photo.files[0];
       this.photoUrl = URL.createObjectURL(photo);
@@ -329,30 +361,36 @@ export default {
       this.form.imageUrl = ev.file.photoUrl;
     },
 
-    checkForm(event) {
-      event.target.classList.add('was-validated');
+    async onSubmit() {
+      debugger;
+      this.$v.form.$touch();
+
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR';
+      } else {
+        this.submitStatus = 'PENDING';
+        const formData = this.saveExercise();
+        await this.$store.dispatch('SAVE_EXERCISE', formData);
+        this.submitStatus = 'OK';
+        // this.$router.push({ name: 'home' });
+      }
     },
 
-    onSubmit() {
+    saveExercise() {
       const formData = new FormData();
 
       formData.append('name', this.form.name);
-
       formData.append('sport', this.form.sport);
       formData.append('moveType', this.form.moveType);
-
       formData.append('bodyPart', this.form.bodyPart);
       formData.append('level', this.form.level);
       formData.append('target', this.form.target);
-
       formData.append('description', this.form.description);
       formData.append('observations', this.form.observations);
-
       formData.append('time', this.form.time);
       formData.append('rest', this.form.rest);
       formData.append('series', this.form.series);
       formData.append('reps', this.form.reps);
-
       formData.append('imageUrl', this.form.imageUrl);
       formData.append('videoUrl', this.form.videoUrl);
       formData.append('isWarmUp', this.form.isWarmUp);
@@ -361,8 +399,7 @@ export default {
         formData.append('photo', this.form.photo);
       }
 
-      this.$store.dispatch('SAVE_EXERCISE', formData);
-      // this.$router.push({ name: 'home' });
+      return formData;
     }
   },
 
@@ -372,10 +409,10 @@ export default {
         required,
         minLength: minLength(5)
       },
-      sport: {},
-      bodyPart: {},
-      level: {},
-      target: {},
+      sport: { required },
+      bodyPart: { required },
+      level: { required },
+      target: { required },
       moveType: {},
       description: {
         required,
@@ -383,7 +420,6 @@ export default {
         maxLength: maxLength(500)
       },
       observations: {
-        required,
         minLength: minLength(10),
         maxLength: maxLength(500)
       },
@@ -392,7 +428,7 @@ export default {
       series: {},
       reps: {},
       image: {},
-      imageUrl: {},
+      imageUrl: { required },
       videoUrl: {},
       isWarmUp: {}
     }

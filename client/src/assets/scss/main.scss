@@ -1,4 +1,4 @@
-// @import "./_variables";
+@import "./_variables";
 // @import "./_custom-variables";
 // @import "./_bootswatch";
 
@@ -6,12 +6,13 @@
 // MY CUSTOM VARS
 $white: #fff;
 $gray-900: #333;
-$gray-800: #555;
+$gray-800: #222;
 $table-active-bg: #dee2e6;
 $second-dark-grey: #555;
 $third-dark-grey: #151515;
 $mandarine: #f39c12;
 $mandarine-gradient: #e08f0e;
+
 
 // Vue-material
 @import "~vue-material/dist/theme/engine"; // Import the theme engine
@@ -39,6 +40,25 @@ body {
     .elegant-color {
       background-color: $gray-900;
     }
+    .checkbox-text {
+      color: white;
+    }
+
+    //////// BUTTON ////////
+    .btn-primary {
+      background-color: $mandarine !important;
+      color: $third-dark-grey !important;
+    }
+    .error {
+      color: $red;
+    }
+    .success {
+      color: $green;
+    }
+    .info {
+      color: $white;
+    }
+
 
     // Fix autocomplete styles in webkit browsers
     .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 

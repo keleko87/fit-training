@@ -49,7 +49,6 @@ export default {
 
   methods: {
     getImage(imageUrl) {
-      // http://localhost:9000/uploads/61acb654-a044-44fc-9c66-4ff842f74fab
       return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     },
     showExercesice() {},
@@ -71,7 +70,7 @@ export default {
   max-width: 300px;
   max-height: 300px;
   border: 1px solid $second-dark-grey;
-  background-color: $gray-900;
+  background-color: $third-dark-grey;
   list-style: none;
   text-align: center;
 }
@@ -192,7 +191,7 @@ figure.effect-sadie div {
 }
 
 figure.effect-sadie div {
-  color: $gray-800;
+  color: $third-dark-grey;
   position: relative;
   bottom: 0;
   top: 10px;
@@ -205,7 +204,7 @@ figure.effect-sadie div {
 }
 
 figure.effect-sadie:hover h6 {
-  color: $gray-800;
+  color: $third-dark-grey;
   -webkit-transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
   transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
 }
