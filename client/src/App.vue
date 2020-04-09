@@ -2,7 +2,7 @@
   <div id="app" class="ft-app">
     <header-custom />
     <div class="ft-app__container">
-      <div class="row h-100 draggable-container">
+      <div class="row h-100">
         <div class="col-md-8 elegant-color ft-app__list">
           <router-view class="view content" name="list"></router-view>
         </div>
@@ -37,6 +37,7 @@ export default {
     }
   }
   &__list {
+    padding: 0;
     background-color: transparent;
     background-image: url('./assets/img/fitness_slide_2.jpg');
     background-repeat: no-repeat;

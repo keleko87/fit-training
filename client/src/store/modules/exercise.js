@@ -29,6 +29,9 @@ const getters = {
   totalExercises(state) {
     return state.totalExercises;
   },
+  totalExercisesReversed() {
+    return state.totalExercises.reverse();
+  },
   exercisesCount(state) {
     return state.totalExercises.length;
   }

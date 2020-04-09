@@ -1,12 +1,6 @@
 <template>
   <div class="ft-exercise-new my-5">
     <div class="container">
-      <div class="row">
-        <div class="mx-auto">
-          <h3>Crear Ejercicio</h3>
-        </div>
-      </div>
-
       <form novalidate @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col-md-6">
@@ -250,6 +244,7 @@
               type="file"
               ref="photo"
               name="photo"
+              class="input-file"
               @change="onSelect($event)"
             />
           </div>
@@ -270,9 +265,9 @@
 
         <div class="form-row mt-3 text-center">
           <div class="col">
-            <md-button class="btn btn-primary" type="submit">
+            <button class="btn btn-primary btn-lg" type="submit">
               Guardar
-            </md-button>
+            </button>
             <p class="success" v-if="submitStatus === 'OK'">
               Ejercicio creado correctamente!
             </p>
@@ -362,7 +357,6 @@ export default {
     },
 
     async onSubmit() {
-      debugger;
       this.$v.form.$touch();
 
       if (this.$v.$invalid) {
@@ -372,7 +366,8 @@ export default {
         const formData = this.saveExercise();
         await this.$store.dispatch('SAVE_EXERCISE', formData);
         this.submitStatus = 'OK';
-        // this.$router.push({ name: 'home' });
+        await this.$store.dispatch('GET_EXERCISES');
+        this.$emit('submitStatus', false);
       }
     },
 
