@@ -327,10 +327,6 @@ export default {
 
   computed: {
     ...mapGetters(['totalExercises']),
-    tickets() {
-      console.log(this.$store.state);
-      return this.$store.state.exercise.totalExercises;
-    }
   },
 
   methods: {

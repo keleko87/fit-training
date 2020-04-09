@@ -1,9 +1,9 @@
 <template>
-  <div class="grid">
+  <div class="ft-exercise-card grid">
     <figure :class="effectClass">
       <img :src="getImage(data.imageUrl)" alt="image url" />
       <figcaption>
-        <h6>{{ data.name }}</h6>
+        <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
         <div>
           <div class="d-flex space-between">
             <div @click="selectExercise()">
@@ -204,7 +204,7 @@ figure.effect-sadie div {
 }
 
 figure.effect-sadie:hover h6 {
-  color: $third-dark-grey;
+  color: $third-dark-grey !important;
   -webkit-transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
   transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
 }

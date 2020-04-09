@@ -40,7 +40,6 @@
           class="col-12"
           v-if="totalExercisesReversed && totalExercisesReversed.length"
         >
-          <h5>{{ totalExercisesReversed.length }} questions</h5>
           <exercise-list
             :list="totalExercisesReversed"
             :type="'all'"

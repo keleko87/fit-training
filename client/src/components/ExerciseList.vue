@@ -1,47 +1,46 @@
 <template>
   <div class="ft-exercise-list__container container">
-    <div v-if="tickets.length === 0" class="row">
-      No tickets are here... yet.
+    <div v-if="exercises.length === 0" class="row">
+      No se encontraron ejercicios...
     </div>
 
     <div v-else class="row">
       <div
-        v-for="ticket in tickets"
-        :key="ticket._id"
+        v-for="exercise in exercises"
+        :key="exercise._id"
         class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
       >
-        <!-- <exercise-card :data="ticket"></exercise-card> -->
-        <exercise-card-animation :data="ticket"></exercise-card-animation>
+        <exercise-card-animation :data="exercise"></exercise-card-animation>
       </div>
     </div>
 
-    <div class="row" v-if="exercisesCount > 0">
+    <div class="row">
       <div class="mx-auto">
-        Pagination total: {{ exercisesCount }}
-        <!-- <b-pagination
-          v-model="pagination.currentPage"
-          :total-rows="exercisesCount"
+        <ft-pagination
+          :total-pages="totalPages"
+          :total="exercisesCount"
+          :current-page="pagination.currentPage"
           :per-page="pagination.perPage"
-          aria-controls="
-        ></b-pagination> -->
+          @pagechanged="onPageChange($event)"
+        >
+        </ft-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { BPagination } from 'bootstrap-vue';
 import { mapGetters } from 'vuex';
-// import ExerciseCard from './ExerciseCard';
 import ExerciseCardAnimation from './ExerciseCardAnimation';
+import FtPagination from './Pagination';
+import pagination from '../mixins/pagination';
 
 export default {
   name: 'exercise-list',
 
   components: {
-    // BPagination
-    // ExerciseCard
-    ExerciseCardAnimation
+    ExerciseCardAnimation,
+    FtPagination
   },
 
   props: {
@@ -57,31 +56,27 @@ export default {
 
   data() {
     return {
-      // exercisesCount: 0,
       pagination: {
         currentPage: 1,
-        rows: 4,
-        perPage: 10
+        perPage: 9
       }
     };
   },
 
+  mixins: [pagination],
+
   computed: {
     ...mapGetters(['exercisesCount', 'totalExercises']),
 
-    tickets() {
+    exercises() {
       const items = this.list || this.totalExercises;
-      console.log('exerciseList', items);
       // Return just page of items needed
-      return items.slice(
-        (this.pagination.currentPage - 1) * this.pagination.perPage,
-        this.pagination.currentPage * this.pagination.perPage
-      );
-    }
+      return this.pageItems(items);
+    },
 
-    // totalRows() {
-    //   return this.$store.getters.totalExercises.length;
-    // }
+    totalPages() {
+      return this.getTotalPages(this.exercisesCount);
+    }
   },
 
   mounted() {
@@ -91,14 +86,13 @@ export default {
   methods: {
     fetchExercises() {
       this.$store.dispatch('GET_EXERCISES');
-      console.log('ticketList', this.$store.state.exercise.totalExercises);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.ticket-container.content {
+.exercise-container.content {
   height: auto;
 }
 </style>

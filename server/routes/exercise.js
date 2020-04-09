@@ -7,15 +7,7 @@ const upload = multer ({dest: './public/uploads'});
 // GET exercise LIST
 router.get('/all', (req, res) => {
   Exercise.find({})
-  .then((data) => {
-    // const exercises = data.map((exercise) => {
-    //   console.log(exercise.imageUrl)
-    //   const image = `${process.env.API}/uploads/${exercise.image}`;
-    //   const newExercise = Object.assign(exercise, { image });
-      
-    //   return newExercise;
-    // })
-    
+  .then((data) => {    
     res.json(data);
   })
   .catch(err => console.log(err));

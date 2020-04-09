@@ -64,6 +64,24 @@ body {
       color: $white;
     }
 
+
+    ////// PAGINATION  //////
+    .pagination.pg-blue {
+      .page-item {
+        .page-link {
+          color: $text-paragrahp;
+        }
+        .page-link:hover {
+          background-color: $second-dark-grey;
+        }
+      }
+      .page-item.active {
+        .page-link {
+          background-color: $teal;
+        }
+      }
+    }
+
     // Fix autocomplete styles in webkit browsers
     .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
     .md-field.md-theme-default.md-focused .md-textarea:-webkit-autofill, 
@@ -79,5 +97,7 @@ body {
   .md-menu-content.md-select-menu {
     z-index: 1100;
   }
-  
+
+
+
 }

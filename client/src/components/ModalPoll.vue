@@ -28,7 +28,6 @@
 <script>
 import {
   mdbContainer,
-  mdbBtn,
   mdbModal,
   mdbModalHeader,
   mdbModalBody,
@@ -45,7 +44,6 @@ export default {
 
   components: {
     mdbContainer,
-    mdbBtn,
     mdbModal,
     mdbModalHeader,
     mdbModalBody,
