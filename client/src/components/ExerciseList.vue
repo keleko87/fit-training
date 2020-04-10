@@ -1,21 +1,12 @@
 <template>
-  <div class="ft-exercise-list__container container">
-    <div v-if="exercises.length === 0" class="row">
-      No se encontraron ejercicios...
-    </div>
-
-    <div v-else class="row">
-      <div
-        v-for="exercise in exercises"
-        :key="exercise._id"
-        class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
-      >
-        <exercise-card-animation :data="exercise"></exercise-card-animation>
+  <div class="ft-exercise-list container">
+    <div class="d-flex justify-content-between">
+      <div class="row">
+        <h5 class="ft-exercise-list__total">
+          Total: {{ exercisesCount }} resultados
+        </h5>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="mx-auto">
+      <div class="row">
         <ft-pagination
           :total-pages="totalPages"
           :total="exercisesCount"
@@ -25,6 +16,20 @@
         >
         </ft-pagination>
       </div>
+    </div>
+
+    <div v-if="exercises && exercises.length > 0" class="row">
+      <div
+        v-for="exercise in exercises"
+        :key="exercise._id"
+        class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
+      >
+        <exercise-card-animation :data="exercise"></exercise-card-animation>
+      </div>
+    </div>
+
+    <div v-if="exercises.length === 0" class="row">
+      No se encontraron ejercicios...
     </div>
   </div>
 </template>
@@ -52,15 +57,6 @@ export default {
     list: {
       type: Array
     }
-  },
-
-  data() {
-    return {
-      pagination: {
-        currentPage: 1,
-        perPage: 9
-      }
-    };
   },
 
   mixins: [pagination],
@@ -92,7 +88,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.exercise-container.content {
-  height: auto;
+.ft-exercise-list {
+  &__total {
+    font-size: 1.2em;
+  }
 }
 </style>

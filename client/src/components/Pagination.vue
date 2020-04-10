@@ -1,84 +1,77 @@
 <template>
   <div class="ft-pagination">
-    <div v-if="showPagination" class="ft-paginator__container">
-      <ul class="pagination">
-        <li class="pagination-item">
-          <button
-            type="button"
-            @click="onClickFirstPage"
+    <div v-if="showPagination" class="ft-pagination__container">
+      <ul class="ft-pagination__list">
+        <li class="ft-pagination__item">
+          <a
+            class="ft-pagination__link"
+            :class="{ disabled: isInFirstPage }"
             :disabled="isInFirstPage"
+            @click.prevent="onClickFirstPage"
           >
-            First
-          </button>
+            <!-- First -->
+            <mdb-icon icon="step-backward" class="ft-pagination__icon" />
+          </a>
         </li>
 
-        <li class="pagination-item">
-          <button
-            type="button"
-            @click="onClickPreviousPage"
+        <li class="ft-pagination__item">
+          <a
+            class="ft-pagination__link"
+            :class="{ disabled: isInFirstPage }"
             :disabled="isInFirstPage"
+            @click.prevent="onClickPreviousPage"
           >
-            Previous
-          </button>
+            <!-- Previous -->
+            <mdb-icon class="ft-pagination__icon" icon="chevron-left" />
+          </a>
         </li>
 
-        <li v-for="page in pages" :key="page.name" class="pagination-item">
-          <button
-            type="button"
-            @click="onClickPage(page.name)"
-            :disabled="page.isDisabled"
+        <li v-for="page in pages" :key="page.name" class="ft-pagination__item">
+          <a
+            class="ft-pagination__link ft-pagination__link--page"
             :class="{ active: isPageActive(page.name) }"
+            :disabled="page.isDisabled"
+            @click.prevent="onClickPage(page.name)"
           >
             {{ page.name }}
-          </button>
+          </a>
         </li>
 
-        <li class="pagination-item">
-          <button
-            type="button"
-            @click="onClickNextPage"
+        <li class="ft-pagination__item">
+          <a
+            class="ft-pagination__link"
+            :class="{ disabled: isInLastPage }"
             :disabled="isInLastPage"
+            @click.prevent="onClickNextPage"
           >
-            Next
-          </button>
+            <!-- Next -->
+            <mdb-icon class="ft-pagination__icon" icon="chevron-right" />
+          </a>
         </li>
 
-        <li class="pagination-item">
-          <button
-            type="button"
-            @click="onClickLastPage"
+        <li class="ft-pagination__item">
+          <a
+            class="ft-pagination__link"
+            :class="{ disabled: isInLastPage }"
             :disabled="isInLastPage"
+            @click.prevent="onClickLastPage"
           >
-            Last
-          </button>
+            <!-- Last -->
+            <mdb-icon class="ft-pagination__icon" icon="step-forward" />
+          </a>
         </li>
       </ul>
-
-      <p>Total: {{ total }} resultados</p>
     </div>
-    <!-- 
-        <mdb-pagination>
-    <mdb-page-item disabled>First</mdb-page-item>
-    <mdb-page-nav prev disabled></mdb-page-nav>
-    <mdb-page-item active>1</mdb-page-item>
-    <mdb-page-item>2</mdb-page-item>
-    <mdb-page-item>3</mdb-page-item>
-    <mdb-page-item>4</mdb-page-item>
-    <mdb-page-item>5</mdb-page-item>
-    <mdb-page-nav next></mdb-page-nav>
-    <mdb-page-item>Last</mdb-page-item>
-  </mdb-pagination>
-      -->
   </div>
 </template>
 <script>
-import { mdbPagination, mdbPageItem, mdbPageNav } from 'mdbvue';
+import { mdbIcon } from 'mdbvue';
 
 export default {
   name: 'ft-pagination',
 
   props: {
-    maxVisibleButtons: {
+    maxVisibleas: {
       type: Number,
       required: false,
       default: 3
@@ -101,6 +94,10 @@ export default {
     }
   },
 
+  components: {
+    mdbIcon
+  },
+
   computed: {
     showPagination() {
       return this.total > 0 && this.total > this.perPage;
@@ -111,20 +108,17 @@ export default {
       }
 
       if (this.currentPage === this.totalPages) {
-        const res = this.totalPages - this.maxVisibleButtons + 1;
+        const res = this.totalPages - this.maxVisibleas + 1;
         if (res <= 0) {
           return 1;
         }
-        return this.totalPages - this.maxVisibleButtons + 1;
+        return this.totalPages - this.maxVisibleas + 1;
       }
 
       return this.currentPage - 1;
     },
     endPage() {
-      return Math.min(
-        this.startPage + this.maxVisibleButtons - 1,
-        this.totalPages
-      );
+      return Math.min(this.startPage + this.maxVisibleas - 1, this.totalPages);
     },
     pages() {
       const range = [];
@@ -169,17 +163,48 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.pagination {
-  list-style-type: none;
-}
+<style lang="scss" scoped>
+$padding-items-lg: 7px 12px;
+$padding-items-sm: 3px 8px;
 
-.pagination-item {
-  display: inline-block;
-}
+.ft-pagination {
+  &__list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
-.active {
-  background-color: #4aae9b;
-  color: #ffffff;
+  &__item {
+    display: inline-block;
+    margin: 2px;
+  }
+
+  &__link {
+    border: $border-item;
+    padding: $padding-items-sm;
+
+    &--page {
+      border: none;
+    }
+  }
+
+  &__link:hover {
+    background-color: $mandarine-gradient;
+    color: $white !important;
+  }
+
+  &__link.active {
+    background-color: $teal;
+    color: $white !important;
+  }
+
+  &__link.active:hover {
+    background-color: none;
+    color: $white;
+  }
+
+  &__link.disabled {
+    color: $second-dark-grey;
+  }
 }
 </style>

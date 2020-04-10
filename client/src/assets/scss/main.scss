@@ -43,6 +43,14 @@ body {
       color: $mandarine;
     }
 
+    a {
+      color: $gray-500;
+    }
+
+    small {
+      color: $gray-400;
+    }
+
     .checkbox-text,
     .input-file {
       color: $text-input;
@@ -66,21 +74,21 @@ body {
 
 
     ////// PAGINATION  //////
-    .pagination.pg-blue {
-      .page-item {
-        .page-link {
-          color: $text-paragrahp;
-        }
-        .page-link:hover {
-          background-color: $second-dark-grey;
-        }
-      }
-      .page-item.active {
-        .page-link {
-          background-color: $teal;
-        }
-      }
-    }
+    // .pagination.pg-blue {
+    //   .page-item {
+    //     .page-link {
+    //       color: $text-paragrahp;
+    //     }
+    //     .page-link:hover {
+    //       background-color: $second-dark-grey;
+    //     }
+    //   }
+    //   .page-item.active {
+    //     .page-link {
+    //       background-color: $teal;
+    //     }
+    //   }
+    // }
 
     // Fix autocomplete styles in webkit browsers
     .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
