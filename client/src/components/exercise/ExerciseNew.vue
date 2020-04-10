@@ -284,7 +284,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
-import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../common/constants';
+import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../../common/constants';
 
 export default {
   name: 'exercise-new',

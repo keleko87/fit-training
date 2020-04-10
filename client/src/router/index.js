@@ -2,10 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Exercise from '../views/Exercise';
 import Home from '../views/Home';
-import WorkoutNew from '../components/WorkoutNew';
-import WorkoutList from '../components/WorkoutList';
-import RoutineNew from '../components/RoutineNew';
-import RoutineList from '../components/RoutineList';
+import WorkoutNew from '../components/workout/WorkoutNew';
+import WorkoutList from '../components/workout/WorkoutList';
+import RoutineNew from '../components/routine/RoutineNew';
+import RoutineList from '../components/routine/RoutineList';
 Vue.use(Router);
 
 export default new Router({

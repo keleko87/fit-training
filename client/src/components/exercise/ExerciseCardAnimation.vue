@@ -1,12 +1,26 @@
 <template>
   <div class="ft-exercise-card grid">
+    <!-- MODAL -->
+    <modal-poll :modal="modalPoll" @close="onCloseModal($event)">
+      <template slot="header">
+        <h3>{{ data.name }}</h3>
+      </template>
+      <template slot="body">
+        <exercise-detail
+          :info="data"
+          @submitStatus="onCloseModal($event)"
+        ></exercise-detail>
+      </template>
+    </modal-poll>
+
+    <!-- CARD -->
     <figure :class="effectClass">
       <img :src="getImage(data.imageUrl)" alt="image url" />
       <figcaption>
         <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
         <div>
           <div class="d-flex space-between">
-            <div @click="selectExercise()">
+            <div @click="showExercise(data._id)">
               <mdb-icon icon="info-circle" size="5x" />
             </div>
             <div @click="selectExercise()">
@@ -23,6 +37,8 @@
 </template>
 <script>
 import { mdbIcon } from 'mdbvue';
+import ExerciseDetail from './ExerciseDetail';
+import ModalPoll from '../common/ModalPoll';
 
 export default {
   name: 'exercise-card-animation',
@@ -38,7 +54,15 @@ export default {
   },
 
   components: {
+    ExerciseDetail,
+    ModalPoll,
     mdbIcon
+  },
+
+  data() {
+    return {
+      modalPoll: false
+    };
   },
 
   computed: {
@@ -51,7 +75,16 @@ export default {
     getImage(imageUrl) {
       return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     },
-    showExercesice() {},
+
+    onCloseModal(ev) {
+      this.modalPoll = ev;
+    },
+
+    async showExercise(id) {
+      console.log('id exercise', id);
+      this.modalPoll = true;
+      // show modal exercise detail
+    },
 
     selectExercise() {},
 

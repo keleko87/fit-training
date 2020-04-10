@@ -27,14 +27,19 @@
       </template>
     </ft-header>
 
-    <!-- EXERCISE LIST -->
     <div class="container">
+
+      <!-- FILTER MENU-->
       <div class="row white">
         <div class="col-6">
-          filter inputs here
+          filters options here
+        </div>
+        <div class="col-6">
+          Search here
         </div>
       </div>
 
+      <!-- EXERCISES LIST -->
       <div class="row mt-3">
         <div
           class="col-12"
@@ -52,10 +57,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import FtHeader from '../components/Header';
-import ExerciseList from '../components/ExerciseList';
-import ExerciseNew from '../components/ExerciseNew';
-import ModalPoll from '../components/ModalPoll';
+import FtHeader from '../components/common/Header';
+import ExerciseList from '../components/exercise/ExerciseList';
+import ExerciseNew from '../components/exercise/ExerciseNew';
+import ModalPoll from '../components/common/ModalPoll';
 
 export default {
   name: 'exercise',

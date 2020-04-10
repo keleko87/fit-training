@@ -3,7 +3,7 @@ export default {
     return {
       pagination: {
         currentPage: 1,
-        perPage: 5 // 12 -> Múltiplo de 3 y 4 para el grid
+        perPage: 12 // 12 -> Múltiplo de 3 y 4 para el grid
       }
     };
   },

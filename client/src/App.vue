@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import HeaderCustom from './components/HeaderCustom';
+import HeaderCustom from './components/common/HeaderCustom';
 
 export default {
   name: 'App',

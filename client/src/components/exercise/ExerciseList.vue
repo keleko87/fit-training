@@ -2,9 +2,7 @@
   <div class="ft-exercise-list container">
     <div class="d-flex justify-content-between">
       <div class="row">
-        <h5 class="ft-exercise-list__total">
-          Total: {{ exercisesCount }} resultados
-        </h5>
+        <h5 class="ft-exercise-list__total">{{ exercisesCount }} resultados</h5>
       </div>
       <div class="row">
         <ft-pagination
@@ -37,8 +35,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import ExerciseCardAnimation from './ExerciseCardAnimation';
-import FtPagination from './Pagination';
-import pagination from '../mixins/pagination';
+import FtPagination from '../common/Pagination';
+import pagination from '../../mixins/pagination';
 
 export default {
   name: 'exercise-list',
