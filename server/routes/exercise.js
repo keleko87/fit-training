@@ -48,7 +48,7 @@ router.post('/new', (req, res) => {
       series,
       reps,
       videoUrl,
-      isWarmUpn,
+      isWarmUp,
       observations
     } = req.body;
 
@@ -75,7 +75,7 @@ router.post('/new', (req, res) => {
       image,
       imageUrl,
       videoUrl,
-      isWarmUpn,
+      isWarmUp,
       observations
     });
 

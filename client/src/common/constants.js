@@ -21,3 +21,19 @@ export const TARGETS = [
   'Power',
   'Footwork'
 ];
+export const MINUTES = [
+  '0',
+  '0.5',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '10',
+  '15',
+  '20',
+  '25',
+  '30',
+  '45',
+  '60'
+];

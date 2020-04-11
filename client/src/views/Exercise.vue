@@ -27,19 +27,18 @@
       </template>
     </ft-header>
 
-    <div class="container">
-
-      <!-- FILTER MENU-->
-      <div class="row white">
-        <div class="col-6">
-          filters options here
-        </div>
-        <div class="col-6">
-          Search here
-        </div>
+    <!-- FILTER MENU-->
+    <div class="row white">
+      <div class="col-6">
+        filters options here
       </div>
+      <div class="col-6">
+        Search here
+      </div>
+    </div>
 
-      <!-- EXERCISES LIST -->
+    <!-- EXERCISES LIST -->
+    <div class="container">
       <div class="row mt-3">
         <div
           class="col-12"

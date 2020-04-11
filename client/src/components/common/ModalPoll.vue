@@ -4,6 +4,7 @@
     <mdb-modal
       side
       fullHeight
+      :size="size"
       :position="position"
       :direction="direction"
       :show="showModal"
@@ -38,8 +39,9 @@ export default {
 
   props: {
     modal: { type: Boolean, default: false },
+    size: { type: String, default: 'fluid' },
     position: { type: String, default: 'top' },
-    direction: { type: String, default: 'top' }
+    direction: { type: String, default: 'left' }
   },
 
   components: {
@@ -65,6 +67,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ft-modal-poll {
+  & /deep/ .modal-header {
+    border-bottom: 1px solid $second-dark-grey;
+  }
+  & /deep/ .modal-footer {
+    border-top: 1px solid $second-dark-grey;
+  }
   & /deep/ .modal-dialog .modal-content {
     background-color: $gray-900;
   }

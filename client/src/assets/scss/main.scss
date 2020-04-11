@@ -32,7 +32,7 @@ body {
 
     ////// H1,H2 and INPUT TEXTS  ////////
     h1, h2, h3 {
-      color: $white;
+      color: $gray-200;
     }
 
     h4, h5, p {
@@ -45,6 +45,10 @@ body {
 
     a {
       color: $gray-500;
+    }
+
+    span {
+      color: $gray-600;
     }
 
     small {
@@ -72,23 +76,10 @@ body {
       color: $white;
     }
 
-
-    ////// PAGINATION  //////
-    // .pagination.pg-blue {
-    //   .page-item {
-    //     .page-link {
-    //       color: $text-paragrahp;
-    //     }
-    //     .page-link:hover {
-    //       background-color: $second-dark-grey;
-    //     }
-    //   }
-    //   .page-item.active {
-    //     .page-link {
-    //       background-color: $teal;
-    //     }
-    //   }
-    // }
+    // HR
+    .ft-breakline {
+      background-color: $second-dark-grey;
+    }
 
     // Fix autocomplete styles in webkit browsers
     .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
@@ -102,10 +93,9 @@ body {
 
   
   ////// DROPDOWN SELECT  ////////
-  .md-menu-content.md-select-menu {
+  .md-menu-content.md-select-menu,
+  .md-menu-content-bottom-start.md-menu-content {
     z-index: 1100;
   }
-
-
 
 }

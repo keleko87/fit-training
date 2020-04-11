@@ -31,7 +31,7 @@ export default {
   font-family: cursive;
 
   &__container {
-    height: 100vh;
+    height: calc(100vh - 52px);
     .row {
       margin: 0;
     }

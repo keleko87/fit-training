@@ -127,7 +127,7 @@
         <div class="form-row">
           <div class="col-md-6">
             <!-- DESCRIPTION -->
-            <md-field :class="getValidationClass('description')"> 
+            <md-field :class="getValidationClass('description')">
               <label>Descripción</label>
               <md-input
                 type="textarea"
@@ -159,28 +159,6 @@
 
         <div class="form-row">
           <div class="col-md-3">
-            <!-- TIME -->
-            <md-field :class="getValidationClass('time')">
-              <label>Duración</label>
-              <md-input
-                type="number"
-                id="time"
-                v-model.trim="$v.form.time.$model"
-              ></md-input>
-            </md-field>
-          </div>
-          <div class="col-md-3">
-            <!-- REST -->
-            <md-field :class="getValidationClass('rest')">
-              <label>Descanso</label>
-              <md-input
-                type="number"
-                id="rest"
-                v-model.trim="$v.form.rest.$model"
-              ></md-input>
-            </md-field>
-          </div>
-          <div class="col-md-3">
             <!-- SERIES -->
             <md-field :class="getValidationClass('series')">
               <label>Series</label>
@@ -191,6 +169,7 @@
               ></md-input>
             </md-field>
           </div>
+
           <div class="col-md-3">
             <!-- REPS -->
             <md-field :class="getValidationClass('reps')">
@@ -201,6 +180,40 @@
                 v-model.trim="$v.form.reps.$model"
               ></md-input>
             </md-field>
+          </div>
+
+          <div class="col-md-3">
+            <!-- REST -->
+            <md-autocomplete
+              :class="getValidationClass('rest')"
+              v-model.trim="$v.form.rest.$model"
+              :md-options="minutes"
+            >
+              <label>Descanso (min)</label>
+            </md-autocomplete>
+            <span
+              class="md-error"
+              v-if="!$v.form.rest.minValue || !$v.form.rest.maxValue"
+            >
+              Añade un valor entre {{ minValueTime }} y {{ maxValueTime }}
+            </span>
+          </div>
+
+          <div class="col-md-3">
+            <!-- TIME -->
+            <md-autocomplete
+              :class="getValidationClass('time')"
+              v-model.trim="$v.form.time.$model"
+              :md-options="minutes"
+            >
+              <label>Duración (min)</label>
+            </md-autocomplete>
+            <span
+              class="md-error"
+              v-if="!$v.form.time.minValue || !$v.form.time.maxValue"
+            >
+              Añade un valor entre {{ minValueTime }} y {{ maxValueTime }}
+            </span>
           </div>
         </div>
 
@@ -215,9 +228,6 @@
                 id="imageUrl"
                 v-model.trim="$v.form.imageUrl.$model"
               ></md-input>
-              <span class="md-error" v-if="!$v.form.imageUrl.required">{{
-                requiredField
-              }}</span>
             </md-field>
           </div>
 
@@ -229,14 +239,13 @@
               <md-input
                 type="url"
                 id="videoUrl"
-                placeholder="http://example.com"
                 v-model.trim="$v.form.videoUrl.$model"
               ></md-input>
             </md-field>
           </div>
         </div>
 
-        <div class="form-row">
+        <div v-if="!isImageUrl" class="form-row">
           <!-- FILE UPLOAD -->
           <div class="col-md-6">
             <input
@@ -255,7 +264,7 @@
           <div class="col-md-6">
             <md-checkbox
               id="is-warmup"
-              v-model="form.isWarmUp"
+              v-model.trim="$v.form.isWarmUp.$model"
               class="md-primary"
             >
               <span class="checkbox-text">Ejercicio de calentamiento ?</span>
@@ -283,8 +292,21 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { required, minLength, maxLength } from 'vuelidate/lib/validators';
-import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../../common/constants';
+import {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
+  url
+} from 'vuelidate/lib/validators';
+import {
+  SPORTS,
+  LEVELS,
+  BODY_PARTS,
+  TARGETS,
+  MINUTES
+} from '../../common/constants';
 
 export default {
   name: 'exercise-new',
@@ -304,8 +326,8 @@ export default {
         moveType: '',
         description: '',
         observations: '',
-        time: '', // seconds
-        rest: '', // seconds
+        time: '', // minutes
+        rest: '', // minutes
         series: '', // number
         reps: '', // number
         image: {},
@@ -321,12 +343,21 @@ export default {
       sports: SPORTS,
       targets: TARGETS,
       levels: LEVELS,
-      bodyParts: BODY_PARTS
+      bodyParts: BODY_PARTS,
+      minutes: MINUTES,
+      minValueTime: MINUTES[0],
+      maxValueTime: MINUTES[MINUTES.length - 1]
     };
   },
 
   computed: {
     ...mapGetters(['totalExercises']),
+
+    isImageUrl() {
+      // const urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
+      const url = new RegExp('https://');
+      return url.test(this.$v.form.imageUrl.$model);
+    }
   },
 
   methods: {
@@ -339,17 +370,15 @@ export default {
         };
       }
     },
+
     onSelect() {
+      this.$v.form.imageUrl.$reset();
       const photo = this.$refs.photo.files[0];
       this.photoUrl = URL.createObjectURL(photo);
       this.form.photo = photo;
-      this.$v.form.imageUrl.$model = this.photoUrl;
-    },
-
-    onInput(ev) {
-      this.form.description = ev.getHTML;
-      this.form.photo = ev.file;
-      this.form.imageUrl = ev.file.photoUrl;
+      if (!this.isImageUrl) {
+        this.$v.form.imageUrl.$model = this.photoUrl;
+      }
     },
 
     async onSubmit() {
@@ -394,35 +423,55 @@ export default {
     }
   },
 
-  validations: {
-    form: {
-      name: {
-        required,
-        minLength: minLength(5)
-      },
-      sport: { required },
-      bodyPart: { required },
-      level: { required },
-      target: { required },
-      moveType: {},
-      description: {
-        required,
-        minLength: minLength(10),
-        maxLength: maxLength(500)
-      },
-      observations: {
-        minLength: minLength(10),
-        maxLength: maxLength(500)
-      },
-      time: {},
-      rest: {},
-      series: {},
-      reps: {},
-      image: {},
-      imageUrl: { required },
-      videoUrl: {},
-      isWarmUp: {}
-    }
+  validations: function() {
+    return {
+      form: {
+        name: {
+          required,
+          minLength: minLength(5)
+        },
+        sport: { required },
+        bodyPart: { required },
+        level: { required },
+        target: { required },
+        moveType: {},
+        description: {
+          required,
+          minLength: minLength(10),
+          maxLength: maxLength(500)
+        },
+        observations: {
+          minLength: minLength(10),
+          maxLength: maxLength(500)
+        },
+        series: {
+          required,
+          minValue: minValue(1),
+          maxValue: maxValue(60)
+        },
+        reps: {
+          minValue: minValue(0),
+          maxValue: maxValue(60)
+        },
+        rest: {
+          required,
+          minValue: minValue(this.minValueTime),
+          maxValue: maxValue(this.maxValueTime)
+        },
+        time: {
+          minValue: minValue(this.minValueTime),
+          maxValue: maxValue(this.maxValueTime)
+        },
+        image: {},
+        imageUrl: {
+          required
+        },
+        videoUrl: {
+          url
+        },
+        isWarmUp: {}
+      }
+    };
   }
 };
 </script>

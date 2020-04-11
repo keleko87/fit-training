@@ -1,7 +1,12 @@
 <template>
   <div class="ft-exercise-card grid">
     <!-- MODAL -->
-    <modal-poll :modal="modalPoll" @close="onCloseModal($event)">
+    <modal-poll
+      :modal="modalPoll"
+      :position="'bottom'"
+      :direction="'right'"
+      @close="onCloseModal($event)"
+    >
       <template slot="header">
         <h3>{{ data.name }}</h3>
       </template>
