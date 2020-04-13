@@ -204,7 +204,7 @@ $padding-items-sm: 3px 8px;
   }
 
   &__link.disabled {
-    color: $second-dark-grey;
+    color: $second-dark-grey !important;
   }
 }
 </style>

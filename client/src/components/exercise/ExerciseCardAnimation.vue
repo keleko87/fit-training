@@ -26,13 +26,13 @@
         <div>
           <div class="d-flex space-between">
             <div @click="showExercise(data._id)">
-              <mdb-icon icon="info-circle" size="5x" />
+              <mdb-icon icon="info-circle" size="7x" />
             </div>
             <div @click="selectExercise()">
-              <mdb-icon icon="arrows-alt" size="5x" />
+              <mdb-icon icon="arrows-alt" size="7x" />
             </div>
             <div @click="shareExercise()">
-              <mdb-icon icon="share-alt-square" size="5x" />
+              <mdb-icon icon="share-alt-square" size="7x" />
             </div>
           </div>
         </div>
@@ -165,7 +165,8 @@ export default {
 
 .grid figure h6 {
   word-spacing: -0.15em;
-  font-weight: 300;
+  font-weight: bold;
+  padding: 3px 5px;
 }
 
 .grid figure h6 span {

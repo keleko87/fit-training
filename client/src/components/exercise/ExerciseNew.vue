@@ -1,5 +1,5 @@
 <template>
-  <div class="ft-exercise-new my-5">
+  <div class="ft-exercise-new mt-2">
     <div class="container">
       <form novalidate @submit.prevent="onSubmit">
         <div class="form-row">
@@ -35,13 +35,10 @@
         </div>
 
         <div class="form-row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <!-- SPORT -->
-            <!-- <md-autocomplete v-model="form.sport" :md-options="sports">
-              <label>Actividad / Deporte</label>
-            </md-autocomplete> -->
             <md-field :class="getValidationClass('sport')">
-              <label for="sport">Actividad / Deporte</label>
+              <label for="sport">Actividad</label>
               <md-select
                 v-model.trim="$v.form.sport.$model"
                 id="sport"
@@ -57,7 +54,7 @@
             </md-field>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-3">
             <!-- BODY PART -->
             <md-field :class="getValidationClass('bodyPart')">
               <label for="bodyPart">Parte del cuerpo</label>
@@ -79,10 +76,8 @@
               }}</span>
             </md-field>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div class="col-md-6">
+  
+          <div class="col-md-3">
             <!-- TARGET -->
             <md-field :class="getValidationClass('target')">
               <label for="movie">Objetivo</label>
@@ -104,7 +99,8 @@
               }}</span>
             </md-field>
           </div>
-          <div class="col-md-6">
+
+          <div class="col-md-3">
             <!-- LEVEL -->
             <md-field :class="getValidationClass('level')">
               <label for="level">Nivel</label>
@@ -249,10 +245,10 @@
           <!-- FILE UPLOAD -->
           <div class="col-md-6">
             <input
-              id="photo"
+              id="image"
               type="file"
-              ref="photo"
-              name="photo"
+              ref="image"
+              name="image"
               class="input-file"
               @change="onSelect($event)"
             />
@@ -274,7 +270,7 @@
 
         <div class="form-row mt-3 text-center">
           <div class="col">
-            <button class="btn btn-primary btn-lg" type="submit">
+            <button class="btn btn-primary" type="submit">
               Guardar
             </button>
             <p class="success" v-if="submitStatus === 'OK'">
@@ -331,7 +327,6 @@ export default {
         series: '', // number
         reps: '', // number
         image: {},
-        photo: {}, // REMOVE THIS
         imageUrl: '',
         videoUrl: '',
         isWarmUp: false
@@ -339,7 +334,6 @@ export default {
       invalidField: 'Campo incorrecto',
       requiredField: 'Campo obligatorio',
       submitStatus: null,
-      photoUrl: '',
       sports: SPORTS,
       targets: TARGETS,
       levels: LEVELS,
@@ -373,11 +367,12 @@ export default {
 
     onSelect() {
       this.$v.form.imageUrl.$reset();
-      const photo = this.$refs.photo.files[0];
-      this.photoUrl = URL.createObjectURL(photo);
-      this.form.photo = photo;
+      const image = this.$refs.image.files[0];
+      const imageUrl = URL.createObjectURL(image);
+      this.form.image = image;
+
       if (!this.isImageUrl) {
-        this.$v.form.imageUrl.$model = this.photoUrl;
+        this.$v.form.imageUrl.$model = imageUrl;
       }
     },
 
@@ -415,8 +410,8 @@ export default {
       formData.append('videoUrl', this.form.videoUrl);
       formData.append('isWarmUp', this.form.isWarmUp);
 
-      if (this.form.photo) {
-        formData.append('photo', this.form.photo);
+      if (this.form.image) {
+        formData.append('image', this.form.image);
       }
 
       return formData;

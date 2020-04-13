@@ -1,0 +1,69 @@
+{
+  "name": "Boxeo Velocidad 2",
+  "sport": "Boxing",
+  "bodyPart": "Full body",
+  "level": "Intermediate",
+  "target": "Speed",
+  "duration": 45,
+  "restBetweenExercise": 1,
+  "sportImageUrl": "",
+  "creatorWorkoutId": "",
+  "exercises": [
+    {
+      "_id": "5e8b94aafc17f3441c9d02c7",
+      "updated_at": "2020-04-06T20:44:26.863Z",
+      "created_at": "2020-04-06T20:44:26.863Z",
+      "name": "Flexiones",
+      "description": "Realiza con las manos a la altura del pecho.",
+      "imageUrl": "c2d89ed6-3920-4207-b37e-2d96834a6d53",
+      "__v": 0
+    },
+    {
+      "_id": "5e8b99efcdeabd67e03ba174",
+      "updated_at": "2020-04-06T21:06:55.116Z",
+      "created_at": "2020-04-06T21:06:55.116Z",
+      "name": "qwer",
+      "description": "eqwewq",
+      "imageUrl": "61acb654-a044-44fc-9c66-4ff842f74fab",
+      "__v": 0
+    },
+    {
+      "_id": "5e8c3bedb258c31fc8d79ce6",
+      "updated_at": "2020-04-07T08:38:05.741Z",
+      "created_at": "2020-04-07T08:38:05.741Z",
+      "name": "My example",
+      "description": "asddasdasdas",
+      "imageUrl": "f4cdeaf0-3e0f-4efe-92f1-9602bc5c91a2",
+      "__v": 0
+    },
+    {
+      "_id": "5e8c3c0cb258c31fc8d79ce7",
+      "updated_at": "2020-04-07T08:38:36.812Z",
+      "created_at": "2020-04-07T08:38:36.812Z",
+      "name": "Flexion + jab + cross",
+      "description": "",
+      "imageUrl": "d2cf5467-753e-4f3b-b3e4-d3fcf6a80577",
+      "__v": 0
+    },
+    {
+      "_id": "5e8c3c31b258c31fc8d79ce8",
+      "updated_at": "2020-04-07T08:39:13.757Z",
+      "created_at": "2020-04-07T08:39:13.757Z",
+      "name": "Salto comba",
+      "description": "Saltos normales en comba",
+      "imageUrl": "7dba35d8-017c-4a5f-9a4a-07ac9920b8d2",
+      "__v": 0
+    },
+    {
+      "_id": "5e8c76efb258c31fc8d79ce9",
+      "updated_at": "2020-04-07T12:49:51.677Z",
+      "created_at": "2020-04-07T12:49:51.677Z",
+      "name": "combo jab + jab ´+ cross, shuffling, roll up + jab + cross + hook right",
+      "description": "asdasd ad adasdasdas",
+      "imageUrl": "e3466f8e-2b01-4b84-9dc4-ae8de393e11b",
+      "__v": 0
+    }
+  ],
+  "musicList": []
+}
+

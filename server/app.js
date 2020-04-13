@@ -39,7 +39,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 const exercise = require('./routes/exercise');
+const workout = require('./routes/workout');
 app.use('/api/exercise', exercise);
+app.use('/api/workout', workout);
 
 
 if (process.env.NODE_ENV === 'production') {

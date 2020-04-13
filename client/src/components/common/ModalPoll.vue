@@ -76,5 +76,11 @@ export default {
   & /deep/ .modal-dialog .modal-content {
     background-color: $gray-900;
   }
+
+  @media (min-width: 576px) {
+    & /deep/ .modal-dialog {
+      max-width: 100%;
+    }
+  }
 }
 </style>

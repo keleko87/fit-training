@@ -14,8 +14,7 @@
 @import "~vue-material/dist/theme/all"; // Apply the theme
 
 body {
-  #app {
-    // font-family: 'Lucida Sans', 'Lucida Sans Regular';
+  #app {    
     .router-link {
       color: $white;
     }

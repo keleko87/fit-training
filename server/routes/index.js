@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Routine = require('../models/Exercise');
+// const Exercise = require('../models/Exercise');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {

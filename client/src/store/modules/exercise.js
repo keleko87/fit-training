@@ -1,4 +1,5 @@
 import { ExercisesService } from '../../common/api.service';
+import exercisesMock from '../../../static/mocks/exercises-all.json';
 
 const state = {
   data: {
@@ -39,9 +40,15 @@ const getters = {
 
 const actions = {
   async ['GET_EXERCISES'](context) {
-    const { data } = await ExercisesService.getExercises();
-    context.commit('SET_TOTAL_EXERCISES', data);
-    return data;
+    try {
+      const { data } = await ExercisesService.getExercises();
+      context.commit('SET_TOTAL_EXERCISES', data);
+      return data;
+    } catch (error) {
+      console.error('ERROR: ', error.message);
+      context.commit('SET_TOTAL_EXERCISES', exercisesMock);
+      return exercisesMock;
+    }
   },
 
   async ['GET_EXERCISE'](context, id) {

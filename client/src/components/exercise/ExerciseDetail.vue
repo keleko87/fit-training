@@ -31,44 +31,44 @@
           </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 mt-3">
           <!-- INFO -->
           <div class="row">
-            <div v-if="info.sport" class="col-md-6">
+            <div v-if="info.sport" class="col-sm-6">
               <!-- SPORT -->
               <h6 class="ft-exercise-detail__label">Actividad</h6>
               <p class="ft-exercise-detail__info">{{ info.sport }}</p>
             </div>
 
-            <div v-if="info.moveType" class="col-md-6">
+            <div v-if="info.moveType" class="col-sm-6">
               <!-- MOVE TYPE -->
               <h6 class="ft-exercise-detail__label">Tipo de movimiento</h6>
               <p class="ft-exercise-detail__info">{{ info.moveType }}</p>
             </div>
 
-            <div v-if="info.bodyPart" class="col-md-6">
+            <div v-if="info.bodyPart" class="col-sm-6">
               <!-- BODY PART -->
               <h6 class="ft-exercise-detail__label">Parte del cuerpo</h6>
               <p class="ft-exercise-detail__info">{{ info.bodyPart }}</p>
             </div>
 
-            <div v-if="info.target" class="col-md-6">
+            <div v-if="info.target" class="col-sm-6">
               <!-- TARGET -->
               <h6 class="ft-exercise-detail__label">Objetivo</h6>
               <p class="ft-exercise-detail__info">{{ info.target }}</p>
             </div>
-            <div v-if="info.level" class="col-md-6">
+            <div v-if="info.level" class="col-sm-6">
               <!-- LEVEL -->
               <h6 class="ft-exercise-detail__label">Nivel</h6>
               <p class="ft-exercise-detail__info">{{ info.level }}</p>
             </div>
 
-            <div v-if="info.description" class="col-md-6">
+            <div v-if="info.description" class="col-sm-6">
               <!-- DESCRIPTION -->
               <h6 class="ft-exercise-detail__label">Descripción</h6>
               <p class="ft-exercise-detail__info">{{ info.description }}</p>
             </div>
-            <div v-else class="col-md-6">
+            <div v-else class="col-sm-6">
               <!-- OBSERVATIONS -->
               <h6 class="ft-exercise-detail__label">Observaciones</h6>
               <p class="ft-exercise-detail__info">{{ info.observations }}</p>
@@ -80,22 +80,22 @@
           <div
             class="row d-flex justify-content-end ft-exercise-detail__time-info"
           >
-            <div v-if="info.series" class="col-md-3">
+            <div v-if="info.series" class="ft-exercise-detail__time-info--item">
               <!-- SERIES -->
               <h6 class="ft-exercise-detail__label">Series</h6>
               <p class="ft-exercise-detail__info">{{ info.series }}</p>
             </div>
-            <div v-if="info.reps !== ''" class="col-md-3">
+            <div v-if="info.reps !== ''" class="ft-exercise-detail__time-info--item">
               <!-- REPS -->
               <h6 class="ft-exercise-detail__label">Reps</h6>
               <p class="ft-exercise-detail__info">{{ reps }}</p>
             </div>
-            <div v-if="info.rest !== ''" class="col-md-3">
+            <div v-if="info.rest !== ''" class="ft-exercise-detail__time-info--item">
               <!-- REST -->
               <h6 class="ft-exercise-detail__label">Descanso</h6>
               <p class="ft-exercise-detail__info">{{ rest }}</p>
             </div>
-            <div v-if="info.time !== ''" class="col-md-3">
+            <div v-if="info.time !== ''" class="ft-exercise-detail__time-info--item">
               <!-- TIME -->
               <h6 class="ft-exercise-detail__label">Duración</h6>
               <p class="ft-exercise-detail__info">{{ time }}</p>
@@ -182,9 +182,12 @@ $iframe-height: 315px;
     text-align: right;
   }
   &__time-info {
-    h6,
-    p {
-      text-align: right;
+    &--item {
+      padding: 0 10px;
+      h6,
+      p {
+        text-align: center;
+      }
     }
   }
 }

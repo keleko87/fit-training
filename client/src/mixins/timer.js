@@ -3,14 +3,14 @@ export default {
     return {
       pagination: {
         currentPage: 1,
-        perPage: 12 // 12 -> Múltiplo de 3 y 4 para el grid
+        perPage: 12 // Múltiplo de 3 y 4 para el grid
       }
     };
   },
 
   methods: {
     setTextTime(timeData) {
-      if (timeData === 0) {
+      if (!timeData || timeData === 0) {
         return '-';
       }
       const timeSec = Math.ceil(timeData * 60);
@@ -18,6 +18,9 @@ export default {
     },
 
     setTextReps(repsData) {
+      if (repsData === null) {
+        return '-';
+      }
       return repsData === 0 ? 'Fallo' : repsData;
     },
 

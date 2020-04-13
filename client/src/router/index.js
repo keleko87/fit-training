@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Exercise from '../views/Exercise';
+import Workout from '../views/Workout';
 import Home from '../views/Home';
 import WorkoutNew from '../components/workout/WorkoutNew';
 import WorkoutList from '../components/workout/WorkoutList';
@@ -21,26 +22,31 @@ export default new Router({
     {
       path: '/workout/new',
       name: 'workoutNew',
-      components: {
-        list: Exercise,
-        create: WorkoutNew
-      }
+      component: Workout
     },
-    {
-      path: '/routine/new',
-      name: 'routineNew',
-      components: {
-        list: WorkoutList,
-        create: RoutineNew
-      }
-    },
-    {
-      path: '/routine/list',
-      name: 'routines',
-      components: {
-        list: RoutineList,
-        create: Home
-      }
-    }
+    // {
+    //   path: '/workout/new',
+    //   name: 'workoutNew',
+    //   components: {
+    //     list: Exercise,
+    //     create: WorkoutNew
+    //   }
+    // },
+    // {
+    //   path: '/routine/new',
+    //   name: 'routineNew',
+    //   components: {
+    //     list: WorkoutList,
+    //     create: RoutineNew
+    //   }
+    // },
+    // {
+    //   path: '/routine/list',
+    //   name: 'routines',
+    //   components: {
+    //     list: RoutineList,
+    //     create: Home
+    //   }
+    // }
   ]
 });

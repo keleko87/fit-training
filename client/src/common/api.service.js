@@ -65,3 +65,19 @@ export const ExercisesService = {
     return ApiService.post(`${this.resource}/new`, exercise);
   }
 };
+
+export const WorkoutsService = {
+  resource: 'workout',
+
+  getWorkouts() {
+    return ApiService.get(this.resource, 'all');
+  },
+
+  getWorkout(id) {
+    return ApiService.get(this.resource, id);
+  },
+
+  saveWorkout(workout) {
+    return ApiService.post(`${this.resource}/new`, workout);
+  }
+};
