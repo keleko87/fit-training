@@ -73,9 +73,9 @@ const actions = {
     }
   },
 
-  // ['REPLACE_IMAGE_URL'](context, { workout }) {
-  //   context.commit('SET_IMAGE_URL', workout);
-  // }
+  ['ADD_WORKOUT_EXERCISE'](context, exercise) {
+    context.commit('ADD_EXERCISE', exercise);
+  }
 };
 
 const mutations = {
@@ -85,12 +85,9 @@ const mutations = {
   ['SET_WORKOUT'](state, newWorkout) {
     state.data = Object.assign({}, state.data, newWorkout);
   },
-  // ['SET_IMAGE_URL'](state, workout) {
-  //   state.data.content = workout.content.replace(
-  //     `blob:${process.env.VUE_APP_WEB}${workout.image.filename}`,
-  //     workout.imageUrl
-  //   );
-  // }
+  ['ADD_EXERCISE'](state, exercise) {
+    state.data.exercises.push(exercise);
+  }
 };
 
 export default {

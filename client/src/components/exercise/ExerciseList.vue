@@ -16,14 +16,23 @@
       </div>
     </div>
 
-    <div v-if="exercises && exercises.length > 0" class="row">
-      <div
-        v-for="exercise in exercises"
-        :key="exercise._id"
-        class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
+    <div v-if="exercises && exercises.length > 0">
+      <draggable
+        class="dragArea row"
+        :list="exercises"
+        :group="{ name: 'workout', pull: 'clone', put: false }"
+        :clone="cloneExercise"
+        @change="log"
       >
-        <exercise-card-animation :data="exercise"></exercise-card-animation>
-      </div>
+        <div
+          v-for="exercise in exercises"
+          :key="exercise._id"
+          class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
+        >
+          <exercise-card-animation :data="exercise"></exercise-card-animation>
+        </div>
+
+      </draggable>
     </div>
 
     <div v-if="exercises.length === 0" class="row">
@@ -37,13 +46,15 @@ import { mapGetters } from 'vuex';
 import ExerciseCardAnimation from './ExerciseCardAnimation';
 import FtPagination from '../common/Pagination';
 import pagination from '../../mixins/pagination';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'exercise-list',
 
   components: {
     ExerciseCardAnimation,
-    FtPagination
+    FtPagination,
+    draggable
   },
 
   props: {
@@ -80,6 +91,14 @@ export default {
   methods: {
     fetchExercises() {
       this.$store.dispatch('GET_EXERCISES');
+    },
+    // log(evt) {
+    //   window.console.log('MOVED', evt);
+    // },
+    cloneExercise(exercise) {
+      return {
+        ...exercise
+      };
     }
   }
 };

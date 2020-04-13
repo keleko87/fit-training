@@ -148,8 +148,37 @@
           </div>
         </div>
 
-        <exercise-card-animation :data="totalExercises[0]"></exercise-card-animation>
+        <div class="">
+          <!-- ADD EXERCESICES -->
 
+          <draggable
+            class="dragArea flex-column"
+            v-model.trim="$v.form.exercises.$model"
+            group="workout"
+            @change="log"
+          >
+            <div
+              v-if="!form.exercises.length"
+              class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 mx-auto my-2"
+            >
+              <div class="ft-workout-new__card-add">
+                <div class="ft-workout-new__card-add--text">
+                  <h5>Arrastra aqui los ejercicios que quieras incluir</h5>
+                </div>
+              </div>
+            </div>
+            <!-- NEW -->
+            <div
+              v-for="exercise in form.exercises"
+              :key="exercise.idGlobal"
+              class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 mx-auto my-2"
+            >
+              <exercise-card-animation
+                :data="exercise"
+              ></exercise-card-animation>
+            </div>
+          </draggable>
+        </div>
 
         <div class="form-row mt-3 text-center">
           <div class="col">
@@ -170,14 +199,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ExerciseCardAnimation from '../exercise/ExerciseCardAnimation';
+import draggable from 'vuedraggable';
 import {
   required,
   minLength,
   minValue,
-  maxValue,
-  url
+  maxValue
 } from 'vuelidate/lib/validators';
 import {
   SPORTS,
@@ -190,12 +218,9 @@ import {
 export default {
   name: 'workout-new',
 
-  mounted() {
-    this.$store.dispatch('GET_EXERCISES');
-  },
-
   components: {
-    ExerciseCardAnimation
+    ExerciseCardAnimation,
+    draggable
   },
 
   data() {
@@ -228,10 +253,23 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['totalExercises'])
+    // NOT USED YET. FOR EDIT WORKOUT EXERCISES
+    workoutExercises: {
+      get() {
+        return this.$store.state.workout.data.exercises;
+      },
+      set(value) {
+        console.log('set workoutExercises value', value);
+        this.$store.commit('ADD_EXERCISE', value[0]);
+      }
+    }
   },
 
   methods: {
+    log(evt) {
+      window.console.log('ADDED', evt);
+    },
+    // NO necesario para guardar la imagen -> Solo cuando haya que mostrarla
     getSportImageSource(sport) {
       const img = this.getSportImageName(sport);
       return require('@/assets/img/sports/' + img + '.png');
@@ -265,6 +303,7 @@ export default {
     },
 
     async onSubmit() {
+      debugger;
       this.$v.form.$touch();
 
       if (this.$v.$invalid) {
@@ -272,9 +311,9 @@ export default {
       } else {
         this.submitStatus = 'PENDING';
         const formData = this.saveWorkout();
-        await this.$store.dispatch('SAVE_EXERCISE', formData);
+        await this.$store.dispatch('SAVE_WORKOUT', formData);
         this.submitStatus = 'OK';
-        await this.$store.dispatch('GET_EXERCISES');
+        await this.$store.dispatch('GET_WORKOUTS');
         this.$emit('submitStatus', false);
       }
     },
@@ -288,20 +327,17 @@ export default {
         level,
         target,
         duration,
-        restBetweenExercise,
-        exercises,
-        musicList
+        restBetweenExercise
       } = this.$v.form.$model;
 
       // User logged
       const creatorWorkoutId = '9121HHS01012932';
-
       // Add sportImageUrl
       const sportImageUrl = this.getSportImageSource(sport);
-
       // exercises.push()
-
+      const exercises = this.form.exercises;
       // musicList harcoded
+      const musicList = [];
 
       return {
         name,
@@ -330,15 +366,6 @@ export default {
         bodyPart: { required },
         level: { required },
         target: { required },
-        series: {
-          required,
-          minValue: minValue(1),
-          maxValue: maxValue(60)
-        },
-        reps: {
-          minValue: minValue(0),
-          maxValue: maxValue(60)
-        },
         restBetweenExercise: {
           required,
           minValue: minValue(this.minValueTime),
@@ -348,14 +375,9 @@ export default {
           minValue: minValue(this.minValueTime),
           maxValue: maxValue(this.maxValueTime)
         },
-        image: {},
-        sportImageUrl: {
+        exercises: {
           required
-        },
-        videoUrl: {
-          url
-        },
-        isWarmUp: {}
+        }
       }
     };
   }
@@ -364,5 +386,16 @@ export default {
 
 <style lang="scss" scoped>
 .ft-workout-new {
+  &__card-add {
+    text-align: center;
+    border: 3px dashed $second-dark-grey;
+    background-color: $gray-800;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
 }
 </style>
