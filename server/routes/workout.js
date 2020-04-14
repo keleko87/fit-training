@@ -12,56 +12,50 @@ router.get('/all', (req, res) => {
 });
 
 
-router.post('/new', (req, res) => {
-  uploadImage(req, res, (err) => {
+router.post('/new', (req, res) => {  
+
+  const { 
+    name,
+    sport,
+    sportImageUrl,
+    bodyPart,
+    level,
+    target,
+    duration,
+    restBetweenExercise,
+    creatorWorkoutId,
+    exercises,
+    musicList
+  } = req.body;
+
+  // TO DO Music list API spotify or other
+  // const getMusicListType = API.find(musicList)
   
-    if(err) {
-      return res.end("Error when creating workout!");
-    }
-
-    const { 
-      name,
-      sport,
-      sportImageUrl,
-      bodyPart,
-      level,
-      target,
-      duration,
-      restBetweenExercise,
-      creatorWorkoutId,
-      exercises,
-      musicList
-    } = req.body;
-
-    // TO DO Music list API spotify or other
-    // const getMusicListType = API.find(musicList)
-    
-    let workout = new Workout({
-      name,
-      sport,
-      sportImageUrl,
-      bodyPart,
-      level,
-      target,
-      duration,
-      restBetweenExercise,
-      creatorWorkoutId,
-      exercises,
-      musicList
-    });
-
-    console.log('WORKOUT: ', workout);
-    
-    workout.save((err) => {
-      if (err) {
-        console.log('ERROR:', err);
-        const { status, message } = err;
-        res.status(status).json(message);
-      }
-      res.status(201).json('Workout Created!');
-    });
-    
+  let workout = new Workout({
+    name,
+    sport,
+    sportImageUrl,
+    bodyPart,
+    level,
+    target,
+    duration,
+    restBetweenExercise,
+    creatorWorkoutId,
+    exercises,
+    musicList
   });
+
+  console.log('WORKOUT: ', workout);
+  
+  workout.save((err) => {
+    if (err) {
+      console.log('ERROR:', err);
+      const { status, message } = err;
+      res.status(status).json(message);
+    }
+    res.status(201).json('Workout Created!');
+  });
+
 });
 
 module.exports = router;

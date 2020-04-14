@@ -22,6 +22,7 @@
         :list="exercises"
         :group="{ name: 'workout', pull: 'clone', put: false }"
         :clone="cloneExercise"
+        :sort="false"
         @change="log"
       >
         <div
@@ -47,6 +48,8 @@ import ExerciseCardAnimation from './ExerciseCardAnimation';
 import FtPagination from '../common/Pagination';
 import pagination from '../../mixins/pagination';
 import draggable from 'vuedraggable';
+
+// let idGlobal = 1;
 
 export default {
   name: 'exercise-list',
@@ -92,11 +95,13 @@ export default {
     fetchExercises() {
       this.$store.dispatch('GET_EXERCISES');
     },
-    // log(evt) {
-    //   window.console.log('MOVED', evt);
-    // },
+    log(evt) {
+      window.console.log('MOVED', evt);
+    },
     cloneExercise(exercise) {
+      const time = Date.now();
       return {
+        idGlobal: `${exercise._id}-${time}`,
         ...exercise
       };
     }

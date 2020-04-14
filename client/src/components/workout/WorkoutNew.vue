@@ -1,12 +1,12 @@
 <template>
-  <div class="ft-workout-new my-5">
+  <div class="ft-workout-new mt-4">
     <div class="container">
       <form novalidate @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col">
             <md-field :class="getValidationClass('name')">
               <!-- NAME -->
-              <label>Nombre del entrenamiento</label>
+              <label>Nuevo Entrenamiento</label>
               <md-input
                 type="text"
                 id="name"
@@ -130,7 +130,7 @@
             </span>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6 mb-4">
             <!-- DURATION -->
             <md-autocomplete
               :class="getValidationClass('duration')"
@@ -150,23 +150,12 @@
 
         <div class="">
           <!-- ADD EXERCESICES -->
-
           <draggable
             class="dragArea flex-column"
-            v-model.trim="$v.form.exercises.$model"
+            v-model="$v.form.exercises.$model"
             group="workout"
             @change="log"
           >
-            <div
-              v-if="!form.exercises.length"
-              class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 mx-auto my-2"
-            >
-              <div class="ft-workout-new__card-add">
-                <div class="ft-workout-new__card-add--text">
-                  <h5>Arrastra aqui los ejercicios que quieras incluir</h5>
-                </div>
-              </div>
-            </div>
             <!-- NEW -->
             <div
               v-for="exercise in form.exercises"
@@ -178,6 +167,20 @@
               ></exercise-card-animation>
             </div>
           </draggable>
+
+          <div
+            v-if="!form.exercises.length"
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 mx-auto my-2"
+          >
+            <div
+              class="ft-workout-new__card-add"
+              :class="getValidationClass('exercises')"
+            >
+              <div class="ft-workout-new__card-add--text">
+                <h5>Arrastra aqui los ejercicios que quieras incluir</h5>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="form-row mt-3 text-center">
@@ -269,6 +272,7 @@ export default {
     log(evt) {
       window.console.log('ADDED', evt);
     },
+
     // NO necesario para guardar la imagen -> Solo cuando haya que mostrarla
     getSportImageSource(sport) {
       const img = this.getSportImageName(sport);
@@ -295,6 +299,11 @@ export default {
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
+      if (fieldName === 'exercises') {
+        return {
+          'card-add--error': field.$invalid && field.$dirty
+        };
+      }
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
@@ -331,9 +340,9 @@ export default {
       } = this.$v.form.$model;
 
       // User logged
-      const creatorWorkoutId = '9121HHS01012932';
+      const creatorWorkoutId = 'UserId-1';
       // Add sportImageUrl
-      const sportImageUrl = this.getSportImageSource(sport);
+      const sportImageUrl = '';
       // exercises.push()
       const exercises = this.form.exercises;
       // musicList harcoded
@@ -395,7 +404,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 20px;
   }
+}
+
+.card-add--error {
+  border: 2px dashed $error;
+  color: $error;
 }
 </style>
