@@ -75,6 +75,10 @@ const actions = {
 
   ['ADD_WORKOUT_EXERCISE'](context, exercise) {
     context.commit('ADD_EXERCISE', exercise);
+  },
+
+  ['UPDATE_WORKOUT_EXERCISE'](context, exerciseUpdated) {
+    context.commit('UPDATE_EXERCISES', exerciseUpdated);
   }
 };
 
@@ -87,6 +91,20 @@ const mutations = {
   },
   ['ADD_EXERCISE'](state, exercise) {
     state.data.exercises.push(exercise);
+  },
+  ['MOVE_EXERCISE'](state, exerciseMoved) {
+    const { oldIndex, newIndex, element } = exerciseMoved;
+    state.data.exercises.splice(oldIndex, 1); // Remove the element in old position
+    state.data.exercises.splice(newIndex, 0, element); // Add the element in new position
+  },
+  ['UPDATE_EXERCISES'](state, exerciseUpdated) {
+    const exercises = state.data.exercises.map(exercise =>
+      exercise.idGlobal === exerciseUpdated.idGlobal
+        ? exerciseUpdated
+        : exercise
+    );
+    console.log(exercises);
+    state.data.exercises = exercises;
   }
 };
 

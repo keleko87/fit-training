@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Exercise = require('../models/Exercise');
-const upload = multer ({dest: './public/uploads'});
 
 // GET exercise LIST
 router.get('/all', (req, res) => {

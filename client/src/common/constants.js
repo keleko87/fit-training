@@ -1,24 +1,24 @@
 export const SPORTS = ['Fitness', 'Boxing', 'HIIT', 'Core', 'Abs'];
-export const LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
+export const LEVELS = ['Principiante', 'Intermedio', 'Avanzado'];
 export const BODY_PARTS = [
-  'Chest',
-  'Back',
-  'Shoulder',
-  'Leg',
+  'Pectoral',
+  'Espalda',
+  'Hombro',
+  'Pierna',
   'Abdominal',
-  'Biceps',
-  'Triceps',
+  'Bíceps',
+  'Tríceps',
   'Full body'
 ];
 export const TARGETS = [
-  'Strength',
-  'Volume',
-  'Definition',
-  'Endurance',
-  'Speed',
-  'Agility',
-  'Technique',
-  'Power',
+  'Fuerza',
+  'Volumen',
+  'Definición',
+  'Resistencia',
+  'Velocidad',
+  'Agilidad',
+  'Técnica',
+  'Potencia',
   'Footwork'
 ];
 export const MINUTES = [

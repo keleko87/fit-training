@@ -28,7 +28,7 @@
     </ft-header>
 
     <!-- FILTER MENU-->
-    <div class="row white">
+    <div class="white">
       <div class="col-6">
         filters options here
       </div>

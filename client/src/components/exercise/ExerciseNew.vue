@@ -130,14 +130,6 @@
                 id="descripton"
                 v-model.trim="$v.form.description.$model"
               ></md-input>
-              <span class="md-error" v-if="!$v.form.description.required">{{
-                requiredField
-              }}</span>
-              <span
-                class="md-error"
-                v-else-if="!$v.form.description.minlength"
-                >{{ invalidField }}</span
-              >
             </md-field>
           </div>
           <div class="col-md-6">
@@ -431,7 +423,6 @@ export default {
         target: { required },
         moveType: {},
         description: {
-          required,
           minLength: minLength(10),
           maxLength: maxLength(500)
         },
