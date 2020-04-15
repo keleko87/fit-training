@@ -72,6 +72,9 @@ const actions = {
       return workoutNewMock;
     }
   },
+  ['RESET_WORKOUT_DATA'](context) {
+    context.commit('RESET_WORKOUT');
+  },
 
   ['ADD_WORKOUT_EXERCISE'](context, exercise) {
     context.commit('ADD_EXERCISE', exercise);
@@ -79,6 +82,10 @@ const actions = {
 
   ['UPDATE_WORKOUT_EXERCISE'](context, exerciseUpdated) {
     context.commit('UPDATE_EXERCISES', exerciseUpdated);
+  },
+
+  ['DELETE_WORKOUT_EXERCISE'](context, exercise) {
+    context.commit('DELETE_EXERCISE', exercise);
   }
 };
 
@@ -88,6 +95,26 @@ const mutations = {
   },
   ['SET_WORKOUT'](state, newWorkout) {
     state.data = Object.assign({}, state.data, newWorkout);
+  },
+  ['RESET_WORKOUT'](state) {
+    const data = {
+      name: '',
+      sport: '',
+      bodyPart: '',
+      level: '',
+      target: '',
+      moveType: '',
+      description: '',
+      observations: '',
+      duration: '',
+      restBetweenWorkout: '',
+      sportImageUrl: '',
+      creatorWorkoutId: '',
+      exercises: [],
+      musicList: []
+    };
+    state.data = data;
+    state.totalWorkouts = [];
   },
   ['ADD_EXERCISE'](state, exercise) {
     state.data.exercises.push(exercise);
@@ -105,6 +132,12 @@ const mutations = {
     );
     console.log(exercises);
     state.data.exercises = exercises;
+  },
+  ['DELETE_EXERCISE'](state, exerciseIdGlobal) {
+    const workoutExercises = state.data.exercises;
+    state.data.exercises = workoutExercises.filter(
+      workoutExercise => workoutExercise.idGlobal !== exerciseIdGlobal
+    );
   }
 };
 

@@ -60,9 +60,17 @@ body {
   
 
     //////// BUTTON ////////
+    .btn {
+      color: $black !important;
+      font-weight: bold;
+    }
     .btn-primary {
       background-color: $mandarine !important;
       color: $third-dark-grey !important;
+    }
+    .btn-primary:not([disabled]):not(.disabled):active {
+      background-color: $mandarine-primary-active !important;
+      box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
     }
     .error {
       color: $error;
@@ -80,8 +88,10 @@ body {
     }
 
     // ICON CARDS
-    .ft-card__icon:hover {
-      color: $second-dark-grey;
+    .ft-card {
+      &__icon:hover {
+        color: $second-dark-grey;
+      }
     }
 
     // Fix autocomplete styles in webkit browsers

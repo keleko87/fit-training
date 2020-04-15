@@ -1,10 +1,10 @@
 <template>
-  <div class="ft-exercise-card grid">
+  <div class="ft-exercise-card-add grid">
     <!-- MODAL -->
     <modal-poll
       :modal="modalPoll"
-      :position="'right'"
-      :direction="'right'"
+      :position="'left'"
+      :direction="'left'"
       @close="onCloseModal($event)"
     >
       <template slot="header">
@@ -20,20 +20,37 @@
 
     <!-- CARD -->
     <figure :class="effectClass">
-      <small v-if="data.series && data.series !== 0" class="ft-exercise-card__series">{{ data.series }}</small>
-      <small v-if="data.reps" class="ft-exercise-card__reps">x{{ reps }}</small>
-      <small v-else-if="data.time && data.time !== 0" class="ft-exercise-card__series">{{ time }}</small>
+      <small
+        v-if="data.series && data.series !== 0"
+        class="ft-exercise-card-add__series"
+        >{{ data.series }}</small
+      >
+      <small v-if="data.reps" class="ft-exercise-card-add__reps">x{{ reps }}</small>
+      <small
+        v-else-if="data.time && data.time !== 0"
+        class="ft-exercise-card-add__series"
+        >{{ time }}</small
+      >
 
       <img :src="getImage(data.imageUrl)" alt="image url" />
+
       <figcaption>
-        <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
-        <div>
-          <div class="d-flex space-between">
+        <h6 class="ft-exercise-card-add__figcaption-name">{{ data.name }}</h6>
+        <div class="ft-exercise-card-add__action">
+          <div class="d-flex">
             <div @click="editExercise()">
-              <mdb-icon class="ft-card__icon" icon="pen" size="6x" />
+              <mdb-icon class="ft-card__icon" icon="pen" />
             </div>
-            <div @click="deleteExercise()">
-              <mdb-icon class="ft-card__icon" icon="trash-alt" size="6x" />
+            <div class="ft-exercise-card-add__action--move">
+              <!-- IMPORTANTE: class="draggable-handle" es necesaria para que funcione <draggable :handle=".handle"> -->
+              <mdb-icon
+                class="ft-card__icon draggable-handle"
+                icon="arrows-alt"
+                size="8x"
+              />
+            </div>
+            <div @click="deleteExercise(data.idGlobal)">
+              <mdb-icon class="ft-card__icon" icon="trash-alt" />
             </div>
           </div>
         </div>
@@ -102,13 +119,16 @@ export default {
       this.modalPoll = true;
     },
 
-    deleteExercise() {}
+    deleteExercise(idGlobal) {
+      this.$store.dispatch('DELETE_WORKOUT_EXERCISE', idGlobal);
+      this.$emit('delete', idGlobal);
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.ft-exercise-card {
+.ft-exercise-card-add {
   &__series,
   &__reps {
     position: absolute;
@@ -126,6 +146,13 @@ export default {
     color: $teal !important;
     padding: 1px 3px;
     left: 23px;
+  }
+
+  .ft-card__icon {
+    font-size: 24px;
+  }
+  .ft-card__icon.handle {
+    font-size: 29px;
   }
 }
 /** Source:  https://bootsnipp.com/snippets/3Meen **/

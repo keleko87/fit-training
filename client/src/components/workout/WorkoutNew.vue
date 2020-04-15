@@ -165,12 +165,13 @@
         </transition>
 
         <div class="">
-          <!-- ADD EXERCESICES -->
+          <!-- ADD EXERCISES -->
           <draggable
             class="dragArea flex-column"
             v-model="workoutExercises"
             group="workout"
-            @change="log"
+            handle=".draggable-handle"
+            @change="changeExercises"
           >
             <!-- NEW -->
             <div
@@ -178,7 +179,10 @@
               :key="exercise.idGlobal"
               class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 mx-auto my-2"
             >
-              <exercise-card-add :data="exercise"></exercise-card-add>
+              <exercise-card-add
+                @delete="onDeleteExercise($event)"
+                :data="exercise"
+              ></exercise-card-add>
             </div>
           </draggable>
 
@@ -188,7 +192,7 @@
           >
             <div
               class="ft-workout-new__card-add"
-              :class="getValidationExercises()"
+              :class="getValidationClass('exercises')"
             >
               <div class="ft-workout-new__card-add--text">
                 <h5>Arrastra aqui los ejercicios que quieras incluir</h5>
@@ -288,11 +292,12 @@ export default {
       this.showFields = !this.showFields;
     },
 
-    log(ev) {
+    changeExercises(ev) {
       window.console.log('DRAG event', ev);
       if (ev.added) {
         const { element } = ev.added;
         this.$store.commit('ADD_EXERCISE', element);
+        this.setExerciseInForm(element);
       } else if (ev.moved) {
         this.$store.commit('MOVE_EXERCISE', ev.moved);
       }
@@ -321,16 +326,6 @@ export default {
       }
     },
 
-    getValidationExercises() {
-      const field = this.$v.form['exercises'];
-
-      if (this.workoutExercises.length === 0) {
-        return {
-          'card-add--error': field.$dirty
-        };
-      }
-    },
-
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -346,6 +341,22 @@ export default {
       }
     },
 
+    onDeleteExercise(id) {
+      console.log('event delete', id);
+      this.$v.form.exercises.$model = this.workoutExercises.filter(
+        elem => elem.idGlobal !== id
+      );
+    },
+
+    setExerciseInForm(exercise) {
+      this.$v.form.exercises.$model.push(exercise);
+    },
+
+    resetForm() {
+      this.showFields = false;
+      this.$v.form.$reset();
+    },
+
     async onSubmit() {
       this.$v.form.$touch();
       this.showFields = true;
@@ -355,12 +366,15 @@ export default {
       } else {
         this.submitStatus = 'PENDING';
         const formData = this.saveWorkout();
+
         await this.$store.dispatch('SAVE_WORKOUT', formData);
         this.submitStatus = 'OK';
-        this.$v.form.$reset();
-        // await this.$store.dispatch('GET_WORKOUTS');
+
+        await this.$store.dispatch('RESET_WORKOUT_DATA');
+        this.resetForm();
+
         setTimeout(() => {
-          this.submitStatus = null;
+          this.submitStatus = '';
         }, 3000);
       }
     },
@@ -421,7 +435,7 @@ export default {
           minValue: minValue(this.minValueTime),
           maxValue: maxValue(this.maxValueTime)
         },
-        exercises: { } // PENDING fix required
+        exercises: { required } // PENDING fix required
       }
     };
   }

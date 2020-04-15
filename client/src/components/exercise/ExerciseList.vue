@@ -19,6 +19,7 @@
     <div v-if="exercises && exercises.length > 0">
       <draggable
         class="dragArea row"
+        handle=".draggable-handle"
         :list="exercises"
         :group="{ name: 'workout', pull: 'clone', put: false }"
         :clone="cloneExercise"
@@ -32,7 +33,6 @@
         >
           <exercise-card-animation :data="exercise"></exercise-card-animation>
         </div>
-
       </draggable>
     </div>
 
@@ -48,8 +48,6 @@ import ExerciseCardAnimation from './ExerciseCardAnimation';
 import FtPagination from '../common/Pagination';
 import pagination from '../../mixins/pagination';
 import draggable from 'vuedraggable';
-
-// let idGlobal = 1;
 
 export default {
   name: 'exercise-list',

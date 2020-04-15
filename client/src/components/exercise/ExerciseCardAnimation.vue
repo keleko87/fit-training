@@ -23,16 +23,22 @@
       <img :src="getImage(data.imageUrl)" alt="image url" />
       <figcaption>
         <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
-        <div>
-          <div class="d-flex space-between">
+        <div class="ft-exercise-card__action">
+          <div class="d-flex">
             <div @click="showExercise()">
-              <mdb-icon class="ft-card__icon" icon="info-circle" size="7x" />
+              <mdb-icon class="ft-card__icon" icon="info-circle" size="6x" />
             </div>
-            <div @click="selectExercise()">
-              <mdb-icon class="ft-card__icon" icon="arrows-alt" size="7x" />
+
+            <div class="ft-exercise-card__action--move">
+              <!-- IMPORTANTE: class="draggable-handle" es necesaria para que funcione <draggable :handle=".handle"> -->
+              <mdb-icon
+                class="ft-card__icon draggable-handle"
+                icon="arrows-alt"
+                size="7x"
+              />
             </div>
             <div @click="shareExercise()">
-              <mdb-icon class="ft-card__icon" icon="share-alt-square" size="7x" />
+              <mdb-icon class="ft-card__icon" icon="share-alt" size="6x" />
             </div>
           </div>
         </div>
@@ -88,8 +94,6 @@ export default {
     showExercise() {
       this.modalPoll = true;
     },
-
-    selectExercise() {},
 
     shareExercise() {}
   }

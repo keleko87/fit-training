@@ -79,9 +79,9 @@ figure.effect-sadie div {
   color: $third-dark-grey;
   position: relative;
   bottom: 0;
-  top: 10px;
+  top: 42px;
   left: 0;
-  padding: 2em;
+  padding: 2em 0;
   width: 100%;
   opacity: 0;
   -webkit-transform: translate3d(0, 10px, 0);
@@ -91,7 +91,7 @@ figure.effect-sadie div {
 figure.effect-sadie:hover h6 {
   color: $third-dark-grey !important;
   -webkit-transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
-  transform: translate3d(0, -50%, 0) translate3d(0, -40px, 0);
+  transform: translate3d(0, -50%, 0) translate3d(0, -76px, 0);
 }
 
 figure.effect-sadie:hover figcaption::before,
