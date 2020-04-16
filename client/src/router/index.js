@@ -7,9 +7,11 @@ import WorkoutNew from '../components/workout/WorkoutNew';
 import WorkoutList from '../components/workout/WorkoutList';
 import RoutineNew from '../components/routine/RoutineNew';
 import RoutineList from '../components/routine/RoutineList';
+import NProgress from 'nprogress'; // Progress bar library
+
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
 
@@ -19,34 +21,47 @@ export default new Router({
       name: 'home',
       redirect: '/workout/new'
     },
-    {
-      path: '/workout/new',
-      name: 'workoutNew',
-      component: Workout
-    },
+    // OLD ROUTE
     // {
     //   path: '/workout/new',
     //   name: 'workoutNew',
-    //   components: {
-    //     list: Exercise,
-    //     create: WorkoutNew
-    //   }
+    //   component: Workout
     // },
-    // {
-    //   path: '/routine/new',
-    //   name: 'routineNew',
-    //   components: {
-    //     list: WorkoutList,
-    //     create: RoutineNew
-    //   }
-    // },
-    // {
-    //   path: '/routine/list',
-    //   name: 'routines',
-    //   components: {
-    //     list: RoutineList,
-    //     create: Home
-    //   }
-    // }
+    {
+      path: '/workout/new',
+      name: 'workoutNew',
+      components: {
+        list: Exercise,
+        create: WorkoutNew
+      }
+    },
+    {
+      path: '/routine/new',
+      name: 'routineNew',
+      components: {
+        list: WorkoutList,
+        create: RoutineNew
+      }
+    },
+    {
+      path: '/routine/list',
+      name: 'routines',
+      components: {
+        list: RoutineList,
+        create: Home
+      }
+    }
   ]
 });
+
+router.beforeEach((routeTo, routeFrom, next) => {
+  // Start the route progress bar.
+  NProgress.start();
+  next();
+});
+router.afterEach(() => {
+  // Complete the animation of the route progress bar.
+  NProgress.done();
+});
+
+export default router;

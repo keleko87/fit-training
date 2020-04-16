@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import NProgress from 'nprogress';
 
 const API_URL = process.env.VUE_APP_API;
 
@@ -9,6 +10,18 @@ const ApiService = {
     console.log(process.env);
     Vue.use(VueAxios, axios);
     Vue.axios.defaults.baseURL = API_URL;
+
+    // before a request is made start the nprogress
+    Vue.axios.interceptors.request.use(config => {
+      NProgress.start();
+      return config;
+    });
+
+    // before a response is returned stop nprogress
+    Vue.axios.interceptors.response.use(response => {
+      NProgress.done();
+      return response;
+    });
   },
 
   setHeader() {

@@ -1,24 +1,22 @@
 <template>
   <div id="app" class="ft-app">
     <header-custom />
-  
 
-    <router-view></router-view>
+    <!-- OLD ROUTES with Workout.vue -->
+    <!-- <router-view></router-view> -->
 
-
-    <!-- <div class="ft-app__container">
-      <div class="row h-100"> -->
-
-        <!-- <div class="col-md-8 elegant-color ft-app__list">
+    <div class="ft-app__container">
+      <div class="row h-100">
+        <div class="col-md-8 elegant-color ft-app__list">
           <router-view class="view content" name="list"></router-view>
         </div>
 
         <div class="col-md-4 bg-create-section ft-app__create">
           <router-view class="view workout" name="create"></router-view>
-        </div> -->
+        </div>
+      </div>
 
-      <!-- </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

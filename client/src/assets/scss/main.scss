@@ -117,3 +117,17 @@ body {
   }
 
 }
+
+////// PROGRESS BAR ///////
+#nprogress {
+  .bar {
+    height: 4px;
+    background: $teal;
+  }
+  .spinner {
+    display: none;
+    // position: absolute;
+    // top: 15px;
+    // right: 45%;
+  }
+}

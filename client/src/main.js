@@ -6,6 +6,7 @@ import Vuelidate from 'vuelidate';
 import VueMaterial from 'vue-material';
 import ApiService from './common/api.service';
 import DateFilter from './common/date.filter';
+import 'nprogress/nprogress.css';
 
 // Bootswatch theme
 // import '../src/assets/css/bootstrap-darkly.min.css';

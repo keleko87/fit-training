@@ -3,33 +3,21 @@
     <div class="row h-100">
 
       <div class="col-md-8 elegant-color ft-app__list">
-        <!-- EXERCISES LIST -->
-        <!-- <div class="container">
-          <div class="row mt-3">
-            <div class="col-12" v-if="totalExercises && totalExercises.length">
-              <exercise-list
-                :list="totalExercises"
-                :type="'all'"
-              ></exercise-list>
-            </div>
-          </div>
-        </div> -->
-
+        <!-- Exercise view -->
         <exercise-view></exercise-view>
-
       </div>
 
       <!-- Workout new -->
       <div class="col-md-4 bg-create-section ft-app__create">
         <workout-new></workout-new>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import ExerciseList from '../components/exercise/ExerciseList';
 import WorkoutNew from '../components/workout/WorkoutNew';
 import ExerciseView from './Exercise';
 
@@ -37,7 +25,6 @@ export default {
   name: 'workout-view',
 
   components: {
-    ExerciseList,
     ExerciseView,
     WorkoutNew
   },
