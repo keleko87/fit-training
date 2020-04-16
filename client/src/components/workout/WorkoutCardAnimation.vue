@@ -4,28 +4,30 @@
     <modal-poll
       :modal="modalPoll"
       :position="'bottom'"
-      :direction="'right'"
+      :direction="'bottom'"
       @close="onCloseModal($event)"
     >
       <template slot="header">
         <h3 class="mb-0">{{ data.name }}</h3>
       </template>
       <template slot="body">
-        <exercise-detail
+        <workout-detail
+          v-if="!isWorkout"
           :info="data"
           @submitStatus="onCloseModal($event)"
-        ></exercise-detail>
+        ></workout-detail>
       </template>
     </modal-poll>
 
     <!-- CARD -->
     <figure :class="effectClass">
-      <img :src="getImage(data.imageUrl)" alt="image url" />
+      <img :src="getSportImage(data.sport)" alt="image url"/>
+
       <figcaption>
         <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
         <div class="ft-exercise-card__action">
           <div class="d-flex">
-            <div @click="showExercise()">
+            <div @click="showWorkout()">
               <mdb-icon class="ft-card__icon" icon="info-circle" size="6x" />
             </div>
 
@@ -37,7 +39,7 @@
                 size="7x"
               />
             </div>
-            <div @click="shareExercise()">
+            <div @click="shareWorkout()">
               <mdb-icon class="ft-card__icon" icon="share-alt" size="6x" />
             </div>
           </div>
@@ -48,11 +50,11 @@
 </template>
 <script>
 import { mdbIcon } from 'mdbvue';
-import ExerciseDetail from './ExerciseDetail';
+import WorkoutDetail from './WorkoutDetail';
 import ModalPoll from '../common/ModalPoll';
 
 export default {
-  name: 'exercise-card-animation',
+  name: 'workout-card-animation',
 
   props: {
     data: {
@@ -65,7 +67,7 @@ export default {
   },
 
   components: {
-    ExerciseDetail,
+    WorkoutDetail,
     ModalPoll,
     mdbIcon
   },
@@ -79,6 +81,9 @@ export default {
   computed: {
     effectClass() {
       return `effect-${this.effect}`;
+    },
+    isWorkout() {
+      return this.type === 'exercise';
     }
   },
 
@@ -87,15 +92,20 @@ export default {
       return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     },
 
+    getSportImage(sport) {
+      const sportImage = sport.toLowerCase();
+      return require(`@/assets/img/sports/${sportImage}.png`);
+    },
+
     onCloseModal(ev) {
       this.modalPoll = ev;
     },
 
-    showExercise() {
+    showWorkout() {
       this.modalPoll = true;
     },
 
-    shareExercise() {}
+    shareWorkout() {}
   }
 };
 </script>

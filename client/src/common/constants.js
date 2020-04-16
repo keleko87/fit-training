@@ -1,4 +1,4 @@
-export const SPORTS = ['Fitness', 'Boxing', 'HIIT', 'Core', 'Abs'];
+export const SPORTS = ['Fitness', 'Boxing', 'HIIT', 'Core'];
 export const LEVELS = ['Principiante', 'Intermedio', 'Avanzado'];
 export const BODY_PARTS = [
   'Pectoral',

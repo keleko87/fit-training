@@ -1,38 +1,37 @@
 <template>
   <div class="ft-exercise-edit">
     <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <!-- IMAGE -->
-          <div v-if="!info.videoUrl && info.imageUrl" class="row">
-            <div class="col-12">
-              <img
-                class="ft-exercise-edit__image mx-auto"
-                :src="getImage(info.imageUrl)"
-                alt="image exercise"
-              />
+      <form novalidate @submit.prevent="onSubmit">
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <!-- IMAGE -->
+            <div v-if="!info.videoUrl && info.imageUrl" class="row">
+              <div class="col-12">
+                <img
+                  class="ft-exercise-edit__image mx-auto"
+                  :src="getImage(info.imageUrl)"
+                  alt="image exercise"
+                />
+              </div>
+            </div>
+
+            <!-- VIDEO -->
+            <div v-else-if="info.videoUrl" class="row">
+              <div class="col-12">
+                <mdb-view hover>
+                  <iframe
+                    class="ft-exercise-edit__iframe"
+                    title="video exercise"
+                    width="560"
+                    :src="info.videoUrl"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </mdb-view>
+              </div>
             </div>
           </div>
-
-          <!-- VIDEO -->
-          <div v-else-if="info.videoUrl" class="row">
-            <div class="col-12">
-              <mdb-view hover>
-                <iframe
-                  class="ft-exercise-edit__iframe"
-                  title="video exercise"
-                  width="560"
-                  :src="info.videoUrl"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-              </mdb-view>
-            </div>
-          </div>
-        </div>
-
-        <form novalidate @submit.prevent="onSubmit">
-          <div class="col-12 mt-3">
+          <div class="col-12 col-lg-6 mt-3">
             <div class="row ft-exercise-edit__is-warm-up mb-3">
               <!-- IS WARM UP -->
               <div class="col-12">
@@ -107,20 +106,21 @@
                 </md-field>
               </div>
             </div>
-
-            <div class="form-row mt-3 text-center">
-              <div class="col">
-                <button class="btn btn-primary" type="submit">
-                  Guardar
-                </button>
-                <p class="success" v-if="submitStatus === 'OK'">
-                  Ejercicio creado correctamente!
-                </p>
-              </div>
-            </div>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div class="row mt-3 text-center">
+          <div class="col">
+            <button class="btn btn-primary" type="submit">
+              Guardar
+            </button>
+            <p class="success" v-if="submitStatus === 'OK'">
+              Ejercicio fue actualizado!
+            </p>
+          </div>
+        </div>
+
+      </form>
     </div>
   </div>
 </template>

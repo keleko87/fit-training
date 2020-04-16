@@ -3,7 +3,7 @@
     <!-- MODAL -->
     <modal-poll :modal="modalPoll" @close="onCloseModal($event)">
       <template slot="header">
-        <h3>Crear ejercicio</h3>
+        <h3 class="mb-0">Crear ejercicio</h3>
       </template>
       <template slot="body">
         <exercise-new @submitStatus="onCloseModal($event)"></exercise-new>
@@ -32,21 +32,21 @@
       <div class="col-6">
         filters options here
       </div>
-      <div class="col-6">
-        Search here
-      </div>
     </div>
 
     <!-- EXERCISES LIST -->
     <div class="container">
       <div class="row mt-3">
+        <div class="col-12">
+          <h4>Ejercicios disponibles</h4>
+        </div>
         <div
           class="col-12"
           v-if="totalExercisesReversed && totalExercisesReversed.length"
         >
           <exercise-list
             :list="totalExercisesReversed"
-            :type="'all'"
+            :type="'exercise'"
           ></exercise-list>
         </div>
       </div>

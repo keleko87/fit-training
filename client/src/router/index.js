@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Exercise from '../views/Exercise';
-import Workout from '../views/Workout';
+import WorkoutGoExercises from '../components/workout-go/WorkoutGoExercises';
+import WorkoutGoInfo from '../components/workout-go/WorkoutGoInfo';
 import Home from '../views/Home';
 import WorkoutNew from '../components/workout/WorkoutNew';
 import WorkoutList from '../components/workout/WorkoutList';
@@ -21,18 +22,20 @@ const router = new Router({
       name: 'home',
       redirect: '/workout/new'
     },
-    // OLD ROUTE
-    // {
-    //   path: '/workout/new',
-    //   name: 'workoutNew',
-    //   component: Workout
-    // },
     {
       path: '/workout/new',
       name: 'workoutNew',
       components: {
         list: Exercise,
         create: WorkoutNew
+      }
+    },
+    {
+      path: '/workout/go',
+      name: 'workoutGo',
+      components: {
+        list: WorkoutGoExercises,
+        create: WorkoutGoInfo
       }
     },
     {

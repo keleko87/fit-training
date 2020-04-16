@@ -1,12 +1,7 @@
 <template>
-  <div class="ft-exercise-card grid">
+  <div class="ft-workout-exercise-card grid">
     <!-- MODAL -->
-    <modal-poll
-      :modal="modalPoll"
-      :position="'bottom'"
-      :direction="'right'"
-      @close="onCloseModal($event)"
-    >
+    <ft-modal :size="'lg'" :modal="modalPoll" @close="onCloseModal($event)">
       <template slot="header">
         <h3 class="mb-0">{{ data.name }}</h3>
       </template>
@@ -16,26 +11,32 @@
           @submitStatus="onCloseModal($event)"
         ></exercise-detail>
       </template>
-    </modal-poll>
+    </ft-modal>
 
     <!-- CARD -->
     <figure :class="effectClass">
+      <small
+        v-if="data.series && data.series !== 0"
+        class="ft-workout-exercise-card__series"
+        >{{ data.series }}</small
+      >
+      <small v-if="data.reps" class="ft-workout-exercise-card__reps"
+        >x{{ reps }}</small
+      >
+      <small
+        v-else-if="data.time && data.time !== 0"
+        class="ft-workout-exercise-card__series"
+        >{{ time }}</small
+      >
+
       <img :src="getImage(data.imageUrl)" alt="image url" />
+
       <figcaption>
-        <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
-        <div class="ft-exercise-card__action">
+        <h6 class="ft-workout-exercise-card__figcaption-name">{{ data.name }}</h6>
+        <div class="ft-workout-exercise-card__action">
           <div class="d-flex">
             <div @click="showExercise()">
               <mdb-icon class="ft-card__icon" icon="info-circle" size="6x" />
-            </div>
-
-            <div class="ft-exercise-card__action--move">
-              <!-- IMPORTANTE: class="draggable-handle" es necesaria para que funcione <draggable :handle=".handle"> -->
-              <mdb-icon
-                class="ft-card__icon draggable-handle"
-                icon="arrows-alt"
-                size="7x"
-              />
             </div>
             <div @click="shareExercise()">
               <mdb-icon class="ft-card__icon" icon="share-alt" size="6x" />
@@ -48,11 +49,12 @@
 </template>
 <script>
 import { mdbIcon } from 'mdbvue';
-import ExerciseDetail from './ExerciseDetail';
-import ModalPoll from '../common/ModalPoll';
+import ExerciseDetail from '../exercise/ExerciseDetail';
+import FtModal from '../common/Modal';
+import timer from '../../mixins/timer';
 
 export default {
-  name: 'exercise-card-animation',
+  name: 'workout-exercises-card',
 
   props: {
     data: {
@@ -64,9 +66,11 @@ export default {
     }
   },
 
+  mixins: [timer],
+
   components: {
     ExerciseDetail,
-    ModalPoll,
+    FtModal,
     mdbIcon
   },
 
@@ -79,6 +83,15 @@ export default {
   computed: {
     effectClass() {
       return `effect-${this.effect}`;
+    },
+    time() {
+      return this.setTextTime(this.data.time);
+    },
+    rest() {
+      return this.setTextTime(this.data.rest);
+    },
+    reps() {
+      return this.setTextReps(this.data.reps);
     }
   },
 
@@ -101,6 +114,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ft-workout-exercise-card {
+  &__series,
+  &__reps {
+    position: absolute;
+    font-size: 1em;
+    font-weight: bold;
+    z-index: 1;
+  }
+  &__series {
+    background-color: $teal;
+    padding: 1px 8px;
+    left: 0;
+  }
+  &__reps {
+    // background-color: $white;
+    color: $teal !important;
+    padding: 1px 3px;
+    left: 23px;
+  }
+
+  .ft-card__icon {
+    font-size: 24px;
+  }
+  .ft-card__icon.handle {
+    font-size: 29px;
+  }
+}
 /** Source:  https://bootsnipp.com/snippets/3Meen **/
 .grid {
   position: relative;

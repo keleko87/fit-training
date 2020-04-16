@@ -255,7 +255,7 @@
               v-model.trim="$v.form.isWarmUp.$model"
               class="md-primary"
             >
-              <span class="checkbox-text">Ejercicio de calentamiento ?</span>
+              <span class="checkbox-text">Ejercicio de calentamiento</span>
             </md-checkbox>
           </div>
         </div>

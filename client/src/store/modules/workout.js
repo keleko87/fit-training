@@ -1,5 +1,6 @@
 import { WorkoutsService } from '../../common/api.service';
 import workoutNewMock from '../../../static/mocks/workout-new.json';
+import workoutsMock from '../../../static/mocks/workouts-all.json';
 
 const state = {
   data: {
@@ -8,11 +9,8 @@ const state = {
     bodyPart: '',
     level: '',
     target: '',
-    moveType: '',
-    description: '',
-    observations: '',
     duration: '', // minutes
-    restBetweenWorkout: '', // minutes
+    restBetweenExercise: '', // minutes
     sportImageUrl: '',
     creatorWorkoutId: '',
     exercises: [],
@@ -47,8 +45,8 @@ const actions = {
       return data;
     } catch (error) {
       console.error('ERROR: ', error.message);
-      // context.commit('SET_TOTAL_WORKOUTS', workoutsMock);
-      // return workoutsMock;
+      context.commit('SET_TOTAL_WORKOUTS', workoutsMock);
+      return workoutsMock;
     }
   },
 
@@ -72,6 +70,11 @@ const actions = {
       return workoutNewMock;
     }
   },
+
+  ['SET_WORKOUT_DATA'](context, workout) {
+    context.commit('SET_WORKOUT', workout);
+  },
+
   ['RESET_WORKOUT_DATA'](context) {
     context.commit('RESET_WORKOUT');
   },
@@ -103,11 +106,8 @@ const mutations = {
       bodyPart: '',
       level: '',
       target: '',
-      moveType: '',
-      description: '',
-      observations: '',
       duration: '',
-      restBetweenWorkout: '',
+      restBetweenExercise: '',
       sportImageUrl: '',
       creatorWorkoutId: '',
       exercises: [],
@@ -138,6 +138,9 @@ const mutations = {
     state.data.exercises = workoutExercises.filter(
       workoutExercise => workoutExercise.idGlobal !== exerciseIdGlobal
     );
+  },
+  ['SET_EXERCISES'](state, exercises) {
+    state.data.exercises = exercises;
   }
 };
 

@@ -1,12 +1,7 @@
 <template>
   <div class="ft-exercise-card-add grid">
     <!-- MODAL -->
-    <modal-poll
-      :modal="modalPoll"
-      :position="'left'"
-      :direction="'left'"
-      @close="onCloseModal($event)"
-    >
+    <ft-modal :size="'lg'" :modal="modalPoll" @close="onCloseModal($event)">
       <template slot="header">
         <h3>{{ data.name }}</h3>
       </template>
@@ -16,7 +11,7 @@
           @submitStatus="onCloseModal($event)"
         ></exercise-edit>
       </template>
-    </modal-poll>
+    </ft-modal>
 
     <!-- CARD -->
     <figure :class="effectClass">
@@ -25,7 +20,9 @@
         class="ft-exercise-card-add__series"
         >{{ data.series }}</small
       >
-      <small v-if="data.reps" class="ft-exercise-card-add__reps">x{{ reps }}</small>
+      <small v-if="data.reps" class="ft-exercise-card-add__reps"
+        >x{{ reps }}</small
+      >
       <small
         v-else-if="data.time && data.time !== 0"
         class="ft-exercise-card-add__series"
@@ -61,7 +58,7 @@
 <script>
 import { mdbIcon } from 'mdbvue';
 import ExerciseEdit from './ExerciseEdit';
-import ModalPoll from '../common/ModalPoll';
+import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
 
 export default {
@@ -81,7 +78,7 @@ export default {
 
   components: {
     ExerciseEdit,
-    ModalPoll,
+    FtModal,
     mdbIcon
   },
 

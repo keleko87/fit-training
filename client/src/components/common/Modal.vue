@@ -1,14 +1,7 @@
 <template>
   <mdb-container class="ft-modal-poll">
     <!-- modal modal -->
-    <mdb-modal
-      side
-      fullHeight
-      :size="size"
-      :position="position"
-      :direction="direction"
-      :show="showModal"
-    >
+    <mdb-modal :size="size" :show="showModal">
       <mdb-modal-header center :close="false">
         <slot name="header"></slot>
       </mdb-modal-header>
@@ -35,11 +28,11 @@ import {
   mdbModalFooter
 } from 'mdbvue';
 export default {
-  name: 'modal-poll',
+  name: 'modal',
 
   props: {
     modal: { type: Boolean, default: false },
-    size: { type: String, default: 'fluid' },
+    size: { type: String, default: 'lg' },
     position: { type: String, default: 'top' },
     direction: { type: String, default: 'left' }
   },
@@ -79,7 +72,7 @@ export default {
 
   @media (min-width: 576px) {
     & /deep/ .modal-dialog {
-      max-width: 100%;
+      // max-width: 100%;
     }
   }
 }

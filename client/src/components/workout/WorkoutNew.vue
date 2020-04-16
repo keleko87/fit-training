@@ -246,6 +246,10 @@ export default {
     mdbIcon
   },
 
+  async created() {
+    await this.$store.dispatch('RESET_WORKOUT_DATA');
+  },
+
   data() {
     return {
       form: {
@@ -303,27 +307,9 @@ export default {
       }
     },
 
-    // NO necesario para guardar la imagen -> Solo cuando haya que mostrarla
-    getSportImageSource(sport) {
-      const img = this.getSportImageName(sport);
-      return require('@/assets/img/sports/' + img + '.png');
-    },
-
-    getSportImageName(sport) {
-      switch (sport) {
-        case 'Fitness':
-          return 'fitness';
-        case 'Boxing':
-          return 'fitness';
-        case 'HIIT':
-          return 'fitness';
-        case 'Core':
-          return 'fitness';
-        case 'Abs':
-          return 'fitness';
-        default:
-          return 'fitness';
-      }
+    setSportImageURL(sport) {
+      const sportImage = sport.toLowerCase();
+      return `@/assets/img/sports/${sportImage}.png`;
     },
 
     getValidationClass(fieldName) {
@@ -391,7 +377,8 @@ export default {
       } = this.$v.form.$model;
 
       const creatorWorkoutId = 'UserId-1';
-      const sportImageUrl = '';
+      // Set Sport image URL
+      const sportImageUrl = this.setSportImageURL(sport);
       // exercises store
       const exercises = this.workoutExercises;
       const totalExercises = this.workoutExercises.length;

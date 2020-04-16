@@ -2,12 +2,12 @@
   <div class="ft-exercise-list container">
     <div class="d-flex justify-content-between">
       <div class="row">
-        <h5 class="ft-exercise-list__total">{{ exercisesCount }} resultados</h5>
+        <h5 class="ft-exercise-list__total">{{ itemsCount }} resultados</h5>
       </div>
       <div class="row">
         <ft-pagination
           :total-pages="totalPages"
-          :total="exercisesCount"
+          :total="itemsCount"
           :current-page="pagination.currentPage"
           :per-page="pagination.perPage"
           @pagechanged="onPageChange($event)"
@@ -16,27 +16,34 @@
       </div>
     </div>
 
-    <div v-if="exercises && exercises.length > 0">
+    <div v-if="items && items.length > 0">
       <draggable
         class="dragArea row"
         handle=".draggable-handle"
-        :list="exercises"
+        :list="items"
         :group="{ name: 'workout', pull: 'clone', put: false }"
         :clone="cloneExercise"
         :sort="false"
         @change="log"
       >
         <div
-          v-for="exercise in exercises"
-          :key="exercise._id"
+          v-for="item in items"
+          :key="item._id"
           class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
         >
-          <exercise-card-animation :data="exercise"></exercise-card-animation>
+          <exercise-card-animation
+            v-if="isExercise"
+            :data="item"
+          ></exercise-card-animation>
+          <workout-card-animation
+            v-else-if="!isExercise"
+            :data="item"
+          ></workout-card-animation>
         </div>
       </draggable>
     </div>
 
-    <div v-if="exercises.length === 0" class="row">
+    <div v-if="items.length === 0" class="row">
       No se encontraron ejercicios...
     </div>
   </div>
@@ -45,6 +52,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ExerciseCardAnimation from './ExerciseCardAnimation';
+import WorkoutCardAnimation from '../workout/WorkoutCardAnimation';
 import FtPagination from '../common/Pagination';
 import pagination from '../../mixins/pagination';
 import draggable from 'vuedraggable';
@@ -54,6 +62,7 @@ export default {
 
   components: {
     ExerciseCardAnimation,
+    WorkoutCardAnimation,
     FtPagination,
     draggable
   },
@@ -61,8 +70,7 @@ export default {
   props: {
     type: {
       type: String,
-      required: false,
-      default: 'all'
+      default: 'exercise'
     },
     list: {
       type: Array
@@ -72,27 +80,28 @@ export default {
   mixins: [pagination],
 
   computed: {
-    ...mapGetters(['exercisesCount', 'totalExercises']),
+    ...mapGetters(['exercisesCount', 'workoutsCount']),
 
-    exercises() {
-      const items = this.list || this.totalExercises;
+    items() {
+      const itemsList = this.list;
       // Return just page of items needed
-      return this.pageItems(items);
+      return this.pageItems(itemsList);
+    },
+
+    itemsCount() {
+      return this.isExercise ? this.exercisesCount : this.workoutsCount;
     },
 
     totalPages() {
-      return this.getTotalPages(this.exercisesCount);
+      return this.getTotalPages(this.itemsCount);
+    },
+
+    isExercise() {
+      return this.type === 'exercise';
     }
   },
 
-  mounted() {
-    this.fetchExercises();
-  },
-
   methods: {
-    fetchExercises() {
-      this.$store.dispatch('GET_EXERCISES');
-    },
     log(evt) {
       window.console.log('MOVED', evt);
     },
