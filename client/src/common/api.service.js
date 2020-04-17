@@ -94,3 +94,19 @@ export const WorkoutsService = {
     return ApiService.post(`${this.resource}/new`, workout);
   }
 };
+
+export const WorkoutGoService = {
+  resource: 'workoutGo',
+
+  getWorkoutsGoByUser(userId) {
+    return ApiService.get(this.resource, userId);
+  },
+
+  getWorkoutGo(id) {
+    return ApiService.get(this.resource, id);
+  },
+
+  saveWorkoutGo(workout) {
+    return ApiService.post(`${this.resource}/new`, workout);
+  }
+};
