@@ -18,10 +18,10 @@
           </div>
         </div>
 
-        <div class="col-sm-12 col-md-3 col-lg-3 mt-3">
+        <div class="col-sm-12 col-md-5 col-lg-3 mt-3">
           <!-- INFO -->
           <div class="row">
-            <div v-if="info.sport" class="col-sm-6">
+            <div v-if="info.sport" class="col-md-6">
               <!-- SPORT -->
               <h6 class="ft-workout-detail__label">Actividad</h6>
               <p class="ft-workout-detail__info">{{ info.sport }}</p>

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { sports, bodyPart, levels, targets } = require('../constants/constants');
 
-const WorkoutSchema = mongoose.Schema({
+const WorkoutGoSchema = mongoose.Schema({
   name: { type: String, required: true },
   sport: { type: String, required: true, enum: sports },
   sportImageUrl: String,
@@ -26,6 +26,6 @@ const WorkoutSchema = mongoose.Schema({
   }
 });
 
-const Workout = mongoose.model('Workout', WorkoutSchema);
+const Workout = mongoose.model('WorkoutGo', WorkoutGoSchema);
 
 module.exports = Workout;

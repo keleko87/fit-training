@@ -1,60 +1,131 @@
 <template>
-  <div class="ft-workout-detail">
+  <div class="ft-workout-go-info">
     <div class="container">
       <div class="row">
         <div class="col-sm-12 mt-3">
           <!-- INFO -->
           <div class="row">
-            <div v-if="workout.sport" class="col-sm-6">
+            <div v-if="workout.name" class="col-12 mb-3">
               <!-- SPORT -->
-              <h6 class="ft-workout-detail__label">Actividad</h6>
-              <p class="ft-workout-detail__info">{{ workout.sport }}</p>
+              <h3 class="ft-workout-go-info__info text-center">
+                {{ workout.name }}
+              </h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div v-if="workout.sport" class="col-md-6">
+              <!-- SPORT -->
+              <h6 class="ft-workout-go-info__label">Actividad</h6>
+              <p class="ft-workout-go-info__info">{{ workout.sport }}</p>
             </div>
 
-            <div v-if="workout.bodyPart" class="col-sm-6">
+            <div v-if="workout.bodyPart" class="col-md-6">
               <!-- BODY PART -->
-              <h6 class="ft-workout-detail__label">Parte del cuerpo</h6>
-              <p class="ft-workout-detail__info">{{ workout.bodyPart }}</p>
+              <h6 class="ft-workout-go-info__label">Parte del cuerpo</h6>
+              <p class="ft-workout-go-info__info">{{ workout.bodyPart }}</p>
             </div>
 
-            <div v-if="workout.target" class="col-sm-6">
+            <div v-if="workout.target" class="col-md-6">
               <!-- TARGET -->
-              <h6 class="ft-workout-detail__label">Objetivo</h6>
-              <p class="ft-workout-detail__info">{{ workout.target }}</p>
+              <h6 class="ft-workout-go-info__label">Objetivo</h6>
+              <p class="ft-workout-go-info__info">{{ workout.target }}</p>
             </div>
-            <div v-if="workout.level" class="col-sm-6">
+            <div v-if="workout.level" class="col-md-6">
               <!-- LEVEL -->
-              <h6 class="ft-workout-detail__label">Nivel</h6>
-              <p class="ft-workout-detail__info">{{ workout.level }}</p>
+              <h6 class="ft-workout-go-info__label">Nivel</h6>
+              <p class="ft-workout-go-info__info">{{ workout.level }}</p>
             </div>
           </div>
 
           <hr class="ft-breakline" />
 
-          <div class="row d-flex ft-workout-detail__time-info">
+          <div class="row ft-workout-go-info__time-info">
             <div
               v-if="workout.restBetweenExercise !== ''"
-              class="ft-workout-detail__time-info--item"
+              class="col-md-6 ft-workout-go-info__time-info--item"
             >
               <!-- REST BETWEEN EXERCISE-->
-              <h6 class="ft-workout-detail__label">Descanso</h6>
-              <p class="ft-workout-detail__info">{{ rest }}</p>
+              <h6 class="ft-workout-go-info__label">Descanso ejercicio</h6>
+              <p class="ft-workout-go-info__info">{{ rest }}</p>
             </div>
             <div
               v-if="workout.duration !== ''"
-              class="ft-workout-detail__time-info--item"
+              class="col-md-6 ft-workout-go-info__time-info--item"
             >
               <!-- DURATION -->
-              <h6 class="ft-workout-detail__label">Duración</h6>
-              <p class="ft-workout-detail__info">{{ duration }}</p>
+              <h6 class="ft-workout-go-info__label">Duración</h6>
+              <p class="ft-workout-go-info__info">{{ duration }}</p>
             </div>
           </div>
 
           <div class="row">
+            <!-- TIMER -->
+            <div class="col-sm-6">
+              <!-- SERIES -->
+              <md-field>
+                <label>Series</label>
+                <md-input
+                  type="number"
+                  id="series"
+                  v-model="workoutSeries"
+                ></md-input>
+              </md-field>
+            </div>
+            <div class="col-sm-6">
+              <!-- AUTO MODE -->
+              <md-checkbox id="timer" v-model="timerAuto" class="md-primary">
+                <span class="checkbox-text">Timer auto</span>
+              </md-checkbox>
+            </div>
+          </div>
+
+          <!-- BUTTONS -->
+          <div class="row">
             <div class="col-12">
-              <button class="btn btn-primary w-100" @click.prevent="workoutFinish()">
-                Finalizar entrenamiento
+              <button
+                class="btn btn-primary w-100"
+                :disabled="startDisabled"
+                @click.prevent="workoutStart()"
+              >
+                Iniciar
               </button>
+            </div>
+            <div class="col-12">
+              <button
+                class="btn btn-primary w-100"
+                :disabled="reStartDisabled"
+                @click.prevent="workoutReStart()"
+              >
+                Reiniciar
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <button
+                class="btn btn-default w-100"
+                :disabled="pauseDisabled"
+                @click.prevent="workoutPause()"
+              >
+                Pausa
+              </button>
+            </div>
+            <div class="col-lg-6">
+              <button
+                class="btn btn-danger w-100"
+                :disabled="finishDisabled"
+                @click.prevent="workoutFinish()"
+              >
+                Fin
+              </button>
+            </div>
+          </div>
+
+          <!-- TIMER -->
+          <div class="row">
+            <div class="col-12">
+              <ft-timer :data="timer" :auto="timerAuto"></ft-timer>
             </div>
           </div>
         </div>
@@ -65,32 +136,95 @@
 
 <script>
 import timer from '../../mixins/timer';
+import FtTimer from '../common/Timer';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'exercise-detail',
-
-  props: {
-    type: {
-      type: String,
-      default: 'exercise'
-    },
-    info: {
-      type: Object
-    }
-  },
+  name: 'workout-go-info',
 
   mixins: [timer],
 
-  // async created() {
-  //   await this.$store.dispatch('GET_WORKOUT', id);
-  // },
+  components: {
+    FtTimer
+  },
+
+  async created() {
+    const userId = 'userId 12323'; // PENDING ADD LOGIN
+    const auto = this.timerAuto;
+    const workoutExercises = this.workoutExercises;
+    const workout = this.workout;
+
+    await this.$store.dispatch('SET_WORKOUT_GO_DATA', {
+      userId,
+      auto,
+      workout,
+      workoutExercises
+    });
+  },
+
+  data() {
+    return {
+      modalFinish: false
+    };
+  },
 
   computed: {
+    ...mapGetters([
+      'timer',
+      'startDate',
+      'currentExercise',
+      'currentWorkoutSerie',
+      'timerWorkout',
+      'workoutExercisesAllDone'
+    ]),
+
+    timerAuto: {
+      get() {
+        return this.$store.state.workoutGo.timer.auto;
+      },
+      set(val) {
+        console.log('set timer mode', val);
+        this.$store.commit('SET_TIMER_AUTO', val);
+      }
+    },
+
+    workoutSeries: {
+      get() {
+        return this.$store.state.workoutGo.timer.workout.series;
+      },
+      set(val) {
+        console.log('set Workout series ', val);
+        this.$store.commit('SET_WORKOUT_SERIES', val);
+      }
+    },
+
+    timerWorkoutExercises() {
+      return this.$store.state.workoutGo.timer.workoutExercises;
+    },
+
     workout() {
       return this.$store.state.workout.data;
     },
+
     workoutExercises() {
       return this.$store.state.workout.data.exercises;
+    },
+
+    pauseDisabled() {
+      return !this.startDisabled;
+    },
+    startDisabled() {
+      return this.startDate !== '';
+    },
+    reStartDisabled() {
+      return (
+        !this.workoutExercisesAllDone &&
+        this.startDate !== '' &&
+        this.endDate === ''
+      );
+    },
+    finishDisabled() {
+      return this.startDate === '';
     },
     duration() {
       return this.setTextTime(this.workout.duration);
@@ -105,8 +239,34 @@ export default {
       return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     },
 
+    workoutStart() {
+      const startDate = Date.now().toString();
+      const inputSeries = this.workoutSeries;
+      const workout = this.timerWorkout;
+      const workoutExercises = this.timerWorkoutExercises;
+      console.log('START WORKOUT', startDate, workout);
+      this.$store.dispatch('START_WORKOUT', {
+        startDate,
+        inputSeries,
+        workout,
+        workoutExercises
+      });
+    },
+
+    workoutReStart() {
+      // TO DO New serie workout
+      this.$store.dispatch('RE_START_WORKOUT', this.timerWorkout);
+    },
+
+    workoutPause() {
+      const currentExercise = this.currentExercise;
+      const workout = this.timerWorkout;
+      this.$store.dispatch('PAUSE_WORKOUT', { currentExercise, workout });
+    },
+
     workoutFinish() {
-      this.$router.push({ name: 'home' });
+      this.modalFinish = true;
+      // IN MODAL ADD --> this.$router.push({ name: 'home' });
     }
   }
 };
@@ -147,7 +307,7 @@ $iframe-height: 315px;
       padding: 0 10px;
       h6,
       p {
-        text-align: center;
+        // text-align: center;
       }
     }
   }

@@ -21,12 +21,21 @@
           </div>
         </div>
       </div>
+
+      <!-- TIMER -->
+      <!-- <div class="row">
+        <div class="col-12">
+          <ft-timer :data="timerWorkoutExercises" :auto="timerAuto"></ft-timer>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import WorkoutExercisesCard from '../workout/WorkoutExercisesCard';
+import FtTimer from '../common/Timer';
 
 export default {
   name: 'exercise-detail',
@@ -42,7 +51,8 @@ export default {
   },
 
   components: {
-    WorkoutExercisesCard
+    WorkoutExercisesCard,
+    FtTimer
   },
 
   // async created() {
@@ -50,6 +60,13 @@ export default {
   // },
 
   computed: {
+    ...mapGetters([
+      'currentExercise',
+      'currentWorkoutSerie',
+      'timerWorkout',
+      'workoutExercisesAllDone'
+    ]),
+
     workoutExercises() {
       return this.$store.state.workout.data.exercises;
     }
@@ -81,7 +98,7 @@ $iframe-height: 315px;
   }
 
   &__exercises {
-    overflow: auto;
+    // overflow: auto;
   }
 
   &__image {
