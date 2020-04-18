@@ -131,17 +131,6 @@
             </div>
           </div>
 
-          startDate
-          <div style="color: white" v-if="startDate !== ''">
-            {{ startDate }}
-          </div>
-
-          <!-- TIMER -->
-          <div class="row">
-            <div class="col-12">
-              <ft-timer></ft-timer>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -150,7 +139,6 @@
 
 <script>
 import timer from '../../mixins/timer';
-import FtTimer from '../common/Timer';
 import { mapGetters } from 'vuex';
 import { SERIES } from '../../common/constants';
 
@@ -158,10 +146,6 @@ export default {
   name: 'workout-go-info',
 
   mixins: [timer],
-
-  components: {
-    FtTimer
-  },
 
   async created() {
     const userId = 'userId 12323'; // PENDING ADD LOGIN

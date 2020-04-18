@@ -53,10 +53,6 @@ export default {
     FtTimer
   },
 
-  // async created() {
-  //   await this.$store.dispatch('SET_WORKOUT_DATA', this.info);
-  // },
-
   computed: {
     ...mapGetters([
       'currentExercise',

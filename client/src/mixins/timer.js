@@ -1,14 +1,18 @@
 export default {
   data() {
     return {
-      pagination: {
-        currentPage: 1,
-        perPage: 12 // Múltiplo de 3 y 4 para el grid
-      }
+      audioFinish: null,
+      audioInit: null,
+      audioInitSource: 'countdown-10-second',
+      audioFinishSource: 'boxing-bell'
     };
   },
 
   methods: {
+    getAudioSource(name) {
+      return require(`@/assets/audio/${name}.mp3`);
+    },
+
     setTextTime(timeData) {
       if (!timeData || timeData === 0) {
         return '-';

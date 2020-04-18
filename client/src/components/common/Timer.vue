@@ -1,5 +1,23 @@
 <template>
   <div class="ft-timer">
+    <!-- MODAL -->
+    <ft-modal
+      :size="'sm'"
+      :modal="modalCountdownInit"
+    >
+      <template slot="header">
+        <h5 class="mb-0">Ejercicio comienza en...</h5>
+      </template>
+      <template slot="body">
+        <div class="text-center">
+          <!-- <p>Ejercicio comienza en...</p> -->
+          <h2 class="ft-timer__time-countdown-before-init">
+            {{ timeCountdownBeforeInit }}
+          </h2>
+        </div>
+      </template>
+    </ft-modal>
+
     <div class="container">
       <div class="row">
         <!-- COUNTDOWN -->
@@ -86,7 +104,7 @@
             </div>
           </div>
         </div>
-
+<!-- 
         <div style="color: white">
           secondsLeft {{ secondsLeft }}
           <br />
@@ -97,7 +115,7 @@
           currentWorkoutSerie {{ currentWorkoutSerie }}
           <br />
           timerWorkoutSeries {{ timerWorkoutSeries }}
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -106,6 +124,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { mdbIcon } from 'mdbvue';
+import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
 import { AudioPlayer } from '../../common/audio';
 
@@ -113,7 +132,8 @@ export default {
   name: 'ft-timer',
 
   components: {
-    mdbIcon
+    mdbIcon,
+    FtModal
   },
 
   mixins: [timer],
@@ -124,13 +144,15 @@ export default {
       selectedTime: 0,
       secondsLeft: 0,
       timeLeft: '00:00',
+      initCountdown: false,
       isPaused: false,
-      audio: null
+      modalCountdownInit: false,
+      timeCountdownBeforeInit: 0
     };
   },
 
-  mounted: function() {
-    this.audio = AudioPlayer.createAudio();
+  mounted() {
+    this.setCountdownAudios();
   },
 
   computed: {
@@ -176,6 +198,13 @@ export default {
     },
 
     ///////////////  COUNTDOWN  ///////////////////
+    setCountdownAudios() {
+      const initSrc = this.getAudioSource(this.audioInitSource);
+      const finishSrc = this.getAudioSource(this.audioFinishSource);
+      this.audioInit = AudioPlayer.createAudio(initSrc);
+      this.audioFinish = AudioPlayer.createAudio(finishSrc);
+    },
+
     setTime(seconds) {
       clearInterval(this.intervalTimer);
       this.timer(seconds);
@@ -184,37 +213,61 @@ export default {
     timer(seconds) {
       this.displayTimeLeft(seconds);
       this.selectedTime = seconds;
-      // this.initialTime = seconds;
-      // this.countdown(end);
     },
 
     countdown(selectedTime) {
-      // this.initialTime = this.selectedTime;
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
-        console.log(this.secondsLeft);
+        console.log('LEFT seconds:', this.secondsLeft);
 
         if (!this.isPaused) {
           this.secondsLeft = this.secondsLeft - 1;
         }
 
         if (this.secondsLeft <= 0) {
-          clearInterval(this.intervalTimer);
+          AudioPlayer.playAlarm(false, this.audioFinish);
+          this.resetCountdown();
           return;
         }
 
         this.displayTimeLeft(this.secondsLeft);
-
       }, 1000);
     },
 
-    startCountdown() {
-      if (this.secondsLeft === 0) {
-        if (this.intervalTimer) {
-          clearInterval(this.intervalTimer);
+    countDownBeforeInit() {
+      this.timeCountdownBeforeInit = 10;
+
+      this.intervalBeforeInit = setInterval(() => {
+
+        this.timeCountdownBeforeInit = this.timeCountdownBeforeInit - 1;
+
+        if (this.timeCountdownBeforeInit <= 0) {
+          clearInterval(this.intervalBeforeInit);
+          return 0;
         }
+
+        return this.timeCountdownBeforeInit;
+      }, 1000);
+    },
+
+    countdown10sec() {
+      this.modalCountdownInit = true;
+      this.countDownBeforeInit();
+      AudioPlayer.playAlarm(false, this.audioInit);
+
+      setTimeout(() => {
+        AudioPlayer.stopAlarm(this.audioInit);
+        this.modalCountdownInit = false;
         this.countdown(this.selectedTime);
+      }, 11000);
+    },
+
+    async startCountdown() {
+      if (!this.initCountdown) {
+        await this.countdown10sec();
+
+        this.initCountdown = true;
       }
 
       this.isPaused = false;
@@ -225,7 +278,12 @@ export default {
     },
 
     stopCountdown() {
+      this.resetCountdown();
+    },
+
+    resetCountdown() {
       clearInterval(this.intervalTimer);
+      this.initCountdown = false;
       this.selectedTime = 0;
       this.secondsLeft = 0;
       this.timeLeft = '00:00';
@@ -262,6 +320,16 @@ $padding-items-sm: 4px 8px;
 $height-countdown-items: 44px;
 
 .ft-timer {
+  &__time-countdown-before-init {
+    margin: 0 auto;
+    color: $teal !important;
+    border: 4px solid $teal;
+    background-color: $white;
+    border-radius: 50px;
+    padding: 24px;
+    width: 95px;
+  }
+
   &__item {
     &--time-left {
       height: $height-countdown-items;
