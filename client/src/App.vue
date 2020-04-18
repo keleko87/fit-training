@@ -42,7 +42,7 @@ export default {
   &__list {
     padding: 0;
     background-color: transparent;
-    background-image: url('./assets/img/fitness_slide_2.jpg');
+    // background-image: url('./assets/img/fitness_slide_2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;

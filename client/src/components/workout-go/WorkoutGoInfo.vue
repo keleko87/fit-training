@@ -7,9 +7,9 @@
           <div class="row">
             <div v-if="workout.name" class="col-12 mb-3">
               <!-- SPORT -->
-              <h3 class="ft-workout-go-info__info text-center">
+              <h4 class="ft-workout-go-info__info text-center">
                 {{ workout.name }}
-              </h3>
+              </h4>
             </div>
           </div>
 
@@ -64,12 +64,21 @@
             <div class="col-sm-6">
               <!-- SERIES -->
               <md-field>
-                <label>Series</label>
-                <md-input
-                  type="number"
-                  id="series"
+                <label for="series">Series</label>
+                <md-select
+                  :disabled="startDate !== ''"
                   v-model="workoutSeries"
-                ></md-input>
+                  id="series"
+                  name="series"
+                >
+                  <md-option
+                    v-for="serie in series"
+                    :key="serie"
+                    :value="serie"
+                  >
+                    {{ serie }}
+                  </md-option>
+                </md-select>
               </md-field>
             </div>
             <div class="col-sm-6">
@@ -82,7 +91,7 @@
 
           <!-- BUTTONS -->
           <div class="row">
-            <div class="col-12">
+            <div class="col-lg-6 px-1">
               <button
                 class="btn btn-primary w-100"
                 :disabled="startDisabled"
@@ -91,18 +100,18 @@
                 Iniciar
               </button>
             </div>
-            <div class="col-12">
+            <div class="col-lg-6 px-1">
               <button
                 class="btn btn-primary w-100"
                 :disabled="reStartDisabled"
                 @click.prevent="workoutReStart()"
               >
-                Reiniciar
+                Reinicio
               </button>
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 px-1">
               <button
                 class="btn btn-default w-100"
                 :disabled="pauseDisabled"
@@ -111,7 +120,7 @@
                 Pausa
               </button>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 px-1">
               <button
                 class="btn btn-danger w-100"
                 :disabled="finishDisabled"
@@ -122,10 +131,15 @@
             </div>
           </div>
 
+          startDate
+          <div style="color: white" v-if="startDate !== ''">
+            {{ startDate }}
+          </div>
+
           <!-- TIMER -->
           <div class="row">
             <div class="col-12">
-              <ft-timer :data="timer" :auto="timerAuto"></ft-timer>
+              <ft-timer></ft-timer>
             </div>
           </div>
         </div>
@@ -138,6 +152,7 @@
 import timer from '../../mixins/timer';
 import FtTimer from '../common/Timer';
 import { mapGetters } from 'vuex';
+import { SERIES } from '../../common/constants';
 
 export default {
   name: 'workout-go-info',
@@ -164,16 +179,15 @@ export default {
 
   data() {
     return {
+      series: SERIES,
       modalFinish: false
     };
   },
 
   computed: {
     ...mapGetters([
-      'timer',
       'startDate',
       'currentExercise',
-      'currentWorkoutSerie',
       'timerWorkout',
       'workoutExercisesAllDone'
     ]),
@@ -266,8 +280,16 @@ export default {
 
     workoutFinish() {
       this.modalFinish = true;
-      // IN MODAL ADD --> this.$router.push({ name: 'home' });
+      //  * IN MODAL ADD:
+      //  * - Enhorabuena has finalizado el entrenamiento!
+      //  * - Quieres Guardar tu entrenamiento ? SI / NO
+      //  * - this.$router.push({ name: 'home' });
     }
+  },
+
+  beforeDestroy() {
+    this.$store.dispatch('RESET_WORKOUT_NOT_FINISH');
+    console.log('destroyed', this.timerWorkoutExercises);
   }
 };
 </script>

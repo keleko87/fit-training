@@ -14,14 +14,14 @@ export default {
         return '-';
       }
       const timeSec = Math.ceil(timeData * 60);
-      return timeData <= 1 ? `${timeSec} sec` : `${timeData} min`;
+      return timeData <= 1 ? `${timeSec}s` : `${timeData}m`;
     },
 
     setTextReps(repsData) {
       if (repsData === null) {
         return '-';
       }
-      return repsData == 0 ? 'Fallo' : repsData;
+      return repsData == 0 ? 'fallo' : repsData;
     },
 
     setTextSeriesXreps(seriesData, repsData) {

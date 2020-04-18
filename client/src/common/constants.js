@@ -37,3 +37,4 @@ export const MINUTES = [
   '45',
   '60'
 ];
+export const SERIES = ['1', '2', '3', '4', '5'];

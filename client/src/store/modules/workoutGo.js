@@ -1,5 +1,5 @@
 import { WorkoutGoService } from '../../common/api.service';
-// import workoutGoMock from '../../../static/mocks/workout-go.json';
+// import workoutGo from '../../../static/mocks/workout-new.json';
 
 const state = {
   userId: '',
@@ -7,8 +7,8 @@ const state = {
   endDate: '',
 
   timer: {
-    auto: true,
-    currentWorkoutSerie: 0,
+    auto: false,
+    currentWorkoutSerie: 1,
     currentExercise: {
       idGlobal: '',
       time: 0,
@@ -16,7 +16,7 @@ const state = {
       done: false
     },
     workout: {
-      series: 1,
+      series: 3,
       restBetweenExercise: 0,
       finish: false
     },
@@ -38,7 +38,7 @@ const getters = {
   timer(state) {
     return state.timer;
   },
-  timerMode(state) {
+  timerAuto(state) {
     return state.timer.auto;
   },
   timerWorkoutExercises(state) {
@@ -51,6 +51,9 @@ const getters = {
   },
   timerWorkout(state) {
     return state.timer.workout;
+  },
+  timerWorkoutSeries(state) {
+    return state.timer.workout.series;
   },
   currentExercise() {
     return state.timer.currentExercise;
@@ -90,6 +93,11 @@ const actions = {
     context.commit('SET_END_DATE', endDate);
   },
 
+  ['RESET_WORKOUT_NOT_FINISH'](context) {
+    context.commit('RESET_START_DATE');
+    context.commit('RESET_TIMER');
+  },
+
   async ['SAVE_WORKOUT_GO'](context, form) {
     try {
       const res = await WorkoutGoService.saveWorkoutGo(form);
@@ -121,14 +129,8 @@ const mutations = {
   },
 
   ['SET_WORKOUT_SERIES'](state, inputSeries) {
-    state.timer.workout.series = inputSeries;
-  },
-
-  ['SET_TIMER_WORKOUT_CURRENT_SERIE'](state, workout) {
-    const currentSerie = state.timer.currentWorkoutSerie;
-    if (currentSerie < workout.series) {
-      state.timer.currentWorkoutSerie = state.timer.currentWorkoutSerie + 1;
-    }
+    const series = parseInt(inputSeries, 10);
+    state.timer.workout.series = series;
   },
 
   ['SET_TIMER_WORKOUT_EXERCISES'](state, workoutExercises) {
@@ -144,11 +146,17 @@ const mutations = {
     state.timer.workoutExercises = [...workoutExers];
   },
 
+  ['SET_TIMER_WORKOUT_CURRENT_SERIE'](state, workout) {
+    const currentSerie = state.timer.currentWorkoutSerie;
+    if (currentSerie < workout.series) {
+      state.timer.currentWorkoutSerie = state.timer.currentWorkoutSerie + 1;
+    }
+  },
+
   ['SET_TIMER_CURRENT_EXERCISE'](state, workoutExercises) {
-    debugger;
     const currentExer = state.timer.currentExercise.idGlobal
-        ? state.timer.currentExercise
-        : '';
+      ? state.timer.currentExercise
+      : '';
 
     if (!currentExer) {
       // First time
@@ -181,23 +189,35 @@ const mutations = {
     }
   },
 
-  ['RESET_TIMER_WORKOUT'](state) {
-    const workout = {
-      series: 0,
-      restBetweenExercise: 0
-    };
-    state.timer.workout = workout;
+  ['RESET_START_DATE'](state) {
+    state.startDate = '';
   },
 
-  ['RESET_TIMER_WORKOUT_EXERCISES'](state) {
-    const workoutExercises = [
-      {
+  ['RESET_TIMER'](state) {
+    const timer = {
+      auto: true,
+      currentWorkoutSerie: 1,
+      currentExercise: {
         idGlobal: '',
         time: 0,
-        rest: 0
-      }
-    ];
-    state.timer.workoutExercises = workoutExercises;
+        rest: 0,
+        done: false
+      },
+      workout: {
+        series: 3,
+        restBetweenExercise: 0,
+        finish: false
+      },
+      workoutExercises: [
+        {
+          idGlobal: '',
+          time: 0,
+          rest: 0,
+          done: false
+        }
+      ]
+    };
+    state.timer = timer;
   }
 };
 

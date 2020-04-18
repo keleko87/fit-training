@@ -1,11 +1,9 @@
 <template>
   <div class="ft-workout-go-exercises">
     <div class="container">
-      <div class="row">
+      <div class="row my-3">
         <!-- Workout exercises list -->
-        <div
-          class="ft-workout-go-exercises__exercises col-sm-12 col-md-7 col-lg-9"
-        >
+        <div class="ft-workout-go-exercises__exercises col-12">
           <div class="row">
             <div
               v-for="exercise in workoutExercises"
@@ -23,11 +21,11 @@
       </div>
 
       <!-- TIMER -->
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-12">
-          <ft-timer :data="timerWorkoutExercises" :auto="timerAuto"></ft-timer>
+          <ft-timer></ft-timer>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
