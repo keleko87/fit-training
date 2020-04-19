@@ -1,5 +1,11 @@
 <template>
-  <div class="ft-workout-exercise-card grid">
+  <div
+    class="ft-workout-exercise-card grid"
+    :class="[
+      { 'current-exercise': isCurrentExercise },
+      { 'exercise-done': exerciseDone }
+    ]"
+  >
     <!-- MODAL -->
     <ft-modal :size="'lg'" :modal="modalPoll" @close="onCloseModal($event)">
       <template slot="header">
@@ -32,7 +38,9 @@
       <img :src="getImage(data.imageUrl)" alt="image url" />
 
       <figcaption>
-        <h6 class="ft-workout-exercise-card__figcaption-name">{{ data.name }}</h6>
+        <h6 class="ft-workout-exercise-card__figcaption-name">
+          {{ data.name }}
+        </h6>
         <div class="ft-workout-exercise-card__action">
           <div class="d-flex">
             <div @click="showExercise()">
@@ -52,11 +60,16 @@ import { mdbIcon } from 'mdbvue';
 import ExerciseDetail from '../exercise/ExerciseDetail';
 import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'workout-exercises-card',
 
   props: {
+    workoutGo: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Object
     },
@@ -81,6 +94,36 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['currentExercise']),
+
+    isWorkoutGo() {
+      return this.workoutGo;
+    },
+
+    workoutExercises() {
+      return this.$store.state.workoutGo.timer.workoutExercises;
+    },
+
+    isCurrentExercise() {
+      if (!this.isWorkoutGo) {
+        return false;
+      } else {
+        console.log(this.currentExercise.idGlobal, '-', this.data.idGlobal);
+        return this.currentExercise.idGlobal === this.data.idGlobal;
+      }
+    },
+    exerciseDone() {
+      if (!this.isWorkoutGo) {
+        return false;
+      } else {
+        console.log('t', this.$store.state.workoutGo.timer);
+        const exercise = this.workoutExercises.find(
+          exercise => exercise.idGlobal === this.data.idGlobal
+        );
+
+        return exercise ? exercise.done : false;
+      }
+    },
     effectClass() {
       return `effect-${this.effect}`;
     },
@@ -223,5 +266,23 @@ export default {
 .grid figure p {
   letter-spacing: 1px;
   font-size: 68.5%;
+}
+
+.current-exercise {
+  border: 4px solid $red !important;
+
+  figure.effect-sadie h6 {
+    top: 169px;
+    color: $red !important;
+  }
+}
+
+.exercise-done {
+  border: 4px solid $green !important;
+
+  figure.effect-sadie h6 {
+    top: 169px;
+    color: $green !important;
+  }
 }
 </style>

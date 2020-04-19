@@ -252,8 +252,10 @@ export default {
     },
 
     workoutReStart() {
-      // TO DO New serie workout
-      this.$store.dispatch('RE_START_WORKOUT', this.timerWorkout);
+      // New serie workout
+      const workout = this.timerWorkout;
+      const workoutExercises = this.timerWorkoutExercises;
+      this.$store.dispatch('RE_START_WORKOUT', { workout, workoutExercises });
     },
 
     workoutPause() {

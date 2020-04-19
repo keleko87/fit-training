@@ -8,7 +8,8 @@ const state = {
 
   timer: {
     auto: false,
-    currentWorkoutSerie: 1,
+    currentWorkoutSerie: 0,
+    currentWorkoutSerieFinished: false,
     currentExercise: {
       idGlobal: '',
       time: 0,
@@ -41,16 +42,11 @@ const getters = {
   timerAuto(state) {
     return state.timer.auto;
   },
-  timerWorkoutExercises(state) {
-    state.timer.workoutExercises;
-  },
-  workoutExercisesAllDone(state) {
-    return state.timer.workoutExercises.every(
-      exercise => exercise.done === true
-    );
-  },
   timerWorkout(state) {
     return state.timer.workout;
+  },
+  timerWorkoutExercises(state) {
+    state.timer.workoutExercises;
   },
   timerWorkoutSeries(state) {
     return state.timer.workout.series;
@@ -60,6 +56,17 @@ const getters = {
   },
   currentWorkoutSerie() {
     return state.timer.currentWorkoutSerie;
+  },
+  currentWorkoutSerieFinished() {
+    return state.timer.currentWorkoutSerieFinished;
+  },
+  restBetweenExercise() {
+    return state.timer.workout.restBetweenExercise;
+  },
+  workoutExercisesAllDone(state) {
+    return state.timer.workoutExercises.every(
+      exercise => exercise.done === true
+    );
   }
 };
 
@@ -79,12 +86,25 @@ const actions = {
   ) {
     context.commit('SET_START_DATE', startDate);
     context.commit('SET_WORKOUT_SERIES', inputSeries);
-    context.commit('SET_TIMER_WORKOUT_CURRENT_SERIE', workout);
-    context.commit('SET_TIMER_CURRENT_EXERCISE', workoutExercises);
+    context.commit('SET_CURRENT_SERIE', workout);
+    context.commit('SET_CURRENT_EXERCISE', workoutExercises);
+  },
+  ['SET_NEXT_EXERCISE'](context, workoutExercises) {
+    const exercisesDone = state.timer.workoutExercises.every(
+      exercise => exercise.done === true
+    );
+
+
+    if (!exercisesDone) {
+      context.commit('SET_CURRENT_EXERCISE', workoutExercises);
+    } else {
+      // context.commit('SET_SERIE_FINISHED');
+    }
   },
   ['RE_START_WORKOUT'](context, { workout, workoutExercises }) {
-    context.commit('SET_TIMER_WORKOUT_CURRENT_SERIE', workout);
-    context.commit('SET_TIMER_CURRENT_EXERCISE', workoutExercises);
+    context.commit('RESET_CURRENT_ITEMS');
+    context.commit('SET_CURRENT_SERIE', workout);
+    context.commit('SET_CURRENT_EXERCISE', workoutExercises);
   },
   ['PAUSE_WORKOUT'](context, { currentExercise, workout }) {
     context.commit('PAUSE_TIMER_WORKOUT', { currentExercise, workout });
@@ -146,14 +166,18 @@ const mutations = {
     state.timer.workoutExercises = [...workoutExers];
   },
 
-  ['SET_TIMER_WORKOUT_CURRENT_SERIE'](state, workout) {
+  ['SET_CURRENT_SERIE'](state, workout) {
+    // RESET serie finished
+    state.timer.currentWorkoutSerieFinished = false;
+
     const currentSerie = state.timer.currentWorkoutSerie;
+
     if (currentSerie < workout.series) {
       state.timer.currentWorkoutSerie = state.timer.currentWorkoutSerie + 1;
     }
   },
 
-  ['SET_TIMER_CURRENT_EXERCISE'](state, workoutExercises) {
+  ['SET_CURRENT_EXERCISE'](state, workoutExercises) {
     const currentExer = state.timer.currentExercise.idGlobal
       ? state.timer.currentExercise
       : '';
@@ -172,31 +196,65 @@ const mutations = {
       });
 
       state.timer.workoutExercises = [...workoutExercises];
-      state.timer.currentExercise = state.timer.workoutExercises.find(
+
+      // Set current Exercise
+      const currentExercise = state.timer.workoutExercises.find(
         exer => exer.done === false
-      )[0];
+      );
+
+      debugger;
+      if (currentExercise) {
+        state.timer.currentExercise = currentExercise;
+      } else {
+        // Set serie finished
+        state.timer.currentWorkoutSerieFinished = true;
+
+        // FINISH WORKOUT
+        if (state.timer.currentWorkoutSerie === state.timer.workout.series) {
+          state.timer.workout.finish = true;
+        }
+      }
     }
   },
 
-  ['PAUSE_TIMER_WORKOUT'](state, { currentExercise, workout }) {
-    // TODO
-    if (currentExercise.timer) {
-      // pause this
-    } else if (workout.timer) {
-      // pause this
-    } else {
-      // nothing
-    }
+  ['SET_SERIE_FINISHED'](state) {
+    state.timer.currentWorkoutSerieFinished = true;
+  },
+
+  ['SET_WORKOUT_FINISH'](state) {
+    state.timer.workout.finish = true;
   },
 
   ['RESET_START_DATE'](state) {
     state.startDate = '';
   },
 
+  ['RESET_CURRENT_ITEMS'](state) {
+    const currentExercise = {
+      idGlobal: '',
+      time: 0,
+      rest: 0,
+      done: false
+    };
+
+    // Reset exercises marked done
+    const workoutExercises = state.timer.workoutExercises.map(exer => {
+      return {
+        ...exer,
+        done: false
+      };
+    });
+
+    state.timer.workoutExercises = [...workoutExercises];
+    state.timer.currentExercise = currentExercise;
+    state.timer.currentWorkoutSerieFinished = false;
+  },
+
   ['RESET_TIMER'](state) {
     const timer = {
       auto: true,
-      currentWorkoutSerie: 1,
+      currentWorkoutSerie: 0,
+      currentWorkoutSerieFinished: false,
       currentExercise: {
         idGlobal: '',
         time: 0,

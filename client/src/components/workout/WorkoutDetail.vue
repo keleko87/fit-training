@@ -10,10 +10,7 @@
               :key="exercise.idGlobal"
               class="col-sm-12 col-md-6 col-lg-4 mb-2"
             >
-              <workout-exercises-card
-                :workout-go="true"
-                :data="exercise"
-              ></workout-exercises-card>
+              <workout-exercises-card :data="exercise"></workout-exercises-card>
             </div>
           </div>
         </div>

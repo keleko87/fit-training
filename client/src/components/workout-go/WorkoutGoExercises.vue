@@ -20,6 +20,18 @@
         </div>
       </div>
 
+      <div v-if="currentWorkoutSerieFinished" style="color: white">
+        SERIE FINALIZADA ! {{ currentWorkoutSerieFinished }}
+        <br />
+      </div>
+
+      <div
+        v-if="currentWorkoutSerieFinished && workoutFinish"
+        style="color: white"
+      >
+        ENTRENAMIENTO FINALIZADO...BUEN TRABAJO! {{ workoutFinish }}
+        <br />
+      </div>
       <!-- TIMER -->
       <div class="row">
         <div class="col-12">
@@ -55,7 +67,6 @@ export default {
 
   computed: {
     ...mapGetters([
-      'currentExercise',
       'currentWorkoutSerie',
       'timerWorkout',
       'workoutExercisesAllDone'
@@ -63,6 +74,12 @@ export default {
 
     workoutExercises() {
       return this.$store.state.workout.data.exercises;
+    },
+    currentWorkoutSerieFinished() {
+      return this.$store.state.workoutGo.timer.currentWorkoutSerieFinished;
+    },
+    workoutFinish() {
+      return this.$store.state.workoutGo.timer.workout.finish;
     }
   },
 

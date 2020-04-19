@@ -1,10 +1,7 @@
 <template>
   <div class="ft-timer">
     <!-- MODAL -->
-    <ft-modal
-      :size="'sm'"
-      :modal="modalCountdownInit"
-    >
+    <ft-modal :size="'sm'" :modal="modalCountdownInit">
       <template slot="header">
         <h5 class="mb-0">Ejercicio comienza en...</h5>
       </template>
@@ -19,6 +16,22 @@
     </ft-modal>
 
     <div class="container">
+      <!-- MANUAL NEXT EXERCISE -->
+      <div class="row">
+        <div v-if="!isRestTime" class="col-12">
+          <button
+            class="btn btn-md btn-default"
+            :disabled="startDisabled"
+            @click="nextExercise()"
+          >
+            Siguiente
+          </button>
+        </div>
+        <div v-else class="col-12">
+          <h4>Descanso</h4>
+        </div>
+      </div>
+
       <div class="row">
         <!-- COUNTDOWN -->
         <div class="col-sm-6">
@@ -104,7 +117,7 @@
             </div>
           </div>
         </div>
-<!-- 
+
         <div style="color: white">
           secondsLeft {{ secondsLeft }}
           <br />
@@ -112,10 +125,16 @@
           <br />
           currentExercise {{ currentExercise }}
           <br />
+          times {{ times }}
+          <br>
           currentWorkoutSerie {{ currentWorkoutSerie }}
           <br />
+          currentWorkoutSerieFinished {{ currentWorkoutSerieFinished }}
+          <br />
           timerWorkoutSeries {{ timerWorkoutSeries }}
-        </div> -->
+          <br>
+          restBetweenExercise {{restBetweenExercise }}
+        </div>
       </div>
     </div>
   </div>
@@ -147,7 +166,8 @@ export default {
       initCountdown: false,
       isPaused: false,
       modalCountdownInit: false,
-      timeCountdownBeforeInit: 0
+      timeCountdownBeforeInit: 0,
+      isRestTime: false
     };
   },
 
@@ -157,11 +177,28 @@ export default {
 
   computed: {
     ...mapGetters([
-      'timerAuto',
       'currentExercise',
       'currentWorkoutSerie',
+      'timerAuto',
+      'timerWorkout',
       'timerWorkoutSeries'
     ]),
+
+    restBetweenExercise() {
+      return this.$store.state.workoutGo.timer.workout.restBetweenExercise * 60;
+    },
+
+    timerWorkoutExercises() {
+      return this.$store.state.workoutGo.timer.workoutExercises;
+    },
+
+    currentWorkoutSerieFinished() {
+      return this.$store.state.workoutGo.timer.currentWorkoutSerieFinished;
+    },
+
+    workoutFinish() {
+      return this.$store.state.workoutGo.timer.workout.finish;
+    },
 
     times() {
       const time = this.currentExercise.time;
@@ -171,11 +208,8 @@ export default {
       return [{ sec, display }];
     },
 
-    rest() {
-      return (
-        this.$store.state.workoutGo.timer.currentExercise.rest ||
-        this.$store.state.workoutGo.timer.workout.restBetweenExercise
-      );
+    restExercise() {
+      return this.currentExercise.rest;
     },
 
     stopDisabled() {
@@ -197,6 +231,26 @@ export default {
       // TODO
     },
 
+    restExerciseSerie() {},
+
+    ///////////////  NEXT EXERCISE  ////////////////
+    nextExercise() {
+      this.resetCountdown();
+
+      if (this.restBetweenExercise > 0) {
+        this.isRestTime = true;
+        this.countdown(this.restBetweenExercise, this.isRestTime, this.setNextExercise);
+      } else {
+        this.setNextExercise();
+      }
+    },
+
+    async setNextExercise() {
+      const workout = this.timerWorkout;
+      const workoutExercises = this.timerWorkoutExercises;
+      await this.$store.dispatch('SET_NEXT_EXERCISE', { workout, workoutExercises });
+    },
+
     ///////////////  COUNTDOWN  ///////////////////
     setCountdownAudios() {
       const initSrc = this.getAudioSource(this.audioInitSource);
@@ -207,15 +261,11 @@ export default {
 
     setTime(seconds) {
       clearInterval(this.intervalTimer);
-      this.timer(seconds);
-    },
-
-    timer(seconds) {
       this.displayTimeLeft(seconds);
       this.selectedTime = seconds;
     },
 
-    countdown(selectedTime) {
+    countdown(selectedTime, isRestTime = false, actionFn = null) {
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
@@ -228,6 +278,12 @@ export default {
         if (this.secondsLeft <= 0) {
           AudioPlayer.playAlarm(false, this.audioFinish);
           this.resetCountdown();
+          if (actionFn) {
+            actionFn();
+          }
+          if (isRestTime) {
+            isRestTime = false;
+          }
           return;
         }
 
@@ -239,7 +295,6 @@ export default {
       this.timeCountdownBeforeInit = 10;
 
       this.intervalBeforeInit = setInterval(() => {
-
         this.timeCountdownBeforeInit = this.timeCountdownBeforeInit - 1;
 
         if (this.timeCountdownBeforeInit <= 0) {
@@ -266,10 +321,8 @@ export default {
     async startCountdown() {
       if (!this.initCountdown) {
         await this.countdown10sec();
-
         this.initCountdown = true;
       }
-
       this.isPaused = false;
     },
 
