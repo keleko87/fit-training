@@ -41,26 +41,7 @@
           <hr class="ft-breakline" />
 
           <div class="row ft-workout-go-info__time-info">
-            <div
-              v-if="workout.restBetweenExercise !== ''"
-              class="col-md-6 ft-workout-go-info__time-info--item"
-            >
-              <!-- REST BETWEEN EXERCISE-->
-              <h6 class="ft-workout-go-info__label">Descanso ejercicio</h6>
-              <p class="ft-workout-go-info__info">{{ rest }}</p>
-            </div>
-            <div
-              v-if="workout.duration !== ''"
-              class="col-md-6 ft-workout-go-info__time-info--item"
-            >
-              <!-- DURATION -->
-              <h6 class="ft-workout-go-info__label">Duración</h6>
-              <p class="ft-workout-go-info__info">{{ duration }}</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <!-- TIMER -->
             <div class="col-sm-6">
               <!-- SERIES -->
               <md-field>
@@ -81,6 +62,37 @@
                 </md-select>
               </md-field>
             </div>
+
+            <div
+              v-if="workout.restBetweenExercise"
+              class="col-md-6 ft-workout-go-info__time-info--item"
+            >
+              <md-field>
+                <label for="series">Descanso (min)</label>
+                <md-select
+                  :disabled="startDate !== ''"
+                  v-model="restBetweenExercise"
+                  id="restBetweenExercise"
+                  name="restBetweenExercise"
+                >
+                  <md-option
+                    v-for="minute in minutes"
+                    :key="minute"
+                    :value="minute"
+                  >
+                    {{ minute }}
+                  </md-option>
+                </md-select>
+              </md-field>
+            </div>
+          </div>
+
+        <!-- DURATION -->
+        <!-- <h6 class="ft-workout-go-info__label">Duración</h6>
+          <p class="ft-workout-go-info__info">{{ duration }}</p>
+        </div> -->
+
+          <div class="row">
             <div class="col-sm-6">
               <!-- AUTO MODE -->
               <md-checkbox id="timer" v-model="timerAuto" class="md-primary">
@@ -130,7 +142,6 @@
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -140,7 +151,7 @@
 <script>
 import timer from '../../mixins/timer';
 import { mapGetters } from 'vuex';
-import { SERIES } from '../../common/constants';
+import { SERIES, MINUTES } from '../../common/constants';
 
 export default {
   name: 'workout-go-info',
@@ -164,6 +175,7 @@ export default {
   data() {
     return {
       series: SERIES,
+      minutes: MINUTES,
       modalFinish: false
     };
   },
@@ -183,6 +195,17 @@ export default {
       set(val) {
         console.log('set timer mode', val);
         this.$store.commit('SET_TIMER_AUTO', val);
+      }
+    },
+
+    restBetweenExercise: {
+      get() {
+        return this.$store.state.workoutGo.timer.workout.restBetweenExercise;
+      },
+      set(val) {
+        console.log('set Rest between exercise ', val);
+        const workout = { restBetweenExercise: val };
+        this.$store.commit('SET_TIMER_WORKOUT', workout);
       }
     },
 
@@ -228,7 +251,7 @@ export default {
       return this.setTextTime(this.workout.duration);
     },
     rest() {
-      return this.setTextTime(this.workout.restBetweenExercise);
+      return this.setTextTime(this.restBetweenExercise);
     }
   },
 
@@ -242,7 +265,7 @@ export default {
       const inputSeries = this.workoutSeries;
       const workout = this.timerWorkout;
       const workoutExercises = this.timerWorkoutExercises;
-      console.log('START WORKOUT', startDate, workout);
+
       this.$store.dispatch('START_WORKOUT', {
         startDate,
         inputSeries,

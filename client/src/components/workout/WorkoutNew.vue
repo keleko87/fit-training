@@ -328,7 +328,6 @@ export default {
     },
 
     onDeleteExercise(id) {
-      console.log('event delete', id);
       this.$v.form.exercises.$model = this.workoutExercises.filter(
         elem => elem.idGlobal !== id
       );

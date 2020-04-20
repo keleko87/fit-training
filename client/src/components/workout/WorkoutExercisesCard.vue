@@ -108,7 +108,6 @@ export default {
       if (!this.isWorkoutGo) {
         return false;
       } else {
-        console.log(this.currentExercise.idGlobal, '-', this.data.idGlobal);
         return this.currentExercise.idGlobal === this.data.idGlobal;
       }
     },
@@ -116,7 +115,6 @@ export default {
       if (!this.isWorkoutGo) {
         return false;
       } else {
-        console.log('t', this.$store.state.workoutGo.timer);
         const exercise = this.workoutExercises.find(
           exercise => exercise.idGlobal === this.data.idGlobal
         );

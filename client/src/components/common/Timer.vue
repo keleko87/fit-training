@@ -3,12 +3,12 @@
     <!-- MODAL -->
     <ft-modal :size="'sm'" :modal="modalCountdownInit">
       <template slot="header">
-        <h5 class="mb-0">Ejercicio comienza en...</h5>
+        <h5 v-if="isRestTime" class="mb-0">Descanso</h5>
+        <h5 v-else class="mb-0">Ejercicio comienza en...</h5>
       </template>
       <template slot="body">
-        <div class="text-center">
-          <!-- <p>Ejercicio comienza en...</p> -->
-          <h2 class="ft-timer__time-countdown-before-init">
+        <div class="ft-timer__time-countdown-before-init text-center">
+          <h2 class="ft-timer__time-countdown-before-init--text">
             {{ timeCountdownBeforeInit }}
           </h2>
         </div>
@@ -21,7 +21,7 @@
         <div v-if="!isRestTime" class="col-12">
           <button
             class="btn btn-md btn-default"
-            :disabled="startDisabled"
+            :disabled="selectedTime != 0"
             @click="nextExercise()"
           >
             Siguiente
@@ -231,15 +231,21 @@ export default {
       // TODO
     },
 
-    restExerciseSerie() {},
-
     ///////////////  NEXT EXERCISE  ////////////////
-    nextExercise() {
+    async nextExercise() {
       this.resetCountdown();
+      this.setTime(this.times[0].sec);
 
       if (this.restBetweenExercise > 0) {
         this.isRestTime = true;
-        this.countdown(this.restBetweenExercise, this.isRestTime, this.setNextExercise);
+        this.timeCountdownBeforeInit = this.restBetweenExercise;
+
+        if (!this.initCountdown) {
+          await this.countdown10sec(this.timeCountdownBeforeInit);
+          this.initCountdown = true;
+        }
+
+        this.isPaused = false;
       } else {
         this.setNextExercise();
       }
@@ -265,7 +271,7 @@ export default {
       this.selectedTime = seconds;
     },
 
-    countdown(selectedTime, isRestTime = false, actionFn = null) {
+    countdown(selectedTime) {
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
@@ -278,12 +284,6 @@ export default {
         if (this.secondsLeft <= 0) {
           AudioPlayer.playAlarm(false, this.audioFinish);
           this.resetCountdown();
-          if (actionFn) {
-            actionFn();
-          }
-          if (isRestTime) {
-            isRestTime = false;
-          }
           return;
         }
 
@@ -291,36 +291,42 @@ export default {
       }, 1000);
     },
 
-    countDownBeforeInit() {
-      this.timeCountdownBeforeInit = 10;
+    countDownBeforeInit(seconds) {
+      this.timeCountdownBeforeInit = seconds;
 
       this.intervalBeforeInit = setInterval(() => {
-        this.timeCountdownBeforeInit = this.timeCountdownBeforeInit - 1;
+        // 10 seconds countdown audio
+        if (this.timeCountdownBeforeInit <= 10) {
+          AudioPlayer.playAlarm(false, this.audioInit);
+        }
 
         if (this.timeCountdownBeforeInit <= 0) {
           clearInterval(this.intervalBeforeInit);
           return 0;
         }
 
+        this.timeCountdownBeforeInit = this.timeCountdownBeforeInit - 1;
+
         return this.timeCountdownBeforeInit;
       }, 1000);
     },
 
-    countdown10sec() {
+    countdown10sec(sec) {
+      const delay = (sec + 1) * 1000; // miliseconds
       this.modalCountdownInit = true;
-      this.countDownBeforeInit();
-      AudioPlayer.playAlarm(false, this.audioInit);
+      this.countDownBeforeInit(sec);
 
       setTimeout(() => {
         AudioPlayer.stopAlarm(this.audioInit);
         this.modalCountdownInit = false;
         this.countdown(this.selectedTime);
-      }, 11000);
+      }, delay);
     },
 
     async startCountdown() {
       if (!this.initCountdown) {
-        await this.countdown10sec();
+        this.timeCountdownBeforeInit = 10;
+        await this.countdown10sec(this.timeCountdownBeforeInit);
         this.initCountdown = true;
       }
       this.isPaused = false;
@@ -340,6 +346,7 @@ export default {
       this.selectedTime = 0;
       this.secondsLeft = 0;
       this.timeLeft = '00:00';
+      this.isRestTime = false;
     },
 
     displayTimeLeft(secondsLeft) {
@@ -375,12 +382,17 @@ $height-countdown-items: 44px;
 .ft-timer {
   &__time-countdown-before-init {
     margin: 0 auto;
-    color: $teal !important;
     border: 4px solid $teal;
     background-color: $white;
     border-radius: 50px;
-    padding: 24px;
+    padding: 5px;
     width: 95px;
+    height: 95px;
+
+    &--text {
+      color: $teal !important;
+      padding-top: 19px;
+    }
   }
 
   &__item {

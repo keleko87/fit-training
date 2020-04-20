@@ -94,7 +94,6 @@ const actions = {
       exercise => exercise.done === true
     );
 
-
     if (!exercisesDone) {
       context.commit('SET_CURRENT_EXERCISE', workoutExercises);
     } else {
@@ -202,7 +201,6 @@ const mutations = {
         exer => exer.done === false
       );
 
-      debugger;
       if (currentExercise) {
         state.timer.currentExercise = currentExercise;
       } else {
