@@ -358,7 +358,6 @@ export default {
 
       await this.timeout(delay);
 
-      console.log('set timeout init re');
       AudioPlayer.stopAlarm(this.audioInit);
       this.modalCountdownInit = false;
       this.countdown(this.selectedTime);
@@ -367,9 +366,7 @@ export default {
     async startCountdown() {
       if (!this.initCountdown) {
         this.timeCountdownBeforeInit = 10;
-        console.log('start ready and rest');
         await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
-        console.log('done');
         this.initCountdown = true;
       }
       this.isPaused = false;
@@ -409,19 +406,6 @@ export default {
       return hour % 12 || 12;
     }
   },
-
-  // watch: {
-  //   autoRefresh(val) {
-  //     if (val && !this.t) {
-  //       // it seems to me this additional check would make sense?
-  //       this.t = setInterval(() => {
-  //         location.reload();
-  //       }, 10 * 1000);
-  //     } else {
-  //       clearInterval(this.t);
-  //     }
-  //   }
-  // },
 
   beforeDestroy() {
     clearInterval(this.intervalTimer);
