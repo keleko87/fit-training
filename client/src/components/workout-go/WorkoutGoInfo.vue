@@ -1,5 +1,32 @@
 <template>
   <div class="ft-workout-go-info">
+    <ft-modal :size="'md'" :modal="modalFinish" @close="onCloseModal($event)">
+      <template slot="header">
+        <h3 class="text-center mb-0">Finalizar entrenamiento</h3>
+      </template>
+      <template slot="body">
+        <div class="row my-4">
+          <div class="col-12 mb-3">
+            <h5 class="text-center">¿Quiers guardar el entrenamiento?</h5>
+          </div>
+          <div class="col-12 text-center mx-0">
+            <button
+              @click.prevent="saveWorkout()"
+              class="btn btn-md btn-primary btn-witdh"
+            >
+              Guardar
+            </button>
+            <button
+              @click.prevent="closeWorkout()"
+              class="btn btn-md btn-danger btn-witdh"
+            >
+              Salir
+            </button>
+          </div>
+        </div>
+      </template>
+    </ft-modal>
+
     <div class="container">
       <div class="row">
         <div class="col-sm-12 mt-3">
@@ -41,7 +68,6 @@
           <hr class="ft-breakline" />
 
           <div class="row ft-workout-go-info__time-info">
-
             <div class="col-sm-6">
               <!-- SERIES -->
               <md-field>
@@ -87,8 +113,8 @@
             </div>
           </div>
 
-        <!-- DURATION -->
-        <!-- <h6 class="ft-workout-go-info__label">Duración</h6>
+          <!-- DURATION -->
+          <!-- <h6 class="ft-workout-go-info__label">Duración</h6>
           <p class="ft-workout-go-info__info">{{ duration }}</p>
         </div> -->
 
@@ -114,31 +140,22 @@
             </div>
             <div class="col-lg-6 px-1">
               <button
-                class="btn btn-primary w-100"
-                :disabled="reStartDisabled"
-                @click.prevent="workoutReStart()"
-              >
-                Reinicio
-              </button>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 px-1">
-              <button
-                class="btn btn-default w-100"
-                :disabled="pauseDisabled"
-                @click.prevent="workoutPause()"
-              >
-                Pausa
-              </button>
-            </div>
-            <div class="col-lg-6 px-1">
-              <button
                 class="btn btn-danger w-100"
                 :disabled="finishDisabled"
                 @click.prevent="workoutFinish()"
               >
                 Fin
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 px-1">
+              <button
+                class="btn btn-default w-100"
+                :disabled="reStartDisabled"
+                @click.prevent="workoutReStart()"
+              >
+                Nueva Serie
               </button>
             </div>
           </div>
@@ -152,6 +169,7 @@
 import timer from '../../mixins/timer';
 import { mapGetters } from 'vuex';
 import { SERIES, MINUTES } from '../../common/constants';
+import FtModal from '../common/Modal';
 
 export default {
   name: 'workout-go-info',
@@ -172,6 +190,10 @@ export default {
     });
   },
 
+  components: {
+    FtModal
+  },
+
   data() {
     return {
       series: SERIES,
@@ -183,7 +205,10 @@ export default {
   computed: {
     ...mapGetters([
       'startDate',
+      'endDate',
       'currentExercise',
+      'currentWorkoutSerie',
+      'timerWorkoutSeries',
       'timerWorkout',
       'workoutExercisesAllDone'
     ]),
@@ -231,17 +256,14 @@ export default {
       return this.$store.state.workout.data.exercises;
     },
 
-    pauseDisabled() {
-      return !this.startDisabled;
-    },
     startDisabled() {
       return this.startDate !== '';
     },
     reStartDisabled() {
       return (
-        !this.workoutExercisesAllDone &&
-        this.startDate !== '' &&
-        this.endDate === ''
+        this.currentWorkoutSerie === this.timerWorkoutSeries ||
+        !this.workoutExercisesAllDone ||
+        this.timerWorkout.finish
       );
     },
     finishDisabled() {
@@ -281,18 +303,59 @@ export default {
       this.$store.dispatch('RE_START_WORKOUT', { workout, workoutExercises });
     },
 
-    workoutPause() {
-      const currentExercise = this.currentExercise;
-      const workout = this.timerWorkout;
-      this.$store.dispatch('PAUSE_WORKOUT', { currentExercise, workout });
-    },
-
     workoutFinish() {
       this.modalFinish = true;
-      //  * IN MODAL ADD:
-      //  * - Enhorabuena has finalizado el entrenamiento!
-      //  * - Quieres Guardar tu entrenamiento ? SI / NO
-      //  * - this.$router.push({ name: 'home' });
+      const endDate = Date.now().toString();
+      this.$store.dispatch('END_WORKOUT', endDate);
+    },
+
+    closeWorkout() {
+      this.$router.push({ name: 'workoutNew' });
+    },
+
+    async saveWorkout() {
+      const {
+        name,
+        sport,
+        bodyPart,
+        level,
+        target,
+        duration,
+        exercises
+      } = this.workout;
+
+      const userId = 'user id logged in 1';
+      const startDate = this.startDate;
+      const endDate = this.endDate;
+      const series = this.timerWorkoutSeries;
+      const restBetweenExercise = this.timerWorkout.restBetweenExercise;
+      const finish = this.timerWorkout.finish;
+
+      const workoutData = {
+        name,
+        sport,
+        bodyPart,
+        level,
+        target,
+        duration,
+        exercises,
+        series,
+        restBetweenExercise,
+        userId,
+        startDate,
+        endDate,
+        finish
+      };
+
+      const res = await this.$store.dispatch('SAVE_WORKOUT_GO', workoutData);
+
+      if (res) {
+        this.closeWorkout();
+      }
+    },
+
+    onCloseModal(ev) {
+      this.modalFinish = ev;
     }
   },
 

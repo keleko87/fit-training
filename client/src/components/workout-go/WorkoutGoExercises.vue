@@ -8,7 +8,7 @@
             <div
               v-for="exercise in workoutExercises"
               :key="exercise.idGlobal"
-              class="col-sm-12 col-md-6 col-lg-4 mb-2"
+              class="col-sm-12 col-md-6 col-lg-4 mb-3"
             >
               <workout-exercises-card
                 :workout-go="true"

@@ -182,6 +182,38 @@ export default {
     font-size: 29px;
   }
 }
+///////  CURRENT EXERCISE - DONE //////////
+.current-exercise {
+  border-bottom: 3px solid $mandarine-gradient !important;
+
+  figure.effect-sadie h6 {
+    top: 169px;
+    color: $mandarine !important;
+  }
+}
+
+.exercise-done {
+  border-bottom: 3px solid $teal !important;
+
+  figure.effect-sadie h6 {
+    top: 169px;
+    color: $teal !important;
+  }
+
+  figure.effect-sadie figcaption::before {
+    background: -webkit-linear-gradient(
+      top,
+      rgba(72, 76, 97, 0) 0%,
+      rgba(72, 76, 97, 0.8) 75%
+    );
+    background: linear-gradient(to bottom, rgba(72, 76, 97, 0) 0%, $teal 75%);
+  }
+}
+
+figure.effect-sadie:hover h6 {
+  color: $third-dark-grey !important;
+}
+
 /** Source:  https://bootsnipp.com/snippets/3Meen **/
 .grid {
   position: relative;
@@ -250,6 +282,7 @@ export default {
   word-spacing: -0.15em;
   font-weight: bold;
   padding: 3px 5px;
+  color: $gray-300 !important;
 }
 
 .grid figure h6 span {
@@ -264,23 +297,5 @@ export default {
 .grid figure p {
   letter-spacing: 1px;
   font-size: 68.5%;
-}
-
-.current-exercise {
-  border: 4px solid $red !important;
-
-  figure.effect-sadie h6 {
-    top: 169px;
-    color: $red !important;
-  }
-}
-
-.exercise-done {
-  border: 4px solid $green !important;
-
-  figure.effect-sadie h6 {
-    top: 169px;
-    color: $green !important;
-  }
 }
 </style>

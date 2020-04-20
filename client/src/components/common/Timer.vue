@@ -2,6 +2,8 @@
   <div class="ft-timer">
     <!-- MODAL -->
     <ft-modal :size="'sm'" :modal="modalCountdownInit">
+      <!-- @close="onCloseModal($event)" -->
+
       <template slot="header">
         <h5 v-if="isRestTime" class="mb-0">Descanso</h5>
         <h5 v-else class="mb-0">Ejercicio comienza en...</h5>
@@ -16,23 +18,24 @@
     </ft-modal>
 
     <div class="container">
-      <!-- MANUAL NEXT EXERCISE -->
+
+      <!-- NEXT EXERCISE -->
       <div class="row">
-        <div v-if="!isRestTime" class="col-12">
+        <div v-if="!isRestTime" class="col-12 d-flex justify-content-center">
           <button
-            class="btn btn-md btn-default"
-            :disabled="selectedTime != 0"
+            class="btn btn-sm btn-default"
+            :disabled="
+              !startDate || selectedTime != 0 || currentWorkoutSerieFinished
+            "
             @click="nextExercise()"
           >
             Siguiente
           </button>
         </div>
-        <div v-else class="col-12">
-          <h4>Descanso</h4>
-        </div>
       </div>
 
-      <div class="row">
+      <!-- TIMER - SERIES -->
+      <div class="row d-flex justify-content-between">
         <!-- COUNTDOWN -->
         <div class="col-sm-6">
           <div>
@@ -102,23 +105,34 @@
             <div
               v-for="serie in timerWorkoutSeries"
               :key="serie"
-              class="ft-timer__link"
+              class="ft-timer__link series"
+              :class="[
+                { active: currentWorkoutSerie === serie },
+                { 'is-done': currentWorkoutSerie > serie },
+                { disabled: serie !== currentWorkoutSerie }
+              ]"
             >
-              <a
-                class=""
-                :class="[
-                  { 'is-active': serie === currentWorkoutSerie },
-                  { 'is-done': currentWorkoutSerie > serie }
-                ]"
-                @click.prevent="setSerie(serie)"
-              >
+              <a class="ft-timer__link--serie" @click.prevent="setSerie()">
                 {{ serie }}
               </a>
             </div>
           </div>
         </div>
+<!-- 
+        <div class="col-sm-3">
+          <p class="text-center mb-2">Ejercicio</p>
+          <button
+            class="btn btn-sm btn-default w-100"
+            :disabled="
+              !startDate || selectedTime != 0 || currentWorkoutSerieFinished
+            "
+            @click="nextExercise()"
+          >
+            Siguiente
+          </button>
+        </div> -->
 
-        <div style="color: white">
+        <!-- <div style="color: white">
           secondsLeft {{ secondsLeft }}
           <br />
           selectedTime {{ selectedTime }}
@@ -126,15 +140,15 @@
           currentExercise {{ currentExercise }}
           <br />
           times {{ times }}
-          <br>
+          <br />
           currentWorkoutSerie {{ currentWorkoutSerie }}
           <br />
           currentWorkoutSerieFinished {{ currentWorkoutSerieFinished }}
           <br />
           timerWorkoutSeries {{ timerWorkoutSeries }}
-          <br>
-          restBetweenExercise {{restBetweenExercise }}
-        </div>
+          <br />
+          restBetweenExercise {{ restBetweenExercise }}
+        </div> -->
       </div>
     </div>
   </div>
@@ -160,6 +174,7 @@ export default {
   data() {
     return {
       intervalTimer: null,
+      intervalBeforeInit: null,
       selectedTime: 0,
       secondsLeft: 0,
       timeLeft: '00:00',
@@ -177,11 +192,13 @@ export default {
 
   computed: {
     ...mapGetters([
+      'startDate',
       'currentExercise',
       'currentWorkoutSerie',
       'timerAuto',
       'timerWorkout',
-      'timerWorkoutSeries'
+      'timerWorkoutSeries',
+      'workoutExercisesAllDone'
     ]),
 
     restBetweenExercise() {
@@ -226,22 +243,26 @@ export default {
   },
 
   methods: {
-    ////////////////  SERIES  /////////////////////
-    setSerie(serie) {
-      // TODO
-    },
-
     ///////////////  NEXT EXERCISE  ////////////////
+    // onCloseModal(ev) {
+    //   window.clearInterval(this.intervalBeforeInit);
+    //   window.clearInterval(this.intervalTimer);
+    //   AudioPlayer.stopAlarm(this.audioInit);
+    //   this.modalCountdownInit = ev;
+    //   // this.countdown(this.selectedTime);
+    // },
+
     async nextExercise() {
       this.resetCountdown();
-      this.setTime(this.times[0].sec);
+      // this.setTime(this.times[0].sec);
 
-      if (this.restBetweenExercise > 0) {
+      if (this.restBetweenExercise > 0 && this.currentExercise.done) {
         this.isRestTime = true;
         this.timeCountdownBeforeInit = this.restBetweenExercise;
 
         if (!this.initCountdown) {
-          await this.countdown10sec(this.timeCountdownBeforeInit);
+          await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
+          this.setNextExercise();
           this.initCountdown = true;
         }
 
@@ -254,7 +275,10 @@ export default {
     async setNextExercise() {
       const workout = this.timerWorkout;
       const workoutExercises = this.timerWorkoutExercises;
-      await this.$store.dispatch('SET_NEXT_EXERCISE', { workout, workoutExercises });
+      await this.$store.dispatch('SET_NEXT_EXERCISE', {
+        workout,
+        workoutExercises
+      });
     },
 
     ///////////////  COUNTDOWN  ///////////////////
@@ -271,11 +295,19 @@ export default {
       this.selectedTime = seconds;
     },
 
+    timeout(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+
     countdown(selectedTime) {
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
-        console.log('LEFT seconds:', this.secondsLeft);
+        console.log(
+          this.intervalTimer,
+          'COUNTDOWN exercise:',
+          this.secondsLeft
+        );
 
         if (!this.isPaused) {
           this.secondsLeft = this.secondsLeft - 1;
@@ -283,6 +315,8 @@ export default {
 
         if (this.secondsLeft <= 0) {
           AudioPlayer.playAlarm(false, this.audioFinish);
+          clearInterval(this.intervalTimer);
+          this.$store.dispatch('SET_CURRENT_EXERCISE_DONE');
           this.resetCountdown();
           return;
         }
@@ -295,6 +329,12 @@ export default {
       this.timeCountdownBeforeInit = seconds;
 
       this.intervalBeforeInit = setInterval(() => {
+        console.log(
+          this.intervalBeforeInit,
+          'COUNTDOWNN BEFORE INIT:',
+          this.timeCountdownBeforeInit
+        );
+
         // 10 seconds countdown audio
         if (this.timeCountdownBeforeInit <= 10) {
           AudioPlayer.playAlarm(false, this.audioInit);
@@ -302,7 +342,7 @@ export default {
 
         if (this.timeCountdownBeforeInit <= 0) {
           clearInterval(this.intervalBeforeInit);
-          return 0;
+          return this.timeCountdownBeforeInit;
         }
 
         this.timeCountdownBeforeInit = this.timeCountdownBeforeInit - 1;
@@ -311,22 +351,25 @@ export default {
       }, 1000);
     },
 
-    countdown10sec(sec) {
+    async countdownReadyAndRest(sec) {
       const delay = (sec + 1) * 1000; // miliseconds
       this.modalCountdownInit = true;
       this.countDownBeforeInit(sec);
 
-      setTimeout(() => {
-        AudioPlayer.stopAlarm(this.audioInit);
-        this.modalCountdownInit = false;
-        this.countdown(this.selectedTime);
-      }, delay);
+      await this.timeout(delay);
+
+      console.log('set timeout init re');
+      AudioPlayer.stopAlarm(this.audioInit);
+      this.modalCountdownInit = false;
+      this.countdown(this.selectedTime);
     },
 
     async startCountdown() {
       if (!this.initCountdown) {
         this.timeCountdownBeforeInit = 10;
-        await this.countdown10sec(this.timeCountdownBeforeInit);
+        console.log('start ready and rest');
+        await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
+        console.log('done');
         this.initCountdown = true;
       }
       this.isPaused = false;
@@ -367,9 +410,23 @@ export default {
     }
   },
 
+  // watch: {
+  //   autoRefresh(val) {
+  //     if (val && !this.t) {
+  //       // it seems to me this additional check would make sense?
+  //       this.t = setInterval(() => {
+  //         location.reload();
+  //       }, 10 * 1000);
+  //     } else {
+  //       clearInterval(this.t);
+  //     }
+  //   }
+  // },
+
   beforeDestroy() {
     clearInterval(this.intervalTimer);
-    console.log('timer destroy', this.intervalTimer);
+    clearInterval(this.intervalBeforeInit);
+    console.log('timers destroy');
   }
 };
 </script>
@@ -416,7 +473,6 @@ $height-countdown-items: 44px;
   }
 
   &__link {
-    // vertical-align: sub;
     border: $border-item;
     padding: $padding-items-lg;
     font-size: 1rem;
@@ -431,13 +487,19 @@ $height-countdown-items: 44px;
   }
 
   &__link.active {
-    background-color: $teal;
-    color: $white !important;
+    border-color: $mandarine !important;
+    background-color: $mandarine-gradient;
+    a {
+      color: $white !important;
+    }
   }
 
   &__link.active:hover {
-    background-color: none;
     color: $white;
+  }
+
+  &__link.series.active:hover {
+    color: $red !important;
   }
 
   &__link.disabled {
@@ -447,11 +509,11 @@ $height-countdown-items: 44px;
     }
   }
 
-  .is-active {
-    color: $red !important;
-  }
-  .is-done {
-    color: $success !important;
+  &__link.is-done.disabled {
+    border: 1px solid $teal-dark;
+    a {
+      color: $teal-dark !important;
+    }
   }
 }
 </style>

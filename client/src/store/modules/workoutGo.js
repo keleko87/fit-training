@@ -36,6 +36,9 @@ const getters = {
   startDate(state) {
     return state.startDate;
   },
+  endDate(state) {
+    return state.endDate;
+  },
   timer(state) {
     return state.timer;
   },
@@ -89,25 +92,30 @@ const actions = {
     context.commit('SET_CURRENT_SERIE', workout);
     context.commit('SET_CURRENT_EXERCISE', workoutExercises);
   },
+
+  ['SET_CURRENT_EXERCISE_DONE'](context) {
+    context.commit('SET_EXERCISE_DONE');
+  },
+
   ['SET_NEXT_EXERCISE'](context, workoutExercises) {
     const exercisesDone = state.timer.workoutExercises.every(
       exercise => exercise.done === true
     );
 
     if (!exercisesDone) {
+      context.commit('SET_EXERCISE_DONE');
       context.commit('SET_CURRENT_EXERCISE', workoutExercises);
     } else {
       // context.commit('SET_SERIE_FINISHED');
     }
   },
+
   ['RE_START_WORKOUT'](context, { workout, workoutExercises }) {
     context.commit('RESET_CURRENT_ITEMS');
     context.commit('SET_CURRENT_SERIE', workout);
     context.commit('SET_CURRENT_EXERCISE', workoutExercises);
   },
-  ['PAUSE_WORKOUT'](context, { currentExercise, workout }) {
-    context.commit('PAUSE_TIMER_WORKOUT', { currentExercise, workout });
-  },
+
   ['END_WORKOUT'](context, endDate) {
     context.commit('SET_END_DATE', endDate);
   },
@@ -176,6 +184,21 @@ const mutations = {
     }
   },
 
+  ['SET_EXERCISE_DONE'](state) {
+    const currentExercise = state.timer.currentExercise;
+    currentExercise.done = true;
+
+    const workoutExercises = state.timer.workoutExercises.map(exer => {
+      if (exer.idGlobal === currentExercise.idGlobal) {
+        exer.done = true;
+      }
+
+      return { ...exer };
+    });
+
+    state.timer.workoutExercises = [...workoutExercises];
+  },
+
   ['SET_CURRENT_EXERCISE'](state, workoutExercises) {
     const currentExer = state.timer.currentExercise.idGlobal
       ? state.timer.currentExercise
@@ -185,17 +208,6 @@ const mutations = {
       // First time
       state.timer.currentExercise = workoutExercises[0];
     } else {
-      // Mark as DONE the currentExercise and set next current exercise
-      const workoutExercises = state.timer.workoutExercises.map(exer => {
-        if (exer.idGlobal === currentExer.idGlobal) {
-          exer.done = true;
-        }
-
-        return { ...exer };
-      });
-
-      state.timer.workoutExercises = [...workoutExercises];
-
       // Set current Exercise
       const currentExercise = state.timer.workoutExercises.find(
         exer => exer.done === false
