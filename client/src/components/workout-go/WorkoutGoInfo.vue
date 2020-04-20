@@ -89,10 +89,7 @@
               </md-field>
             </div>
 
-            <div
-              v-if="workout.restBetweenExercise"
-              class="col-md-6 ft-workout-go-info__time-info--item"
-            >
+            <div class="col-md-6 ft-workout-go-info__time-info--item">
               <md-field>
                 <label for="series">Descanso (min)</label>
                 <md-select
@@ -298,9 +295,7 @@ export default {
 
     workoutReStart() {
       // New serie workout
-      const workout = this.timerWorkout;
-      const workoutExercises = this.timerWorkoutExercises;
-      this.$store.dispatch('RE_START_WORKOUT', { workout, workoutExercises });
+      this.$store.dispatch('RE_START_WORKOUT');
     },
 
     workoutFinish() {

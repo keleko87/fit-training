@@ -89,7 +89,7 @@ const actions = {
   ) {
     context.commit('SET_START_DATE', startDate);
     context.commit('SET_WORKOUT_SERIES', inputSeries);
-    context.commit('SET_CURRENT_SERIE', workout);
+    context.commit('SET_CURRENT_SERIE');
     context.commit('SET_CURRENT_EXERCISE', workoutExercises);
   },
 
@@ -110,10 +110,10 @@ const actions = {
     }
   },
 
-  ['RE_START_WORKOUT'](context, { workout, workoutExercises }) {
+  ['RE_START_WORKOUT'](context) {
     context.commit('RESET_CURRENT_ITEMS');
-    context.commit('SET_CURRENT_SERIE', workout);
-    context.commit('SET_CURRENT_EXERCISE', workoutExercises);
+    context.commit('SET_CURRENT_SERIE');
+    context.commit('SET_CURRENT_EXERCISE');
   },
 
   ['END_WORKOUT'](context, endDate) {
@@ -173,13 +173,13 @@ const mutations = {
     state.timer.workoutExercises = [...workoutExers];
   },
 
-  ['SET_CURRENT_SERIE'](state, workout) {
+  ['SET_CURRENT_SERIE'](state) {
     // RESET serie finished
     state.timer.currentWorkoutSerieFinished = false;
 
     const currentSerie = state.timer.currentWorkoutSerie;
 
-    if (currentSerie < workout.series) {
+    if (currentSerie < state.timer.workout.series) {
       state.timer.currentWorkoutSerie = state.timer.currentWorkoutSerie + 1;
     }
   },
@@ -199,14 +199,14 @@ const mutations = {
     state.timer.workoutExercises = [...workoutExercises];
   },
 
-  ['SET_CURRENT_EXERCISE'](state, workoutExercises) {
+  ['SET_CURRENT_EXERCISE'](state) {
     const currentExer = state.timer.currentExercise.idGlobal
       ? state.timer.currentExercise
       : '';
 
     if (!currentExer) {
       // First time
-      state.timer.currentExercise = workoutExercises[0];
+      state.timer.currentExercise = state.timer.workoutExercises[0];
     } else {
       // Set current Exercise
       const currentExercise = state.timer.workoutExercises.find(
@@ -240,6 +240,7 @@ const mutations = {
   },
 
   ['RESET_CURRENT_ITEMS'](state) {
+    debugger
     const currentExercise = {
       idGlobal: '',
       time: 0,

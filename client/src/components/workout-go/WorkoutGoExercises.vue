@@ -1,7 +1,7 @@
 <template>
   <div class="ft-workout-go-exercises">
     <div class="container">
-      <div class="row my-3">
+      <div class="row mt-3">
         <!-- Workout exercises list -->
         <div class="ft-workout-go-exercises__exercises col-12">
           <div class="row">

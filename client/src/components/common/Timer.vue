@@ -132,7 +132,7 @@
           </button>
         </div> -->
 
-        <!-- <div style="color: white">
+        <div style="color: white">
           secondsLeft {{ secondsLeft }}
           <br />
           selectedTime {{ selectedTime }}
@@ -148,7 +148,7 @@
           timerWorkoutSeries {{ timerWorkoutSeries }}
           <br />
           restBetweenExercise {{ restBetweenExercise }}
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -254,15 +254,16 @@ export default {
 
     async nextExercise() {
       this.resetCountdown();
-      // this.setTime(this.times[0].sec);
 
       if (this.restBetweenExercise > 0 && this.currentExercise.done) {
         this.isRestTime = true;
         this.timeCountdownBeforeInit = this.restBetweenExercise;
 
         if (!this.initCountdown) {
-          await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
           this.setNextExercise();
+          this.setTime(this.times[0].sec);
+          await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
+
           this.initCountdown = true;
         }
 
