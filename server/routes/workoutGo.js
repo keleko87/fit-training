@@ -4,7 +4,7 @@ const WorkoutGo = require('../models/WorkoutGo');
 
 // GET workout Go LIST
 router.get('/all', (req, res) => {
-  Workout.find({})
+  WorkoutGo.find({})
   .then((data) => {    
     res.json(data);
   })
@@ -18,33 +18,30 @@ router.post('/new', (req, res) => {
   const { 
     name,
     sport,
-    sportImageUrl,
     bodyPart,
     level,
     target,
     duration,
-    restBetweenExercise,
-    creatorWorkoutId,
     exercises
   } = req.body;
 
   // WORKOUT GO user and date
-  const { userId, startDate, endDate } = req.body; 
+  const { userId, startDate, endDate, series, restBetweenExercise, finish } = req.body; 
 
-  let workout = new Workout({
+  let workout = new WorkoutGo({
     name,
     sport,
-    sportImageUrl,
     bodyPart,
     level,
     target,
     duration,
-    restBetweenExercise,
-    creatorWorkoutId,
     exercises,
     userId,
     startDate,
-    endDate
+    endDate,
+    restBetweenExercise,
+    series,
+    finish
   });
 
   console.log('WORKOUT GO: ', workout);

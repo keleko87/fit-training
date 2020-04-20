@@ -4,21 +4,20 @@ const { sports, bodyPart, levels, targets } = require('../constants/constants');
 const WorkoutGoSchema = mongoose.Schema({
   name: { type: String, required: true },
   sport: { type: String, required: true, enum: sports },
-  sportImageUrl: String,
   bodyPart: { type: String, enum: bodyPart },
   level: { type: String },
   target: { type: String, enum: targets },
   duration: Number, // minutes
-  restBetweenExercise: Number, // minutes
-  totalExercises: Number,
-  creatorWorkoutId: { type: Object }, // { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   exercises: [],
   musicList: [],
 
   // Workout GO DATA
+  restBetweenExercise: Number, // minutes
+  series: Number,
   userId: { type: Object, required: true }, // { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   startDate: { type: String, required: true } ,
-  endDate: { type: String, required: true }
+  endDate: { type: String },
+  finish: { type: Boolean, requied: true }
 }, {
   timestamps: {
     createdAt: "created_at",
