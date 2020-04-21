@@ -118,7 +118,7 @@
           <div class="row">
             <div class="col-sm-6">
               <!-- AUTO MODE -->
-              <md-checkbox id="timer" v-model="timerAuto" class="md-primary">
+              <md-checkbox id="timer" v-model="timerAuto" :disabled="startDate != ''" class="md-primary">
                 <span class="checkbox-text">Timer auto</span>
               </md-checkbox>
             </div>
@@ -282,14 +282,10 @@ export default {
     workoutStart() {
       const startDate = Date.now().toString();
       const inputSeries = this.workoutSeries;
-      const workout = this.timerWorkout;
-      const workoutExercises = this.timerWorkoutExercises;
 
       this.$store.dispatch('START_WORKOUT', {
         startDate,
-        inputSeries,
-        workout,
-        workoutExercises
+        inputSeries
       });
     },
 
@@ -394,10 +390,6 @@ $iframe-height: 315px;
   &__time-info {
     &--item {
       padding: 0 10px;
-      h6,
-      p {
-        // text-align: center;
-      }
     }
   }
 }

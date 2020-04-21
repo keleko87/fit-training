@@ -83,28 +83,25 @@ const actions = {
     context.commit('SET_TIMER_WORKOUT', workout);
     context.commit('SET_TIMER_WORKOUT_EXERCISES', workoutExercises);
   },
-  ['START_WORKOUT'](
-    context,
-    { startDate, inputSeries, workout, workoutExercises }
-  ) {
+  ['START_WORKOUT'](context, { startDate, inputSeries }) {
     context.commit('SET_START_DATE', startDate);
     context.commit('SET_WORKOUT_SERIES', inputSeries);
     context.commit('SET_CURRENT_SERIE');
-    context.commit('SET_CURRENT_EXERCISE', workoutExercises);
+    context.commit('SET_CURRENT_EXERCISE');
   },
 
   ['SET_CURRENT_EXERCISE_DONE'](context) {
     context.commit('SET_EXERCISE_DONE');
   },
 
-  ['SET_NEXT_EXERCISE'](context, workoutExercises) {
+  ['SET_NEXT_EXERCISE'](context) {
     const exercisesDone = state.timer.workoutExercises.every(
       exercise => exercise.done === true
     );
 
     if (!exercisesDone) {
       context.commit('SET_EXERCISE_DONE');
-      context.commit('SET_CURRENT_EXERCISE', workoutExercises);
+      context.commit('SET_CURRENT_EXERCISE');
     } else {
       // context.commit('SET_SERIE_FINISHED');
     }
@@ -240,7 +237,6 @@ const mutations = {
   },
 
   ['RESET_CURRENT_ITEMS'](state) {
-    debugger
     const currentExercise = {
       idGlobal: '',
       time: 0,

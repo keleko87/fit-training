@@ -1,6 +1,21 @@
 <template>
   <div class="ft-timer">
-    <!-- MODAL -->
+
+    <!-- MODAL FINISH -->
+    <ft-modal :size="'sm'" :modal="modalFinish" @close="onCloseModalFinish($event)">
+      <template slot="header">
+        <h4 class="mb-0">Buen trabajo</h4>
+      </template>
+      <template slot="body">
+        <div class="text-center">
+          <h5 class="my-3">
+            {{ modalFinishText }}
+          </h5>
+        </div>
+      </template>
+    </ft-modal>
+
+    <!-- MODAL COUNTDOWN -->
     <ft-modal :size="'sm'" :modal="modalCountdownInit">
       <!-- @close="onCloseModal($event)" -->
 
@@ -18,11 +33,21 @@
     </ft-modal>
 
     <div class="container">
-
-      <!-- NEXT EXERCISE -->
       <div class="row">
-        <div v-if="!isRestTime" class="col-12 d-flex justify-content-center">
+
+        <div class="col-12 d-flex justify-content-center">
+          <!-- AUTO TIMER -->
           <button
+            v-if="timerAuto"
+            class="btn btn-sm btn-default"
+            :disabled="!startDate || initAutoTimer"
+            @click="autoStart()"
+          >
+            Iniciar Auto
+          </button>
+          <!-- NEXT EXERCISE -->
+          <button
+            v-if="!this.timerAuto && !isRestTime"
             class="btn btn-sm btn-default"
             :disabled="
               !startDate || selectedTime != 0 || currentWorkoutSerieFinished
@@ -118,19 +143,7 @@
             </div>
           </div>
         </div>
-<!-- 
-        <div class="col-sm-3">
-          <p class="text-center mb-2">Ejercicio</p>
-          <button
-            class="btn btn-sm btn-default w-100"
-            :disabled="
-              !startDate || selectedTime != 0 || currentWorkoutSerieFinished
-            "
-            @click="nextExercise()"
-          >
-            Siguiente
-          </button>
-        </div> -->
+
 
         <div style="color: white">
           secondsLeft {{ secondsLeft }}
@@ -181,8 +194,10 @@ export default {
       initCountdown: false,
       isPaused: false,
       modalCountdownInit: false,
+      modalFinish: false,
       timeCountdownBeforeInit: 0,
-      isRestTime: false
+      isRestTime: false,
+      initAutoTimer: false
     };
   },
 
@@ -239,10 +254,75 @@ export default {
 
     pauseDisabled() {
       return !this.selectedTime || this.secondsLeft === 0 || this.isPaused;
+    },
+
+    modalFinishText() {
+      if (
+        (this.workoutExercisesAllDone || this.currentWorkoutSerieFinished) &&
+        this.workoutFinish
+      ) {
+        return 'Enhorabuena! Has acabado el entrenamiento!';
+      }
+
+      if (this.workoutExercisesAllDone || this.currentWorkoutSerieFinished) {
+        return 'Has finalizado la serie!';
+      }
+
+      return '';
     }
   },
 
   methods: {
+    ///////////// AUTO TIMER ///////////
+    async autoStart() {
+      this.initAutoTimer = true;
+      let index = 0;
+
+      for (const exercise of this.timerWorkoutExercises) {
+        console.log('init 1', exercise);
+
+        // next exercise
+        if (index > 0 && !this.intervalBeforeInit && !this.intervalTimer) {
+          console.log('next exercise', index);
+          await this.nextExercise();
+
+          // AudioPlayer.stopAlarm(this.audioInit);
+          // this.modalCountdownInit = false;
+          // // this.initCountdown = true;
+
+          // this.countdown(this.selectedTime);
+          // await this.timeout(this.selectedTime * 1000);
+
+          // if ((index === this.timerWorkoutExercises.length - 1) && this.workoutExercisesAllDone) {
+          //   console.log('FINISH SERIE');
+          //   this.showModalFinish();
+          // }
+        } else {
+          // set time
+          this.setTime(this.times[0].sec);
+
+          // 10 seconds before Init
+          console.log('init ready 2');
+          await this.countdownReadyAndRest(10);
+          this.initCountdown = true;
+
+          console.log('this.selectedTime', this.selectedTime);
+
+          // Init countdown Exercise
+          AudioPlayer.stopAlarm(this.audioInit);
+          this.modalCountdownInit = false;
+
+          this.countdown(this.selectedTime);
+          await this.timeout(this.selectedTime * 1000);
+          console.log('finish cd exercise', index);
+        }
+
+        index++;
+      }
+
+      this.initAutoTimer = false;
+    },
+
     ///////////////  NEXT EXERCISE  ////////////////
     // onCloseModal(ev) {
     //   window.clearInterval(this.intervalBeforeInit);
@@ -252,6 +332,12 @@ export default {
     //   // this.countdown(this.selectedTime);
     // },
 
+    openModalFinish() {
+      if (this.workoutFinish || this.currentWorkoutSerieFinished || this.workoutExercisesAllDone) {
+        this.showModalFinish();
+      }
+    },
+
     async nextExercise() {
       this.resetCountdown();
 
@@ -260,26 +346,27 @@ export default {
         this.timeCountdownBeforeInit = this.restBetweenExercise;
 
         if (!this.initCountdown) {
-          this.setNextExercise();
+          await this.setNextExercise();
           this.setTime(this.times[0].sec);
           await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
 
+          AudioPlayer.stopAlarm(this.audioInit);
+          this.modalCountdownInit = false;
           this.initCountdown = true;
+
+          this.countdown(this.selectedTime);
+          await this.timeout(this.selectedTime * 1000);
         }
 
         this.isPaused = false;
       } else {
         this.setNextExercise();
+        this.openModalFinish();
       }
     },
 
     async setNextExercise() {
-      const workout = this.timerWorkout;
-      const workoutExercises = this.timerWorkoutExercises;
-      await this.$store.dispatch('SET_NEXT_EXERCISE', {
-        workout,
-        workoutExercises
-      });
+      await this.$store.dispatch('SET_NEXT_EXERCISE');
     },
 
     ///////////////  COUNTDOWN  ///////////////////
@@ -317,13 +404,20 @@ export default {
         if (this.secondsLeft <= 0) {
           AudioPlayer.playAlarm(false, this.audioFinish);
           clearInterval(this.intervalTimer);
+          this.intervalTimer = null;
+          console.log('intervalTimer', this.intervalTimer);
+
           this.$store.dispatch('SET_CURRENT_EXERCISE_DONE');
+          this.openModalFinish();
           this.resetCountdown();
+
           return;
         }
 
         this.displayTimeLeft(this.secondsLeft);
       }, 1000);
+
+      // await this.setTimeout(this.secondsLeft);
     },
 
     countDownBeforeInit(seconds) {
@@ -343,6 +437,8 @@ export default {
 
         if (this.timeCountdownBeforeInit <= 0) {
           clearInterval(this.intervalBeforeInit);
+          this.intervalBeforeInit = null;
+          console.log('intervalBefore', this.intervalBeforeInit);
           return this.timeCountdownBeforeInit;
         }
 
@@ -359,16 +455,20 @@ export default {
 
       await this.timeout(delay);
 
-      AudioPlayer.stopAlarm(this.audioInit);
-      this.modalCountdownInit = false;
-      this.countdown(this.selectedTime);
+      // AudioPlayer.stopAlarm(this.audioInit);
+      // this.modalCountdownInit = false;
+      // this.countdown(this.selectedTime);
     },
 
     async startCountdown() {
       if (!this.initCountdown) {
         this.timeCountdownBeforeInit = 10;
         await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
+
+        AudioPlayer.stopAlarm(this.audioInit);
+        this.modalCountdownInit = false;
         this.initCountdown = true;
+        this.countdown(this.selectedTime);
       }
       this.isPaused = false;
     },
@@ -383,6 +483,7 @@ export default {
 
     resetCountdown() {
       clearInterval(this.intervalTimer);
+      clearInterval(this.intervalBeforeInit);
       this.initCountdown = false;
       this.selectedTime = 0;
       this.secondsLeft = 0;
@@ -405,6 +506,14 @@ export default {
     hourConvert(hour) {
       // 15 --> 3
       return hour % 12 || 12;
+    },
+
+    showModalFinish() {
+      this.modalFinish = true;
+    },
+
+    onCloseModalFinish(ev) {
+      this.modalFinish = ev;
     }
   },
 
