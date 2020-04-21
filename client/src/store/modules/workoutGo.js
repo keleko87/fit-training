@@ -103,7 +103,7 @@ const actions = {
       context.commit('SET_EXERCISE_DONE');
       context.commit('SET_CURRENT_EXERCISE');
     } else {
-      // context.commit('SET_SERIE_FINISHED');
+      context.commit('SET_SERIE_FINISHED');
     }
   },
 

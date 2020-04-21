@@ -86,6 +86,26 @@ body {
       color: $white;
     }
 
+    ////// CHECKBOX /////////
+    .checkbox-lg .md-checkbox-container::after {
+      width: 0.50rem;
+      padding-top: 16px;
+      left: 8px;
+      padding-left: 0px;
+      top: 1px;
+    }
+
+    .checkbox-lg .md-checkbox-container {
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+
+    .checkbox-lg .md-checkbox-label {
+      padding-top: 5px;
+      padding-left: 10px;
+    }
+
+
     // HR
     .ft-breakline {
       background-color: $second-dark-grey;

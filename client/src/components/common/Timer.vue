@@ -40,7 +40,7 @@
           <button
             v-if="timerAuto"
             class="btn btn-sm btn-default"
-            :disabled="!startDate || initAutoTimer"
+            :disabled="!startDate || initAutoTimer || this.workoutExercisesAllDone"
             @click="autoStart()"
           >
             Iniciar Auto
@@ -66,7 +66,7 @@
           <div>
             <p class="text-center mb-2">Tiempo</p>
           </div>
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center align-items-center">
             <div class="ft-timer__item--player d-flex">
               <div class="ft-timer__link" :class="{ disabled: startDisabled }">
                 <a
@@ -108,10 +108,10 @@
                 v-for="(time, index) in times"
                 :key="index"
                 class="ft-timer__link"
-                :class="{ disabled: selectedTime !== 0 }"
+                :class="{ disabled: setTimeDisabled }"
               >
                 <a
-                  :disabled="selectedTime !== 0"
+                  :disabled="setTimeDisabled"
                   @click.prevent="setTime(time.sec)"
                 >
                   {{ time.display }}
@@ -137,7 +137,7 @@
                 { disabled: serie !== currentWorkoutSerie }
               ]"
             >
-              <a class="ft-timer__link--serie" @click.prevent="setSerie()">
+              <a class="ft-timer__link--serie">
                 {{ serie }}
               </a>
             </div>
@@ -145,7 +145,7 @@
         </div>
 
 
-        <div style="color: white">
+        <!-- <div style="color: white">
           secondsLeft {{ secondsLeft }}
           <br />
           selectedTime {{ selectedTime }}
@@ -161,7 +161,7 @@
           timerWorkoutSeries {{ timerWorkoutSeries }}
           <br />
           restBetweenExercise {{ restBetweenExercise }}
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -245,15 +245,19 @@ export default {
     },
 
     stopDisabled() {
-      return !this.selectedTime || this.secondsLeft === 0;
+      return !this.selectedTime || this.secondsLeft === 0 || this.timerAuto;
     },
 
     startDisabled() {
-      return !this.selectedTime || (this.secondsLeft > 0 && !this.isPaused);
+      return !this.selectedTime || (this.secondsLeft > 0 && !this.isPaused) || this.timerAuto;
     },
 
     pauseDisabled() {
-      return !this.selectedTime || this.secondsLeft === 0 || this.isPaused;
+      return !this.selectedTime || this.secondsLeft === 0 || this.isPaused || this.timerAuto;
+    },
+
+    setTimeDisabled() {
+      return this.selectedTime !== 0 || this.timerAuto;
     },
 
     modalFinishText() {
@@ -279,45 +283,49 @@ export default {
       let index = 0;
 
       for (const exercise of this.timerWorkoutExercises) {
-        console.log('init 1', exercise);
 
         // next exercise
         if (index > 0 && !this.intervalBeforeInit && !this.intervalTimer) {
-          console.log('next exercise', index);
-          await this.nextExercise();
+          console.log('next exercise', exercise);
 
-          // AudioPlayer.stopAlarm(this.audioInit);
-          // this.modalCountdownInit = false;
-          // // this.initCountdown = true;
+          if (this.restBetweenExercise > 0 && this.currentExercise.done) {
+            await this.nextExercise();
 
-          // this.countdown(this.selectedTime);
-          // await this.timeout(this.selectedTime * 1000);
+          } else {
+            this.setNextExercise();
+            this.setTime(this.times[0].sec);
 
-          // if ((index === this.timerWorkoutExercises.length - 1) && this.workoutExercisesAllDone) {
-          //   console.log('FINISH SERIE');
-          //   this.showModalFinish();
-          // }
+            this.initCountdown = true;
+            this.countdown(this.selectedTime);
+
+            const timeoutCountdown = (this.selectedTime + 1) * 1000; // 1 seconds to add margin between countdown rest
+            await this.timeout(timeoutCountdown);
+          }
+
         } else {
-          // set time
+          // First Exercise Set time
+          this.timeCountdownBeforeInit = 10;
           this.setTime(this.times[0].sec);
 
           // 10 seconds before Init
-          console.log('init ready 2');
-          await this.countdownReadyAndRest(10);
-          this.initCountdown = true;
+          await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
 
-          console.log('this.selectedTime', this.selectedTime);
-
-          // Init countdown Exercise
+          // Stop audio 10sec
           AudioPlayer.stopAlarm(this.audioInit);
           this.modalCountdownInit = false;
 
+          // Init countdown
+          this.initCountdown = true;
           this.countdown(this.selectedTime);
           await this.timeout(this.selectedTime * 1000);
-          console.log('finish cd exercise', index);
         }
 
         index++;
+      }
+
+      if (this.workoutExercisesAllDone) {
+        this.$store.dispatch('SET_NEXT_EXERCISE'); // trigger next exercise to mark as done and serie finish
+        this.showModalFinish();
       }
 
       this.initAutoTimer = false;
@@ -325,18 +333,13 @@ export default {
 
     ///////////////  NEXT EXERCISE  ////////////////
     // onCloseModal(ev) {
+    //  // TO DO Reset countdown or rest countdown an start next
     //   window.clearInterval(this.intervalBeforeInit);
     //   window.clearInterval(this.intervalTimer);
     //   AudioPlayer.stopAlarm(this.audioInit);
     //   this.modalCountdownInit = ev;
     //   // this.countdown(this.selectedTime);
     // },
-
-    openModalFinish() {
-      if (this.workoutFinish || this.currentWorkoutSerieFinished || this.workoutExercisesAllDone) {
-        this.showModalFinish();
-      }
-    },
 
     async nextExercise() {
       this.resetCountdown();
@@ -346,27 +349,33 @@ export default {
         this.timeCountdownBeforeInit = this.restBetweenExercise;
 
         if (!this.initCountdown) {
-          await this.setNextExercise();
+          this.setNextExercise();
           this.setTime(this.times[0].sec);
+
           await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
 
           AudioPlayer.stopAlarm(this.audioInit);
           this.modalCountdownInit = false;
-          this.initCountdown = true;
 
+          this.initCountdown = true;
           this.countdown(this.selectedTime);
-          await this.timeout(this.selectedTime * 1000);
+
+          const timeoutCountdown = (this.selectedTime + 1) * 1000; // 2 seconds to add margin between countdown rest
+          await this.timeout(timeoutCountdown);
+
+          // Check if finish
+          this.openModalFinish();
         }
 
         this.isPaused = false;
       } else {
         this.setNextExercise();
-        this.openModalFinish();
       }
     },
 
-    async setNextExercise() {
-      await this.$store.dispatch('SET_NEXT_EXERCISE');
+    setNextExercise() {
+      this.$store.dispatch('SET_NEXT_EXERCISE');
+      this.openModalFinish();
     },
 
     ///////////////  COUNTDOWN  ///////////////////
@@ -405,10 +414,8 @@ export default {
           AudioPlayer.playAlarm(false, this.audioFinish);
           clearInterval(this.intervalTimer);
           this.intervalTimer = null;
-          console.log('intervalTimer', this.intervalTimer);
 
           this.$store.dispatch('SET_CURRENT_EXERCISE_DONE');
-          this.openModalFinish();
           this.resetCountdown();
 
           return;
@@ -438,7 +445,6 @@ export default {
         if (this.timeCountdownBeforeInit <= 0) {
           clearInterval(this.intervalBeforeInit);
           this.intervalBeforeInit = null;
-          console.log('intervalBefore', this.intervalBeforeInit);
           return this.timeCountdownBeforeInit;
         }
 
@@ -454,10 +460,6 @@ export default {
       this.countDownBeforeInit(sec);
 
       await this.timeout(delay);
-
-      // AudioPlayer.stopAlarm(this.audioInit);
-      // this.modalCountdownInit = false;
-      // this.countdown(this.selectedTime);
     },
 
     async startCountdown() {
@@ -494,7 +496,6 @@ export default {
     displayTimeLeft(secondsLeft) {
       const minutes = Math.floor((secondsLeft % 3600) / 60);
       const seconds = secondsLeft % 60;
-
       this.timeLeft = `${this.zeroPadded(minutes)}:${this.zeroPadded(seconds)}`;
     },
 
@@ -510,6 +511,12 @@ export default {
 
     showModalFinish() {
       this.modalFinish = true;
+    },
+
+    openModalFinish() {
+      if (this.workoutFinish || this.currentWorkoutSerieFinished || this.workoutExercisesAllDone) {
+        this.showModalFinish();
+      }
     },
 
     onCloseModalFinish(ev) {
@@ -528,7 +535,7 @@ export default {
 <style lang="scss" scoped>
 $padding-items-lg: 7px 12px;
 $padding-items-sm: 4px 8px;
-$height-countdown-items: 44px;
+$height-countdown-items: 45px;
 
 .ft-timer {
   &__time-countdown-before-init {
@@ -550,11 +557,13 @@ $height-countdown-items: 44px;
     &--time-left {
       height: $height-countdown-items;
       border: $border-item;
-      padding: 11px 9px;
+      border-radius: 5px;
+      padding: 12px 8px;
       background-color: $gray-200;
 
       span {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
+        font-weight: bold;
         color: $gray-900 !important;
       }
     }

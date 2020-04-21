@@ -20,18 +20,6 @@
         </div>
       </div>
 
-      <div v-if="currentWorkoutSerieFinished" style="color: white">
-        SERIE FINALIZADA ! {{ currentWorkoutSerieFinished }}
-        <br />
-      </div>
-
-      <div
-        v-if="currentWorkoutSerieFinished && workoutFinish"
-        style="color: white"
-      >
-        ENTRENAMIENTO FINALIZADO...BUEN TRABAJO! {{ workoutFinish }}
-        <br />
-      </div>
       <!-- TIMER -->
       <div class="row">
         <div class="col-12">

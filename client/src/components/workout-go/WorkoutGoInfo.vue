@@ -118,7 +118,12 @@
           <div class="row">
             <div class="col-sm-6">
               <!-- AUTO MODE -->
-              <md-checkbox id="timer" v-model="timerAuto" :disabled="startDate != ''" class="md-primary">
+              <md-checkbox
+                id="timer"
+                v-model="timerAuto"
+                :disabled="startDate != ''"
+                class="md-primary checkbox-lg"
+              >
                 <span class="checkbox-text">Timer auto</span>
               </md-checkbox>
             </div>
