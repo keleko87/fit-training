@@ -15,7 +15,7 @@ export default {
 
     setTextTime(timeData) {
       if (!timeData || timeData === 0) {
-        return '-';
+        return '0s';
       }
       const timeSec = Math.ceil(timeData * 60);
       return timeData <= 1 ? `${timeSec}s` : `${timeData}m`;

@@ -38,3 +38,4 @@ export const MINUTES = [
   '60'
 ];
 export const SERIES = ['1', '2', '3', '4', '5'];
+export const TIME_PATTERN = '/^([01]?[0-9]|2[0-5]):[0-5][0-9]$/';

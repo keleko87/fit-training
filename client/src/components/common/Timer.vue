@@ -40,7 +40,7 @@
           <button
             v-if="timerAuto"
             class="btn btn-sm btn-default"
-            :disabled="!startDate || initAutoTimer || this.workoutExercisesAllDone"
+            :disabled="autoStartDisabled"
             @click="autoStart()"
           >
             Iniciar Auto
@@ -88,10 +88,35 @@
               </div>
             </div>
 
-            <div class="ft-timer__item--time-left">
-              <span class="my-0">
+            <div v-if="!showCustomTime" class="ft-timer__item--time-left">
+              <span @click.prevent="openCustomTime()" class="my-0">
                 {{ timeLeft }}
               </span>
+            </div>
+
+            <div v-if="showCustomTime" class="ft-timer__item--time-left active">
+              <masked-input
+                id="customTime"
+                class="ft-timer__item--time-left-custom-time"
+                name="customTime"
+                placeholder="00:00"
+                inputmode="numeric"
+                :disabled="customTimeDisabled"
+                :value="customTime.display"
+                @input="onChangeTime($event)"
+                @blur.native="setCustomTime($event)"
+                :mask="{
+                  pattern: 'DU:DU', // 59:59
+                  formatCharacters: {
+                    D: {
+                      validate: char => /^[0-5]$/.test(char)
+                    },
+                    U: {
+                      validate: char => /^[0-9]$/.test(char)
+                    }
+                  }
+                }"
+              />
             </div>
 
             <div class="ft-timer__item--times d-flex">
@@ -105,8 +130,6 @@
                 </a>
               </div>
               <div
-                v-for="(time, index) in times"
-                :key="index"
                 class="ft-timer__link"
                 :class="{ disabled: setTimeDisabled }"
               >
@@ -117,6 +140,7 @@
                   {{ time.display }}
                 </a>
               </div>
+
             </div>
           </div>
         </div>
@@ -146,13 +170,17 @@
 
 
         <!-- <div style="color: white">
+          currentExerciseTime {{currentExerciseTime}}
+          <br>
+          customTimeDisabled {{ customTimeDisabled }}
+          <br>
           secondsLeft {{ secondsLeft }}
           <br />
           selectedTime {{ selectedTime }}
           <br />
           currentExercise {{ currentExercise }}
           <br />
-          times {{ times }}
+          time {{ time }}
           <br />
           currentWorkoutSerie {{ currentWorkoutSerie }}
           <br />
@@ -172,6 +200,7 @@ import { mapGetters } from 'vuex';
 import { mdbIcon } from 'mdbvue';
 import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
+import MaskedInput from 'vue-masked-input';
 import { AudioPlayer } from '../../common/audio';
 
 export default {
@@ -179,7 +208,8 @@ export default {
 
   components: {
     mdbIcon,
-    FtModal
+    FtModal,
+    MaskedInput
   },
 
   mixins: [timer],
@@ -197,7 +227,12 @@ export default {
       modalFinish: false,
       timeCountdownBeforeInit: 0,
       isRestTime: false,
-      initAutoTimer: false
+      initAutoTimer: false,
+      customTime: {
+        sec: 0,
+        display: '00:00'
+      },
+      showCustomTime: false
     };
   },
 
@@ -232,16 +267,33 @@ export default {
       return this.$store.state.workoutGo.timer.workout.finish;
     },
 
-    times() {
+    time() {
       const time = this.currentExercise.time;
       const sec = time * 60;
       const display = this.setTextTime(time);
 
-      return [{ sec, display }];
+      return { sec, display };
+    },
+
+    currentExerciseTime() {
+      return this.currentExercise && this.currentExercise.time;
     },
 
     restExercise() {
       return this.currentExercise.rest;
+    },
+
+    customTimeDisabled() {
+      return (
+        !this.startDate ||
+        this.currentExerciseTime ||
+        (this.startDisabled && !this.pauseDisabled) ||
+        (!this.startDisabled && !this.stopDisabled)
+      );
+    },
+
+    autoStartDisabled() {
+      return !this.startDate || this.initAutoTimer || this.workoutExercisesAllDone || !this.currentExerciseTime;
     },
 
     stopDisabled() {
@@ -257,7 +309,7 @@ export default {
     },
 
     setTimeDisabled() {
-      return this.selectedTime !== 0 || this.timerAuto;
+      return !this.currentExerciseTime || this.selectedTime !== 0 || this.timerAuto;
     },
 
     modalFinishText() {
@@ -293,7 +345,7 @@ export default {
 
           } else {
             this.setNextExercise();
-            this.setTime(this.times[0].sec);
+            this.setTime(this.time.sec);
 
             this.initCountdown = true;
             this.countdown(this.selectedTime);
@@ -305,7 +357,7 @@ export default {
         } else {
           // First Exercise Set time
           this.timeCountdownBeforeInit = 10;
-          this.setTime(this.times[0].sec);
+          this.setTime(this.time.sec);
 
           // 10 seconds before Init
           await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
@@ -325,7 +377,7 @@ export default {
 
       if (this.workoutExercisesAllDone) {
         this.$store.dispatch('SET_NEXT_EXERCISE'); // trigger next exercise to mark as done and serie finish
-        this.showModalFinish();
+        this.openModalFinish();
       }
 
       this.initAutoTimer = false;
@@ -350,7 +402,7 @@ export default {
 
         if (!this.initCountdown) {
           this.setNextExercise();
-          this.setTime(this.times[0].sec);
+          this.setTime(this.time.sec);
 
           await this.countdownReadyAndRest(this.timeCountdownBeforeInit);
 
@@ -386,6 +438,38 @@ export default {
       this.audioFinish = AudioPlayer.createAudio(finishSrc);
     },
 
+    transformDisplayTime(time) {
+      const timeDisplay = time.split(':');
+      let min = timeDisplay[0].replace('_', '0');
+      let sec = timeDisplay[1].replace('_', '0');
+
+      const seconds = parseInt(min, 10) * 60 + parseInt(sec, 10);
+      console.log(seconds);
+      return seconds;
+    },
+
+    onChangeTime(ev) {
+      console.log('on change time input ', ev);
+      const sec = this.transformDisplayTime(ev);
+      // const sec = ev.target.value;
+      this.customTime.sec = sec;
+      this.customTime.display = ev;
+      // this.setTime(sec);
+      // this.displayTimeLeft(sec);
+    },
+
+    openCustomTime() {
+      if (!this.customTimeDisabled) {
+        this.showCustomTime = true;
+      }
+    },
+
+    setCustomTime(ev) {
+      console.log('blur', ev.target.value);
+      this.setTime(this.customTime.sec);
+      this.showCustomTime = false;
+    },
+
     setTime(seconds) {
       clearInterval(this.intervalTimer);
       this.displayTimeLeft(seconds);
@@ -416,6 +500,12 @@ export default {
           this.intervalTimer = null;
 
           this.$store.dispatch('SET_CURRENT_EXERCISE_DONE');
+
+          if (this.workoutExercisesAllDone) {
+            this.$store.dispatch('SET_NEXT_EXERCISE'); // trigger next exercise to mark as done and serie finish
+            this.openModalFinish();
+          }
+
           this.resetCountdown();
 
           return;
@@ -566,6 +656,22 @@ $height-countdown-items: 45px;
         font-weight: bold;
         color: $gray-900 !important;
       }
+
+      &-custom-time {
+        width: 105px;
+        height: 35px;
+        background-color: $gray-200;
+        border: none;
+        font-weight: bold;
+        color: $gray-900 !important;
+        font-size: 2.5rem;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    &--time-left.active {
+      border: 3px solid $mandarine-gradient;
     }
 
     &--player,
