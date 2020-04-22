@@ -630,7 +630,7 @@ $height-countdown-items: 45px;
 .ft-timer {
   &__time-countdown-before-init {
     margin: 0 auto;
-    border: 4px solid $teal;
+    border: 5px solid $teal;
     background-color: $white;
     border-radius: 50px;
     padding: 5px;
@@ -640,6 +640,7 @@ $height-countdown-items: 45px;
     &--text {
       color: $teal !important;
       padding-top: 19px;
+      font-weight: bold;
     }
   }
 
