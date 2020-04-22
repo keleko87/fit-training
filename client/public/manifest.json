@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "short_name": "client",
+  "name": "Fit Training",
+  "short_name": "Fit Training",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
