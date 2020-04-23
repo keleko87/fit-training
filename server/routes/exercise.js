@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const path = require('path');
 const Exercise = require('../models/Exercise');
 
 // GET exercise LIST
@@ -14,13 +15,16 @@ router.get('/all', (req, res) => {
 
 const storageImage	=	multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, './server/public/uploads');
+    console.log(`DIR__NAME______`, path.resolve(__dirname, '../public/uploads'));
+    const destinationPath = path.resolve(__dirname, '../public/uploads');
+    callback(null, destinationPath);
   },
   filename: function (req, file, callback) {
-    const image = req.body.imageUrl;
-    // const fileName = file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1];
-    const imageUrl = image.split(`blob:${process.env.APP_WEB}`);
-    callback(null, imageUrl[1]);
+    // const image = req.body.image;
+    // const imageUrl = image.split(`blob:${process.env.APP_WEB}`);
+    const datetimestamp = Date.now();
+    const fileName = file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1];
+    callback(null, fileName);
   }
 });
 
@@ -54,7 +58,7 @@ router.post('/new', (req, res) => {
 
     if (req.file && imageUrl) {
       image = req.file;
-      imageUrl = req.body.imageUrl.replace(`blob:${process.env.APP_WEB}`, '');
+      // imageUrl = req.body.imageUrl.replace(`blob:${process.env.APP_WEB}`, '');
   
     } else if (!req.file){
       image = { filename: 'nofile' };
