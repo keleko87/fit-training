@@ -5,7 +5,7 @@
 .vscode
 
 #uploads
-/public/uploads/*
+# /public/uploads/*
 
 # Logs
 logs

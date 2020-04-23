@@ -13,9 +13,40 @@ router.get('/all', (req, res) => {
   .catch(err => console.log(err));
 });
 
+// if (process.env.NODE_ENV === 'production') {
+//   var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, path.resolve(__dirname, '../public/uploads'))
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
+//     }
+//   })
+// } else {
+//   var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, path.resolve(__dirname, 'uploads'))
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
+//     }
+//   })
+// }
+
+// const uploads = multer({ storage: storage });
+
+// app.use(uploads.any());
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.resolve(__dirname, 'build')));
+// } else {
+//   app.use(express.static('./public'));
+// }
+
 const storageImage	=	multer.diskStorage({
   destination: function (req, file, callback) {
     console.log(`DIR__NAME______`, path.resolve(__dirname, '../public/uploads'));
+    console.log(`PATH JOIN`, path.join(__dirname, 'public/uploads'));
+
     // const destinationPath = path.resolve(__dirname, '../public/uploads');
     callback(null, './public/uploads');
   },
