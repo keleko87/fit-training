@@ -47,11 +47,15 @@ app.use('/api/workoutGo', workoutGo);
 
 
 if (process.env.NODE_ENV === 'production') {
+  // Static folder
   app.use(express.static(__dirname + '/public/'));
 
-  app.use((req, res, next) => {
-    res.sendfile(__dirname + '/public/index.html');
-  });
+  // app.use((req, res, next) => {
+  //   res.sendfile(__dirname + '/public/index.html');
+  // });
+
+  // HANDLE SPA Vue
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 }
 
 // catch 404 and forward to error handler

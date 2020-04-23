@@ -14,22 +14,23 @@ router.get('/all', (req, res) => {
 
 const storageImage	=	multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, './public/uploads');
+    callback(null, './server/public/uploads');
   },
   filename: function (req, file, callback) {
     const image = req.body.imageUrl;
-    const imageUrl = image.split(`blob:${process.env.APP_WEB}`)
+    // const fileName = file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1];
+    const imageUrl = image.split(`blob:${process.env.APP_WEB}`);
     callback(null, imageUrl[1]);
   }
 });
 
-const uploadImage = multer({ storage : storageImage }).single('image');
+const uploadImage = multer({ storage: storageImage }).single('image');
 
 router.post('/new', (req, res) => {
   uploadImage(req, res, (err) => {
   
     if(err) {
-      return res.end("Error uploading file!");
+      return res.status(601).json(err);
     }
   
     let image;
@@ -54,9 +55,9 @@ router.post('/new', (req, res) => {
     if (req.file && imageUrl) {
       image = req.file;
       imageUrl = req.body.imageUrl.replace(`blob:${process.env.APP_WEB}`, '');
-    } else {
+  
+    } else if (!req.file){
       image = { filename: 'nofile' };
-      imageUrl = '';
     }
   
     let exercise = new Exercise({
