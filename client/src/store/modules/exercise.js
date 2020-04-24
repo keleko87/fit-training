@@ -64,10 +64,6 @@ const actions = {
       window.console.log('error', err);
       return err;
     }
-  },
-
-  ['REPLACE_IMAGE_URL'](context, { exercise }) {
-    context.commit('SET_IMAGE_URL', exercise);
   }
 };
 
@@ -77,12 +73,6 @@ const mutations = {
   },
   ['SET_EXERCISE'](state, newExercise) {
     state.data = Object.assign({}, state.data, newExercise);
-  },
-  ['SET_IMAGE_URL'](state, exercise) {
-    state.data.content = exercise.content.replace(
-      `blob:${process.env.VUE_APP_WEB}${exercise.image.filename}`,
-      exercise.imageUrl
-    );
   }
 };
 

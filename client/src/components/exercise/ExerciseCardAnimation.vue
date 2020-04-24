@@ -90,7 +90,7 @@ export default {
       if (this.isImageUrl) {
         return this.data.imageUrl;
       }
-      return `${process.env.VUE_APP_UPLOADS}${this.data.imageUrl}`;
+      return `${process.env.VUE_APP_UPLOADS}${this.data.image.filename}`;
     }
   },
 

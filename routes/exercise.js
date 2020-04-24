@@ -13,49 +13,13 @@ router.get('/all', (req, res) => {
   .catch(err => console.log(err));
 });
 
-// if (process.env.NODE_ENV === 'production') {
-//   var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, path.resolve(__dirname, '../public/uploads'))
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-//     }
-//   })
-// } else {
-//   var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, path.resolve(__dirname, 'uploads'))
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-//     }
-//   })
-// }
-
-// const uploads = multer({ storage: storage });
-
-// app.use(uploads.any());
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.resolve(__dirname, 'build')));
-// } else {
-//   app.use(express.static('./public'));
-// }
-
 const storageImage	=	multer.diskStorage({
   destination: function (req, file, callback) {
-    console.log(`DIR__NAME______`, path.resolve(__dirname, '../public/uploads'));
-    console.log(`PATH JOIN`, path.join(__dirname, 'public/uploads'));
-
-    // const destinationPath = path.resolve(__dirname, '../public/uploads');
     callback(null, './public/uploads');
   },
   filename: function (req, file, callback) {
-    // const image = req.body.image;
-    // const imageUrl = image.split(`blob:${process.env.APP_WEB}`);
-    console.log('FILE NAME: ', file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    const datetimestamp = Date.now();
-    const fileName = file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1];
+    console.log('FILE NAME: ',  file.fieldname + '-' + Date.now() + '_' + file.originalname);
+    const fileName = file.fieldname + '-' + Date.now() + '_' + file.originalname;
     callback(null, fileName);
   }
 });
@@ -90,7 +54,7 @@ router.post('/new', (req, res) => {
 
     if (req.file && imageUrl) {
       image = req.file;
-      // imageUrl = req.body.imageUrl.replace(`blob:${process.env.APP_WEB}`, '');
+      imageUrl = req.file.filename;
   
     } else if (!req.file){
       image = { filename: 'nofile' };
