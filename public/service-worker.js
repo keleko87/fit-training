@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.0e31b3d39e094718693bfb4bea537108.js"
+  "/precache-manifest.2dc40a21139c3a3d77ab6a47dfb8c969.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "fit-traning"});

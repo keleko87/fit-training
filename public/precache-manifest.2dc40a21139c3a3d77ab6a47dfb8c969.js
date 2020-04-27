@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "72d5026f4c9860c381ef",
-    "url": "/css/app.96f8bbf2.css"
+    "revision": "72b3d7049f36fb3d793f",
+    "url": "/css/app.bcf14e18.css"
   },
   {
-    "revision": "72d5026f4c9860c381ef",
-    "url": "/js/app.c01d9670.js"
+    "revision": "72b3d7049f36fb3d793f",
+    "url": "/js/app.d9dbf5a1.js"
   },
   {
     "revision": "ed710f0b4be041ba55bd",
@@ -44,6 +44,10 @@ self.__precacheManifest = [
     "url": "/img/arrow_right.8ef6a08c.svg"
   },
   {
+    "revision": "84b809f448966cf90e1763a3965bfd6e",
+    "url": "/img/fitness_slide_1.84b809f4.jpg"
+  },
+  {
     "revision": "5de8ce5d742240f85f3183daa89a679b",
     "url": "/img/boxing-2.5de8ce5d.png"
   },
@@ -56,44 +60,44 @@ self.__precacheManifest = [
     "url": "/fonts/fa-brands-400.c1868c95.eot"
   },
   {
-    "revision": "a06da7f0950f9dd366fc9db9d56d618a",
-    "url": "/fonts/fa-brands-400.a06da7f0.woff2"
-  },
-  {
     "revision": "ec3cfddedb8bebd2d7a3fdf511f7c1cc",
     "url": "/fonts/fa-brands-400.ec3cfdde.woff"
   },
   {
-    "revision": "261d666b0147c6c5cda07265f98b8f8c",
-    "url": "/fonts/fa-regular-400.261d666b.eot"
+    "revision": "a06da7f0950f9dd366fc9db9d56d618a",
+    "url": "/fonts/fa-brands-400.a06da7f0.woff2"
   },
   {
     "revision": "13685372945d816a2b474fc082fd9aaa",
     "url": "/fonts/fa-brands-400.13685372.ttf"
   },
   {
-    "revision": "c20b5b7362d8d7bb7eddf94344ace33e",
-    "url": "/fonts/fa-regular-400.c20b5b73.woff2"
+    "revision": "261d666b0147c6c5cda07265f98b8f8c",
+    "url": "/fonts/fa-regular-400.261d666b.eot"
   },
   {
-    "revision": "a0369ea57eb6d3843d6474c035111f29",
-    "url": "/fonts/fa-solid-900.a0369ea5.eot"
+    "revision": "c20b5b7362d8d7bb7eddf94344ace33e",
+    "url": "/fonts/fa-regular-400.c20b5b73.woff2"
   },
   {
     "revision": "f89ea91ecd1ca2db7e09baa2c4b156d1",
     "url": "/fonts/fa-regular-400.f89ea91e.woff"
   },
   {
-    "revision": "b15db15f746f29ffa02638cb455b8ec0",
-    "url": "/fonts/fa-solid-900.b15db15f.woff2"
-  },
-  {
     "revision": "db78b9359171f24936b16d84f63af378",
     "url": "/fonts/fa-regular-400.db78b935.ttf"
   },
   {
+    "revision": "a0369ea57eb6d3843d6474c035111f29",
+    "url": "/fonts/fa-solid-900.a0369ea5.eot"
+  },
+  {
     "revision": "bea989e82b07e9687c26fc58a4805021",
     "url": "/fonts/fa-solid-900.bea989e8.woff"
+  },
+  {
+    "revision": "b15db15f746f29ffa02638cb455b8ec0",
+    "url": "/fonts/fa-solid-900.b15db15f.woff2"
   },
   {
     "revision": "1ab236ed440ee51810c56bd16628aef0",
@@ -112,11 +116,19 @@ self.__precacheManifest = [
     "url": "/img/fa-solid-900.ec763292.svg"
   },
   {
+    "revision": "6ca76963c6bb61b1b5243c71f4fbb5c2",
+    "url": "/img/fit-training-logo.6ca76963.png"
+  },
+  {
+    "revision": "640b2894ff24b18bf882213d85294d25",
+    "url": "/img/fit-training-logo4.640b2894.png"
+  },
+  {
     "revision": "2030955537fa6fbdebd1b87a332a4a0a",
     "url": "/img/fitness.20309555.png"
   },
   {
-    "revision": "1b26b704f070f3f32b6a331ebf1e9c4f",
+    "revision": "23a442bc2fac4602dbe3ee6859e8390d",
     "url": "/index.html"
   },
   {
