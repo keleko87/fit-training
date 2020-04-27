@@ -4,6 +4,7 @@ import Exercise from '../views/Exercise';
 import WorkoutGoExercises from '../components/workout-go/WorkoutGoExercises';
 import WorkoutGoInfo from '../components/workout-go/WorkoutGoInfo';
 import Home from '../views/Home';
+import About from '../views/About';
 import WorkoutNew from '../components/workout/WorkoutNew';
 import WorkoutList from '../components/workout/WorkoutList';
 import RoutineNew from '../components/routine/RoutineNew';
@@ -20,7 +21,11 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      redirect: '/workout/new'
+      // redirect: '/workout/new'
+      components: {
+        list: Home,
+        create: About
+      }
     },
     {
       path: '/workout/new',

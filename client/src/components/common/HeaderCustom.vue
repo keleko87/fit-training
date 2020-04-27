@@ -1,7 +1,10 @@
 <template>
   <mdb-navbar class="ft-navbar" color="black" dark>
-    <mdb-navbar-brand>
-      Fit Training
+    <mdb-navbar-brand class="ft-navbar__logo">
+      <!-- Fit Training -->
+      <router-link class="router-link" exact :to="{ name: 'home' }">
+        <img src="@/assets/img/fit-training-logo4.png" alt="logo header" />
+      </router-link>
     </mdb-navbar-brand>
     <mdb-navbar-toggler>
       <mdb-navbar-nav>
@@ -63,8 +66,23 @@ export default {
 <style lang="scss" scoped>
 .ft-navbar {
   // background-color: $blue;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  margin: 0;
+
   &__icon {
     font-size: 1.2em;
+  }
+
+  &__logo /deep/ .navbar-brand {
+    padding: 0;
+    margin: 0 15px 0 0;
+    height: $height-navbar;
+
+    img {
+      height: 100%;
+    }
   }
 }
 </style>

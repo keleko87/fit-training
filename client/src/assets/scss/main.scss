@@ -13,12 +13,14 @@
 @import "~vue-material/dist/theme/all"; // Apply the theme
 
 body {
-  #app {    
+  #app {
+    /// APP /////    
     .router-link {
       color: $white;
     }
     .router-link:hover {
       color: $mandarine;
+      text-decoration: none;
     }
     .bg-create-section {
       background-color: $third-dark-grey;
@@ -26,7 +28,6 @@ body {
     .elegant-color {
       background-color: $gray-900;
     }
-    
 
     ////// H1,H2 and INPUT TEXTS  ////////
     h1, h2, h3 {

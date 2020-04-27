@@ -52,8 +52,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ft-navbar {
+  height: 45px;
+
   .nav-pills {
-    margin-top: 0
+    margin-top: 0;
   }
 }
 </style>

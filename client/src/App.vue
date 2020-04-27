@@ -16,6 +16,12 @@
         </div>
       </div>
 
+      <!-- <div class="ft-app__footer row d-flex justify-content-end">
+        <div class="">
+          <small class="text-center">Made with love by Mario Martín</small>
+        </div>
+      </div> -->
+
     </div>
   </div>
 </template>
@@ -34,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 .ft-app {
   &__container {
-    height: calc(100vh - 52px);
+    height: calc(100vh - #{$height-navbar});
     .row {
       margin: 0;
     }
@@ -42,10 +48,14 @@ export default {
   &__list {
     padding: 0;
     background-color: transparent;
-    // background-image: url('./assets/img/fitness_slide_2.jpg');
+    // background-image: url('./assets/img/fitness_slide_1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;
+  }
+
+  &__create {
+    padding: 0;
   }
 }
 </style>

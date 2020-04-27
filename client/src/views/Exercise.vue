@@ -13,14 +13,14 @@
     <!-- NAVBAR -->
     <ft-header>
       <template slot="nav-list">
-        <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'routineNew' }">
+        <li class="nav-item mx-2">
+          <router-link class="router-link" :to="{ name: 'routineNew' }">
             Entrenamientos
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mx-2">
           <!-- trigger modal button -->
-          <a class="nav-link" @click="modalPoll = true">
+          <a class="router-link" @click="modalPoll = true">
             Nuevo ejercicio
           </a>
         </li>

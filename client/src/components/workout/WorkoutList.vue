@@ -4,7 +4,7 @@
     <ft-header>
       <template slot="nav-list">
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'workoutNew' }">
+          <router-link class="router-link" :to="{ name: 'workoutNew' }">
             Nuevo entrenamiento
           </router-link>
         </li>

@@ -50,7 +50,7 @@ export default {
 <style lang="scss" scoped>
 .ft-app {
   &__container {
-    height: calc(100vh - 52px);
+    height: calc(100vh - #{$height-navbar});
     .row {
       margin: 0;
     }
@@ -58,7 +58,7 @@ export default {
   &__list {
     padding: 0;
     background-color: transparent;
-    // background-image: url('./assets/img/fitness_slide_2.jpg');
+    // background-image: url('./assets/img/fitness_slide_1.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;

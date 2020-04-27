@@ -1,5 +1,5 @@
 <template>
-  <div class="ft-workout-new mt-4">
+  <div class="ft-workout-new mt-4 px-3">
     <div class="container">
       <form novalidate @submit.prevent="onSubmit">
         <div class="row d-flex align-items-center">

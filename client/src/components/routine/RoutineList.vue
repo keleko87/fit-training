@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Routine List</h2>
+    <h2 class="text-center">Routine List</h2>
   </div>
 </template>
 <script>

@@ -1,13 +1,21 @@
 <template>
-  <div class="routine-new my-5">
-    <h2>Routine New</h2>
+  <div class="ft-routine-new">
+    <h2 class="ft-routine-new__title text-center">Nueva Rutina</h2>
+
+    <ft-about></ft-about>
   </div>
 </template>
 
 <script>
+import FtAbout from '../../views/About';
+
 export default {
   name: 'routine-new',
 
+  components: {
+    FtAbout
+  },
+ 
   data() {
     return {
       form: {}
@@ -28,4 +36,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ft-routine-new {
+  &__title {
+    position: absolute;
+    top: 30px;
+    left: 25%;
+    color: $black !important;
+    font-weight: bold;
+  }
+}
 </style>
