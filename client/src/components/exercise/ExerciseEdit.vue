@@ -9,7 +9,7 @@
               <div class="col-12">
                 <img
                   class="ft-exercise-edit__image mx-auto"
-                  :src="getImage(info.imageUrl)"
+                  :src="getImage(info)"
                   alt="image exercise"
                 />
               </div>
@@ -127,6 +127,7 @@
 
 <script>
 import { mdbView } from 'mdbvue';
+import imageSource from '../../mixins/imageSource';
 import {
   minLength,
   maxLength,
@@ -148,6 +149,8 @@ export default {
     this.form = this.setInfoData(this.info);
   },
 
+  mixins: [imageSource],
+
   components: {
     mdbView
   },
@@ -163,10 +166,6 @@ export default {
   },
 
   methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
-    },
-
     setInfoData(data) {
       const { isWarmUp, series, reps, rest, time, observations } = data;
 

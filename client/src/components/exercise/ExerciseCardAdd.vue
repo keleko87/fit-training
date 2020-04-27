@@ -29,7 +29,7 @@
         >{{ time }}</small
       >
 
-      <img :src="getImage(data.imageUrl)" alt="image url" />
+      <img :src="getImage(data)" alt="image url" />
 
       <figcaption>
         <h6 class="ft-exercise-card-add__figcaption-name">{{ data.name }}</h6>
@@ -60,6 +60,7 @@ import { mdbIcon } from 'mdbvue';
 import ExerciseEdit from './ExerciseEdit';
 import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
+import imageSource from '../../mixins/imageSource';
 
 export default {
   name: 'exercise-card-add',
@@ -74,7 +75,7 @@ export default {
     }
   },
 
-  mixins: [timer],
+  mixins: [timer, imageSource],
 
   components: {
     ExerciseEdit,
@@ -104,10 +105,6 @@ export default {
   },
 
   methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
-    },
-
     onCloseModal(ev) {
       this.modalPoll = ev;
     },

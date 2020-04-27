@@ -444,18 +444,13 @@ export default {
       let sec = timeDisplay[1].replace('_', '0');
 
       const seconds = parseInt(min, 10) * 60 + parseInt(sec, 10);
-      console.log(seconds);
       return seconds;
     },
 
     onChangeTime(ev) {
-      console.log('on change time input ', ev);
       const sec = this.transformDisplayTime(ev);
-      // const sec = ev.target.value;
       this.customTime.sec = sec;
       this.customTime.display = ev;
-      // this.setTime(sec);
-      // this.displayTimeLeft(sec);
     },
 
     openCustomTime() {
@@ -617,7 +612,9 @@ export default {
   beforeDestroy() {
     clearInterval(this.intervalTimer);
     clearInterval(this.intervalBeforeInit);
-    console.log('timers destroy');
+    this.intervalTimer = null;
+    this.intervalBeforeInit = null;
+    console.log('timers destroyed');
   }
 };
 </script>

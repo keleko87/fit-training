@@ -72,10 +72,6 @@ export default {
   },
 
   methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
-    },
-
     onDeleteExercise(id) {
       console.log(id, 'deleted', this.workoutExercises);
     },

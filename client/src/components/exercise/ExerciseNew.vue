@@ -233,7 +233,7 @@
           </div>
         </div>
 
-        <div v-if="!isImageUrl" class="form-row">
+        <div v-if="!isImageModelURL" class="form-row">
           <!-- FILE UPLOAD -->
           <div class="col-md-6">
             <input
@@ -280,6 +280,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import imageSource from '../../mixins/imageSource';
 import {
   required,
   minLength,
@@ -302,6 +303,8 @@ export default {
   mounted() {
     this.$store.dispatch('GET_EXERCISES');
   },
+
+  mixins: [imageSource],
 
   data() {
     return {
@@ -339,10 +342,8 @@ export default {
   computed: {
     ...mapGetters(['totalExercises']),
 
-    isImageUrl() {
-      // const urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
-      const url = new RegExp('https://');
-      return url.test(this.$v.form.imageUrl.$model);
+    isImageModelURL() {
+      return this.isImageUrl(this.$v.form.imageUrl.$model);
     }
   },
 
@@ -363,7 +364,7 @@ export default {
       const imageUrl = URL.createObjectURL(image);
       this.form.image = image;
 
-      if (!this.isImageUrl) {
+      if (!this.isImageModelURL) {
         this.$v.form.imageUrl.$model = imageUrl;
       }
     },

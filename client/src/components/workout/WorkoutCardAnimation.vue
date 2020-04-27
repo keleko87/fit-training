@@ -52,6 +52,7 @@
 import { mdbIcon } from 'mdbvue';
 import WorkoutDetail from './WorkoutDetail';
 import ModalPoll from '../common/ModalPoll';
+import imageSource from '../../mixins/imageSource';
 
 export default {
   name: 'workout-card-animation',
@@ -65,6 +66,8 @@ export default {
       default: 'sadie'
     }
   },
+
+  mixins: [imageSource],
 
   components: {
     WorkoutDetail,
@@ -88,15 +91,6 @@ export default {
   },
 
   methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
-    },
-
-    getSportImage(sport) {
-      const sportImage = sport.toLowerCase();
-      return require(`@/assets/img/sports/${sportImage}.png`);
-    },
-
     onCloseModal(ev) {
       this.modalPoll = ev;
     },

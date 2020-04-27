@@ -8,7 +8,7 @@
             <div class="col-12">
               <img
                 class="ft-exercise-detail__image mx-auto"
-                :src="getImage(info.imageUrl)"
+                :src="getImage(info)"
                 alt="image exercise"
               />
             </div>
@@ -120,6 +120,7 @@
 <script>
 import { mdbView, mdbIcon } from 'mdbvue';
 import timer from '../../mixins/timer';
+import imageSource from '../../mixins/imageSource';
 
 export default {
   name: 'exercise-detail',
@@ -130,7 +131,7 @@ export default {
     }
   },
 
-  mixins: [timer],
+  mixins: [timer, imageSource],
 
   components: {
     mdbView,
@@ -146,12 +147,6 @@ export default {
     },
     reps() {
       return this.setTextReps(this.info.reps);
-    }
-  },
-
-  methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
     }
   }
 };

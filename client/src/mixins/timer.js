@@ -25,7 +25,7 @@ export default {
       if (repsData === null) {
         return '-';
       }
-      return repsData == 0 ? 'fallo' : repsData;
+      return repsData == 0 ? ' Fallo' : repsData;
     },
 
     setTextSeriesXreps(seriesData, repsData) {

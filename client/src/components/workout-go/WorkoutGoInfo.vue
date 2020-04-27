@@ -124,7 +124,7 @@
                 :disabled="startDate != ''"
                 class="md-primary checkbox-lg"
               >
-                <span class="checkbox-text">Timer auto</span>
+                <span class="checkbox-text">Tiempo auto</span>
               </md-checkbox>
             </div>
           </div>
@@ -280,10 +280,6 @@ export default {
   },
 
   methods: {
-    getImage(imageUrl) {
-      return `${process.env.VUE_APP_UPLOADS}${imageUrl}`;
-    },
-
     workoutStart() {
       const startDate = Date.now().toString();
       const inputSeries = this.workoutSeries;
@@ -357,7 +353,7 @@ export default {
 
   beforeDestroy() {
     this.$store.dispatch('RESET_WORKOUT_NOT_FINISH');
-    console.log('destroyed', this.timerWorkoutExercises);
+    console.log('RESET_WORKOUT_NOT_FINISH', this.timerWorkoutExercises);
   }
 };
 </script>

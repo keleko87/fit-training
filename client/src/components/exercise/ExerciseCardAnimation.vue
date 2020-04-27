@@ -20,7 +20,7 @@
 
     <!-- CARD -->
     <figure :class="effectClass">
-      <img :src="getImage" alt="image url" />
+      <img :src="getImage(data)" alt="image url" />
       <figcaption>
         <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
         <div class="ft-exercise-card__action">
@@ -50,6 +50,7 @@
 import { mdbIcon } from 'mdbvue';
 import ExerciseDetail from './ExerciseDetail';
 import ModalPoll from '../common/ModalPoll';
+import imageSource from '../../mixins/imageSource';
 
 export default {
   name: 'exercise-card-animation',
@@ -63,6 +64,8 @@ export default {
       default: 'sadie'
     }
   },
+
+  mixins: [imageSource],
 
   components: {
     ExerciseDetail,
@@ -79,18 +82,6 @@ export default {
   computed: {
     effectClass() {
       return `effect-${this.effect}`;
-    },
-    isImageUrl() {
-      // const urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
-      const url = new RegExp('https://');
-      return url.test(this.data.imageUrl);
-    },
-
-    getImage() {
-      if (this.isImageUrl) {
-        return this.data.imageUrl;
-      }
-      return `${process.env.VUE_APP_UPLOADS}${this.data.image.filename}`;
     }
   },
 

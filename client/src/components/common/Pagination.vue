@@ -165,7 +165,7 @@ export default {
 
 <style lang="scss" scoped>
 $padding-items-lg: 7px 12px;
-$padding-items-sm: 3px 8px;
+$padding-items-sm: 6px 9px;
 
 .ft-pagination {
   &__list {
@@ -205,6 +205,7 @@ $padding-items-sm: 3px 8px;
 
   &__link.disabled {
     color: $second-dark-grey !important;
+    border-color: $second-dark-grey !important;
   }
 }
 </style>
