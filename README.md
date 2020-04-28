@@ -1,7 +1,7 @@
-# fit-training 
+# Fit Training 
 Create your own fitness workouts and exercises. 
 
-## url
+## Url
 https://fit-training.herokuapp.com
 
 
@@ -17,7 +17,7 @@ This project uses:
 [VueJS](https://vuejs.org/) For Views, with PWA support
 
 
-# server
+# Server
 
 ## Project setup
 ```
@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-# client
+# Client
 
 ## Project setup
 ```
