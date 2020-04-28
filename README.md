@@ -24,10 +24,12 @@ This project uses:
 npm install
 ```
 
-### Run local node
+### Run local
 ```
 npm run dev
 ```
+
+
 
 # Client
 
@@ -46,9 +48,3 @@ npm run dev
 npm run build
 ```
 
-# client
-
-## Project setup
-```
-npm install
-```
