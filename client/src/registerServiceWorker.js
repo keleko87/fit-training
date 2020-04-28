@@ -20,6 +20,10 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('New content is available; please refresh.');
+      // autorefresh when new content available
+      // setTimeout(() => {
+      //   window.location.reload(true);
+      // }, 1000);
     },
     offline() {
       console.log(

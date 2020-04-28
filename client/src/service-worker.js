@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 workbox.setConfig({
   debug: false
 });

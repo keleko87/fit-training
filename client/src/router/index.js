@@ -1,14 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Exercise from '../views/Exercise';
-import WorkoutGoExercises from '../components/workout-go/WorkoutGoExercises';
-import WorkoutGoInfo from '../components/workout-go/WorkoutGoInfo';
-import Home from '../views/Home';
-import About from '../views/About';
-import WorkoutNew from '../components/workout/WorkoutNew';
-import WorkoutList from '../components/workout/WorkoutList';
-import RoutineNew from '../components/routine/RoutineNew';
-import RoutineList from '../components/routine/RoutineList';
 import NProgress from 'nprogress'; // Progress bar library
 
 Vue.use(Router);
@@ -21,43 +12,47 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      // redirect: '/workout/new'
       components: {
-        list: Home,
-        create: About
+        list: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
       }
     },
     {
       path: '/workout/new',
       name: 'workoutNew',
       components: {
-        list: Exercise,
-        create: WorkoutNew
+        list: () => import(/* webpackChunkName: "workout-new" */ '../views/Exercise.vue'),
+        create: () => import(/* webpackChunkName: "workout-new" */ '../components/workout/WorkoutNew.vue') 
       }
     },
     {
       path: '/workout/go',
       name: 'workoutGo',
       components: {
-        list: WorkoutGoExercises,
-        create: WorkoutGoInfo
+        list: () => import(/* webpackChunkName: "workout-go" */ '../components/workout-go/WorkoutGoExercises.vue'),
+        create: () => import(/* webpackChunkName: "workout-go" */ '../components/workout-go/WorkoutGoInfo.vue'),
       }
     },
     {
       path: '/routine/new',
       name: 'routineNew',
       components: {
-        list: WorkoutList,
-        create: RoutineNew
+        list: () => import(/* webpackChunkName: "routine-new" */ '../components/workout/WorkoutList.vue'),
+        create: () => import(/* webpackChunkName: "routine-new" */ '../components/routine/RoutineNew.vue')
       }
     },
     {
       path: '/routine/list',
       name: 'routines',
       components: {
-        list: RoutineList,
-        create: Home
+        list: () => import(/* webpackChunkName: "routines" */ '../components/routine/RoutineList.vue'),
+        create: () => import(/* webpackChunkName: "routines" */ '../views/Home.vue')
       }
+    },
+    // NOT FOUND
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 });
