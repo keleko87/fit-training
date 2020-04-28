@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "72b3d7049f36fb3d793f",
+    "revision": "eb34f2a3b014ca8a7476",
     "url": "/css/app.bcf14e18.css"
   },
   {
-    "revision": "72b3d7049f36fb3d793f",
-    "url": "/js/app.d9dbf5a1.js"
+    "revision": "eb34f2a3b014ca8a7476",
+    "url": "/js/app.aae5842b.js"
   },
   {
     "revision": "ed710f0b4be041ba55bd",
@@ -22,10 +22,6 @@ self.__precacheManifest = [
   {
     "revision": "6bb2f852fc05817e96bebeed343b8812",
     "url": "/img/hiit.6bb2f852.png"
-  },
-  {
-    "revision": "9803794dda6ed1352bbf00d64984b49f",
-    "url": "/img/boxing3.9803794d.png"
   },
   {
     "revision": "b19e4bd8f8c3f548b0f00995ed05a5d2",
@@ -48,10 +44,6 @@ self.__precacheManifest = [
     "url": "/img/fitness_slide_1.84b809f4.jpg"
   },
   {
-    "revision": "5de8ce5d742240f85f3183daa89a679b",
-    "url": "/img/boxing-2.5de8ce5d.png"
-  },
-  {
     "revision": "215a9d2813da3ddca4f8a61f53e363c6",
     "url": "/media/countdown-10-second.215a9d28.mp3"
   },
@@ -60,12 +52,12 @@ self.__precacheManifest = [
     "url": "/fonts/fa-brands-400.c1868c95.eot"
   },
   {
-    "revision": "ec3cfddedb8bebd2d7a3fdf511f7c1cc",
-    "url": "/fonts/fa-brands-400.ec3cfdde.woff"
-  },
-  {
     "revision": "a06da7f0950f9dd366fc9db9d56d618a",
     "url": "/fonts/fa-brands-400.a06da7f0.woff2"
+  },
+  {
+    "revision": "ec3cfddedb8bebd2d7a3fdf511f7c1cc",
+    "url": "/fonts/fa-brands-400.ec3cfdde.woff"
   },
   {
     "revision": "13685372945d816a2b474fc082fd9aaa",
@@ -92,12 +84,12 @@ self.__precacheManifest = [
     "url": "/fonts/fa-solid-900.a0369ea5.eot"
   },
   {
-    "revision": "bea989e82b07e9687c26fc58a4805021",
-    "url": "/fonts/fa-solid-900.bea989e8.woff"
-  },
-  {
     "revision": "b15db15f746f29ffa02638cb455b8ec0",
     "url": "/fonts/fa-solid-900.b15db15f.woff2"
+  },
+  {
+    "revision": "bea989e82b07e9687c26fc58a4805021",
+    "url": "/fonts/fa-solid-900.bea989e8.woff"
   },
   {
     "revision": "1ab236ed440ee51810c56bd16628aef0",
@@ -116,8 +108,8 @@ self.__precacheManifest = [
     "url": "/img/fa-solid-900.ec763292.svg"
   },
   {
-    "revision": "6ca76963c6bb61b1b5243c71f4fbb5c2",
-    "url": "/img/fit-training-logo.6ca76963.png"
+    "revision": "57e852db17fbe82f47b6c0f68e736789",
+    "url": "/img/fit-training-logo.57e852db.png"
   },
   {
     "revision": "640b2894ff24b18bf882213d85294d25",
@@ -128,7 +120,7 @@ self.__precacheManifest = [
     "url": "/img/fitness.20309555.png"
   },
   {
-    "revision": "23a442bc2fac4602dbe3ee6859e8390d",
+    "revision": "9298cb43af465dcd93c1937be6ddbc99",
     "url": "/index.html"
   },
   {

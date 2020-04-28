@@ -1,5 +1,3 @@
-importScripts("/precache-manifest.dc3f574f393282aaadbc5f338828cbde.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
-
 workbox.setConfig({
   debug: false
 });
@@ -62,4 +60,3 @@ workbox.routing.registerRoute(
     ]
   })
 );
-
