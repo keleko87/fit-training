@@ -23,7 +23,7 @@
                     class="ft-exercise-edit__iframe"
                     title="video exercise"
                     width="560"
-                    :src="info.videoUrl"
+                    :src="videoUrl"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                   ></iframe>
@@ -127,7 +127,7 @@
 
 <script>
 import { mdbView } from 'mdbvue';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 import {
   minLength,
   maxLength,
@@ -149,7 +149,7 @@ export default {
     this.form = this.setInfoData(this.info);
   },
 
-  mixins: [imageSource],
+  mixins: [mediaSource],
 
   components: {
     mdbView
@@ -163,6 +163,12 @@ export default {
       minValueTime: MINUTES[0],
       maxValueTime: MINUTES[MINUTES.length - 1]
     };
+  },
+
+  computed: {
+    videoUrl() {
+      return this.setLoopInVideo(this.info.videoUrl);
+    }
   },
 
   methods: {
@@ -236,8 +242,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$iframe-height: 315px;
-
 .ft-exercise-edit {
   &__image {
     width: auto;
@@ -246,6 +250,7 @@ $iframe-height: 315px;
 
   &__iframe {
     height: $iframe-height;
+    border: $iframe-border;
   }
 
   &__is-warm-up {

@@ -60,7 +60,7 @@ import { mdbIcon } from 'mdbvue';
 import ExerciseEdit from './ExerciseEdit';
 import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 
 export default {
   name: 'exercise-card-add',
@@ -75,7 +75,7 @@ export default {
     }
   },
 
-  mixins: [timer, imageSource],
+  mixins: [timer, mediaSource],
 
   components: {
     ExerciseEdit,

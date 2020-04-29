@@ -280,7 +280,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 import {
   required,
   minLength,
@@ -304,7 +304,7 @@ export default {
     this.$store.dispatch('GET_EXERCISES');
   },
 
-  mixins: [imageSource],
+  mixins: [mediaSource],
 
   data() {
     return {

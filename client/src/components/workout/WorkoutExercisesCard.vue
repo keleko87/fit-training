@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex';
 import ExerciseDetail from '../exercise/ExerciseDetail';
 import FtModal from '../common/Modal';
 import timer from '../../mixins/timer';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 
 export default {
   name: 'workout-exercises-card',
@@ -80,7 +80,7 @@ export default {
     }
   },
 
-  mixins: [timer, imageSource],
+  mixins: [timer, mediaSource],
 
   components: {
     ExerciseDetail,

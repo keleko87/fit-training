@@ -50,7 +50,7 @@
 import { mdbIcon } from 'mdbvue';
 import ExerciseDetail from './ExerciseDetail';
 import ModalPoll from '../common/ModalPoll';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 
 export default {
   name: 'exercise-card-animation',
@@ -65,7 +65,7 @@ export default {
     }
   },
 
-  mixins: [imageSource],
+  mixins: [mediaSource],
 
   components: {
     ExerciseDetail,

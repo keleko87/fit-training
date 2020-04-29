@@ -52,7 +52,7 @@
 import { mdbIcon } from 'mdbvue';
 import WorkoutDetail from './WorkoutDetail';
 import ModalPoll from '../common/ModalPoll';
-import imageSource from '../../mixins/imageSource';
+import mediaSource from '../../mixins/mediaSource';
 
 export default {
   name: 'workout-card-animation',
@@ -67,7 +67,7 @@ export default {
     }
   },
 
-  mixins: [imageSource],
+  mixins: [mediaSource],
 
   components: {
     WorkoutDetail,

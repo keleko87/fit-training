@@ -16,6 +16,11 @@ export default {
     getSportImage(sport) {
       const sportImage = sport.toLowerCase();
       return require(`@/assets/img/sports/${sportImage}.png`);
+    },
+
+    setLoopInVideo(videoUrl) {
+      const videoId = videoUrl.split('embed/')[1];
+      return `${videoUrl}?version=3&loop=1&playlist=${videoId}`;
     }
   }
 };
