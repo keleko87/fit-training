@@ -36,9 +36,8 @@ module.exports = {
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: 'src/service-worker.js'
-      // ...other Workbox options...
+      swSrc: 'src/service-worker.js',
+      exclude: [/\.map$/, /manifest\.json$/]
     }
   },
 
@@ -51,11 +50,4 @@ module.exports = {
       }
     }
   }
-  // devServer: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:9000'
-  //     }
-  //   }
-  // },
 };

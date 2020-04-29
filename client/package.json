@@ -54,8 +54,7 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.5",
-    "webpack-dev-server": "^3.10.1",
-    "workbox-webpack-plugin": "^5.1.3"
+    "webpack-dev-server": "^3.10.1"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
