@@ -168,10 +168,11 @@
 </template>
 
 <script>
+const FtModal = () => import('../common/Modal.vue');
+
 import timer from '../../mixins/timer';
 import { mapGetters } from 'vuex';
 import { SERIES, MINUTES } from '../../common/constants';
-import FtModal from '../common/Modal';
 
 export default {
   name: 'workout-go-info',

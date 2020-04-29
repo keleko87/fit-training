@@ -49,9 +49,10 @@
   </div>
 </template>
 <script>
-import { mdbIcon } from 'mdbvue';
-import WorkoutDetail from './WorkoutDetail';
-import ModalPoll from '../common/ModalPoll';
+const WorkoutDetail = () => import('./WorkoutDetail.vue');
+const ModalPoll = () => import('../common/ModalPoll.vue');
+
+import { mdbIcon } from 'mdbvue/lib';
 import mediaSource from '../../mixins/mediaSource';
 
 export default {

@@ -55,11 +55,12 @@
 </template>
 
 <script>
+const FtHeader = () => import('../components/common/Header.vue');
+const ExerciseList = () => import('../components/exercise/ExerciseList.vue');
+const ExerciseNew = () => import('../components/exercise/ExerciseNew.vue');
+const ModalPoll = () => import('../components/common/ModalPoll.vue');
+
 import { mapGetters } from 'vuex';
-import FtHeader from '../components/common/Header';
-import ExerciseList from '../components/exercise/ExerciseList';
-import ExerciseNew from '../components/exercise/ExerciseNew';
-import ModalPoll from '../components/common/ModalPoll';
 
 export default {
   name: 'exercise',

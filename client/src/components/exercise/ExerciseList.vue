@@ -50,10 +50,11 @@
 </template>
 
 <script>
+const ExerciseCardAnimation = () => import('./ExerciseCardAnimation.vue');
+const WorkoutCardAnimation = () => import('../workout/WorkoutCardAnimation.vue');
+const FtPagination = () => import('../common/Pagination.vue');
+
 import { mapGetters } from 'vuex';
-import ExerciseCardAnimation from './ExerciseCardAnimation';
-import WorkoutCardAnimation from '../workout/WorkoutCardAnimation';
-import FtPagination from '../common/Pagination';
 import pagination from '../../mixins/pagination';
 import draggable from 'vuedraggable';
 

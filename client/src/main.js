@@ -17,6 +17,7 @@ import 'mdbvue/lib/css/mdb.min.css';
 // Vue Material
 import 'vue-material/dist/vue-material.min.css';
 import './assets/scss/main.scss';
+// Register service worker
 import './registerServiceWorker';
 
 Vue.use(VueMaterial);

@@ -36,7 +36,7 @@ import {
   mdbNavbarNav,
   mdbNavItem,
   mdbIcon
-} from 'mdbvue';
+} from 'mdbvue/lib';
 
 export default {
   name: 'header-custom',

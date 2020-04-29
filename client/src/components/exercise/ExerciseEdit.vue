@@ -119,22 +119,21 @@
             </p>
           </div>
         </div>
-
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { mdbView } from 'mdbvue';
+import { mdbView } from 'mdbvue/lib';
 import mediaSource from '../../mixins/mediaSource';
+import { MINUTES } from '../../common/constants';
 import {
   minLength,
   maxLength,
   minValue,
   maxValue
 } from 'vuelidate/lib/validators';
-import { MINUTES } from '../../common/constants';
 
 export default {
   name: 'exercise-edit',

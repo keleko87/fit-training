@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mdbView, mdbIcon } from 'mdbvue';
+import { mdbView, mdbIcon } from 'mdbvue/lib';
 import timer from '../../mixins/timer';
 import mediaSource from '../../mixins/mediaSource';
 

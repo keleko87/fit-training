@@ -56,9 +56,10 @@
   </div>
 </template>
 <script>
-import { mdbIcon } from 'mdbvue';
-import ExerciseEdit from './ExerciseEdit';
-import FtModal from '../common/Modal';
+const ExerciseEdit = () => import('./ExerciseEdit.vue');
+const FtModal = () => import('../common/Modal.vue');
+
+import { mdbIcon } from 'mdbvue/lib';
 import timer from '../../mixins/timer';
 import mediaSource from '../../mixins/mediaSource';
 

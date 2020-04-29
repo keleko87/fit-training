@@ -31,8 +31,9 @@
 </template>
 
 <script>
+const WorkoutExercisesCard = () => import('../workout/WorkoutExercisesCard.vue');
+
 import { mapGetters } from 'vuex';
-import WorkoutExercisesCard from '../workout/WorkoutExercisesCard';
 import FtTimer from '../common/Timer';
 
 export default {

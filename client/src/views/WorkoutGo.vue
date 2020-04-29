@@ -17,9 +17,10 @@
 </template>
 
 <script>
+const WorkoutNew = () => import('../components/workout/WorkoutNew.vue');
+const ExerciseView = () => import('./Exercise.vue');
+
 import { mapGetters } from 'vuex';
-import WorkoutNew from '../components/workout/WorkoutNew';
-import ExerciseView from './Exercise';
 
 export default {
   name: 'workout-view',

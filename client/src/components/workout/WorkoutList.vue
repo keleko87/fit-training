@@ -39,9 +39,10 @@
 </template>
 
 <script>
+const FtHeader = () => import('../common/Header.vue');
+const ExerciseList = () => import('../exercise/ExerciseList.vue');
+
 import { mapGetters } from 'vuex';
-import FtHeader from '../common/Header';
-import ExerciseList from '../exercise/ExerciseList';
 
 export default {
   name: 'workout-list',

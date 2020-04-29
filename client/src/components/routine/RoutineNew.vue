@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import FtAbout from '../../views/About';
+const FtAbout = () => import('../../views/About.vue');
 
 export default {
   name: 'routine-new',

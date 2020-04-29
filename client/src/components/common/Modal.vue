@@ -26,7 +26,7 @@ import {
   mdbModalHeader,
   mdbModalBody,
   mdbModalFooter
-} from 'mdbvue';
+} from 'mdbvue/lib';
 export default {
   name: 'modal',
 

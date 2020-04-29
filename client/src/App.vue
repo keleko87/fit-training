@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import HeaderCustom from './components/common/HeaderCustom';
+const HeaderCustom = () => import('./components/common/HeaderCustom.vue');
 
 export default {
   name: 'App',

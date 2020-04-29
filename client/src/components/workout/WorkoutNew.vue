@@ -220,8 +220,9 @@
 </template>
 
 <script>
-import { mdbIcon } from 'mdbvue';
-import ExerciseCardAdd from '../exercise/ExerciseCardAdd';
+const ExerciseCardAdd = () => import('../exercise/ExerciseCardAdd.vue');
+
+import { mdbIcon } from 'mdbvue/lib';
 import draggable from 'vuedraggable';
 import {
   required,

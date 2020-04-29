@@ -196,11 +196,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mdbIcon } from 'mdbvue';
-import FtModal from '../common/Modal';
-import timer from '../../mixins/timer';
+const FtModal = () => import('../common/Modal.vue');
+
 import MaskedInput from 'vue-masked-input';
+import { mapGetters } from 'vuex';
+import { mdbIcon } from 'mdbvue/lib';
+import timer from '../../mixins/timer';
 import { AudioPlayer } from '../../common/audio';
 
 export default {

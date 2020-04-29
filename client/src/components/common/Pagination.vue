@@ -65,7 +65,7 @@
   </div>
 </template>
 <script>
-import { mdbIcon } from 'mdbvue';
+import { mdbIcon } from 'mdbvue/lib';
 
 export default {
   name: 'ft-pagination',

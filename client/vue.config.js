@@ -1,27 +1,30 @@
 const path = require('path');
 const manifestJSON = require('./public/manifest.json');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   // Performance optimization
-  // configureWebpack: {
-  //   optimization: {
-  //     runtimeChunk: 'single',
-  //     splitChunks: {
-  //       chunks: 'all',
-  //       maxInitialRequests: Infinity,
-  //       minSize: 0,
-  //       cacheGroups: {
-  //         vendor: {
-  //           test: /[\\/]node_modules[\\/]/,
-  //           name(module) {
-  //             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-  //             return `npm.${packageName.replace('@', '')}`;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
+  configureWebpack: {
+    plugins: [new BundleAnalyzerPlugin()],
+
+    optimization: {
+      // runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all'
+        // maxInitialRequests: Infinity,
+        // minSize: 0,
+        // cacheGroups: {
+        //   vendor: {
+        //     test: /[\\/]node_modules[\\/]/,
+        //     name(module) {
+        //       const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+        //       return `npm.${packageName.replace('@', '')}`;
+        //     }
+        //   }
+        // }
+      }
+    }
+  },
 
   // Config where add build files
   outputDir: path.resolve(__dirname, '../public/dist'),

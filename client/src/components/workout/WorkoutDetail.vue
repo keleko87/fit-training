@@ -80,7 +80,8 @@
 </template>
 
 <script>
-import WorkoutExercisesCard from './WorkoutExercisesCard';
+const WorkoutExercisesCard = () => import('./WorkoutExercisesCard.vue');
+
 import timer from '../../mixins/timer';
 
 export default {
