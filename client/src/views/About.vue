@@ -24,8 +24,8 @@ export default {
     height: calc(100vh - #{$height-navbar});
 
     &--item {
-      height: 40vh;
-      width: 75%;
+      // height: 40vh;
+      // width: 75%;
     }
   }
 

@@ -2,7 +2,7 @@
   <mdb-navbar class="ft-navbar" color="black" dark>
     <mdb-navbar-brand class="ft-navbar__logo">
       <!-- Fit Training -->
-      <router-link class="router-link" exact :to="{ name: 'home' }">
+      <router-link class="router-link" to="/home">
         <img src="@/assets/img/fit-training-logo4.png" alt="logo header" />
       </router-link>
     </mdb-navbar-brand>
@@ -21,9 +21,47 @@
           </router-link>
         </mdb-nav-item>
       </mdb-navbar-nav>
-      <!-- <form>
-        <mdb-input type="text" class="text-white" placeholder="Search" aria-label="Search" label navInput waves waves-fixed/>
-      </form> -->
+      <div class="navbar-nav mr-auto">
+        <li v-if="showAdminBoard" class="nav-item">
+          <router-link to="/admin" class="router-link">Admin Panel</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link v-if="currentUser" to="/user" class="router-link"
+            >User</router-link
+          >
+        </li>
+      </div>
+
+      <div v-if="!currentUser" class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <router-link to="/register" class="router-link">
+            <mdb-icon
+              far
+              icon="calendar-alt"
+              class="ft-navbar__icon"
+            />Registarse
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/login" class="router-link">
+            <mdb-icon far icon="calendar-alt" class="ft-navbar__icon" />Login
+          </router-link>
+        </li>
+      </div>
+
+      <div v-if="currentUser" class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <router-link to="/profile" class="router-link">
+            <mdb-icon far icon="calendar-alt" class="ft-navbar__icon" />
+            {{ currentUser.username }}
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <a class="router-link" href @click.prevent="logOut">
+            <mdb-icon far icon="calendar-alt" class="ft-navbar__icon" />LogOut
+          </a>
+        </li>
+      </div>
     </mdb-navbar-toggler>
   </mdb-navbar>
 </template>
@@ -50,15 +88,23 @@ export default {
     mdbIcon
   },
 
-  computed: {},
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    showAdminBoard() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes('ROLE_ADMIN');
+      }
+
+      return false;
+    }
+  },
 
   methods: {
-    login() {
-      // this.$store.dispatch(LOGIN);
-    },
-
-    logout() {
-      // this.$store.dispatch(LOGOUT);
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
     }
   }
 };

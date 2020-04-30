@@ -10,10 +10,58 @@ const router = new Router({
 
   routes: [
     {
-      path: '/',
+      path: '/login',
+      name: 'login',
+      components: {
+        list: () => import(/* webpackChunkName: "home" */ '../components/auth/Login.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      components: {
+        list: () => import(/* webpackChunkName: "home" */ '../components/auth/Register.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/home',
       name: 'home',
       components: {
         list: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/',
+      name: 'app',
+      components: {
+        list: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      components: {
+        list: () => import(/* webpackChunkName: "auth" */ '../components/auth/Profile.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      components: {
+        list: () => import(/* webpackChunkName: "auth" */ '../components/auth/BoardAdmin.vue'),
+        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+      }
+    },
+    {
+      path: '/user',
+      name: 'user',
+      components: {
+        list: () => import(/* webpackChunkName: "auth" */ '../components/auth/BoardUser.vue'),
         create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
       }
     },
@@ -57,11 +105,23 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((routeTo, routeFrom, next) => {
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register', '/home'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
   // Start the route progress bar.
   NProgress.start();
-  next();
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
 });
+
 router.afterEach(() => {
   // Complete the animation of the route progress bar.
   NProgress.done();

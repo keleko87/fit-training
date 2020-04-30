@@ -19,7 +19,10 @@
           <strong class="ft-home__strong">objetivo.</strong>
         </h1>
         <div class="col-12 text-center">
-          <router-link class="ft-home__button btn btn-default btn-lg" :to="{ name: 'routineNew' }">
+          <router-link
+            class="ft-home__button btn btn-default btn-lg"
+            :to="{ name: userLoggedIn ? 'routineNew' : 'login' }"
+          >
             Comienza ahora!
           </router-link>
         </div>
@@ -30,7 +33,13 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+
+  computed: {
+    userLoggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  }
 };
 </script>
 
