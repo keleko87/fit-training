@@ -1,21 +1,15 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  age: Number,
-  weight: Number,
-  height: Number,
-  complexion: String,
-  currentRoutine: { type: mongoose.Schema.Types.ObjectId, ref: 'Routine' }
-}, {
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
-  }
+  roles: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Role'
+    }
+  ]
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

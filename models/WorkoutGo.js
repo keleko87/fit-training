@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { sports, bodyPart, levels, targets } = require('../constants/constants');
+const { sports, bodyPart, levels, targets } = require('../config/constants');
 
 const WorkoutGoSchema = mongoose.Schema({
   name: { type: String, required: true },

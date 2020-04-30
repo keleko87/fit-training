@@ -8,6 +8,9 @@ const mongoose = require('mongoose');
 const debug = require('debug')(`fit-training:${path.basename(__filename).split('.')[0]}`);
 const cors = require('cors');
 
+const db = require("./models");
+const Role = db.role;
+
 // Connect to mongo database
 const dburl = process.env.MONGO_DB_URL;
 console.log(`fit-training:${path.basename(__filename).split('.')[0]}`,'connecting....', dburl);
@@ -18,12 +21,52 @@ mongoose.connect(dburl, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
+.then(() => {
+  console.log("Successfully connect to MongoDB.");
+  initial();
+})
+.catch(err => {
+  console.error("Connection error", err);
+  process.exit();
+});
+
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'user' to roles collection");
+      });
+
+      new Role({
+        name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
+}
+
 // Init server
 const app = express();
 
 // CORS
-app.use(cors());
-app.options('*', cors());
+var corsOptions = {
+  origin: "http://localhost:8080"
+};
+
+app.use(cors(corsOptions));
+// app.use(cors());
+// app.options('*', cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,14 +79,18 @@ app.locals.title = 'Fit Training Express Server';
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
+const auth = require('./routes/auth');
+const user = require('./routes/user');
 const exercise = require('./routes/exercise');
 const workout = require('./routes/workout');
 const workoutGo = require('./routes/workoutGo');
+app.use('/api/auth', auth);
+app.use('/api/test', user);
 app.use('/api/exercise', exercise);
 app.use('/api/workout', workout);
 app.use('/api/workoutGo', workoutGo);

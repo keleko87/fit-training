@@ -3,10 +3,10 @@ const manifestJSON = require('./public/manifest.json');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  // Performance optimization
   configureWebpack: {
     plugins: [new BundleAnalyzerPlugin()],
 
+    // Performance optimization
     optimization: {
       // runtimeChunk: 'single',
       splitChunks: {
