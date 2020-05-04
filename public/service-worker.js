@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.3e32598582c50020f668347855fbcf34.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("/precache-manifest.7140b8fc606a76084b89a5b82c2be115.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 /* eslint-disable no-undef */
 
@@ -22,7 +22,7 @@ if (workbox) {
       plugins: [
         new workbox.expiration.Plugin({
           maxEntries: 60,
-          maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+          maxAgeSeconds: 24 * 60 * 60 // 1 Day
         })
       ]
     })
@@ -31,7 +31,7 @@ if (workbox) {
   // AUDIOS
   workbox.routing.registerRoute(
     /\.(?:mp3)$/,
-    workbox.strategies.networkFirst({
+    workbox.strategies.cacheFirst({
       cacheName: 'audios',
       plugins: [
         new workbox.expiration.Plugin({
@@ -44,17 +44,28 @@ if (workbox) {
 
   // API
   workbox.routing.registerRoute(
-    new RegExp('https://fit-training.herokuapp.com/api'),
+    new RegExp('/api/exercise/all'),
     workbox.strategies.networkFirst({
-      cacheName: 'api'
+      cacheName: 'api-exercise',
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 60,
+          maxAgeSeconds: 24 * 60 * 60 // 1 Days
+        })
+      ]
     })
   );
 
-  // UPLOADS SERVER
   workbox.routing.registerRoute(
-    new RegExp('https://fit-training.herokuapp.com/uploads/'),
+    new RegExp('/api/workout/all'),
     workbox.strategies.networkFirst({
-      cacheName: 'uploads'
+      cacheName: 'api-workout',
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 60,
+          maxAgeSeconds: 24 * 60 * 60 // 1 Day
+        })
+      ]
     })
   );
 

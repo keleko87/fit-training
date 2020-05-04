@@ -26,16 +26,8 @@ const router = new Router({
       }
     },
     {
-      path: '/home',
-      name: 'home',
-      components: {
-        list: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
-        create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
-      }
-    },
-    {
       path: '/',
-      name: 'app',
+      name: 'home',
       components: {
         list: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
         create: () => import(/* webpackChunkName: "home" */ '../views/About.vue')
@@ -106,7 +98,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register', '/home'];
+  const publicPages = ['/login', '/register', '/'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
 

@@ -4,12 +4,12 @@
       <slot name="nav-list">
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'home' }">
-            New workout
+            Home
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'new' }">
-            <i class="ion-compose"></i>New Routine
+          <router-link class="nav-link" :to="{ name: 'routineNew' }">
+            <i class="ion-compose"></i>Nueva rutina
           </router-link>
         </li>
         <li class="nav-item dropdown">

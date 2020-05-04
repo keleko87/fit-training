@@ -14,11 +14,6 @@
     <ft-header>
       <template slot="nav-list">
         <li class="nav-item mx-2">
-          <router-link class="router-link" :to="{ name: 'routineNew' }">
-            Entrenamientos
-          </router-link>
-        </li>
-        <li class="nav-item mx-2">
           <!-- trigger modal button -->
           <a class="router-link" @click="modalPoll = true">
             Nuevo ejercicio
