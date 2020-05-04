@@ -29,7 +29,11 @@
         >{{ time }}</small
       >
 
-      <img :src="getImage(data)" alt="image url" />
+      <img
+        :src="getImage(data)"
+        @error="defaultExerciseImage($event, data)"
+        alt="image url"
+      />
 
       <figcaption>
         <h6 class="ft-exercise-card-add__figcaption-name">{{ data.name }}</h6>

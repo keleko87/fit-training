@@ -10,6 +10,7 @@
                 <img
                   class="ft-exercise-edit__image mx-auto"
                   :src="getImage(info)"
+                  @error="defaultExerciseImage($event, info)"
                   alt="image exercise"
                 />
               </div>

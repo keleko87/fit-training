@@ -20,7 +20,11 @@
 
     <!-- CARD -->
     <figure :class="effectClass">
-      <img :src="getImage(data)" alt="image url" />
+      <img
+        :src="getImage(data)"
+        @error="defaultExerciseImage($event, data)"
+        alt="image url"
+      />
       <figcaption>
         <h6 class="ft-exercise-card__figcaption-name">{{ data.name }}</h6>
         <div class="ft-exercise-card__action">

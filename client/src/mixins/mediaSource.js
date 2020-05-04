@@ -13,6 +13,12 @@ export default {
       return `${process.env.VUE_APP_UPLOADS}${data.image.filename}`;
     },
 
+    defaultExerciseImage(ev, data) {
+      const sport = data && data.sport ? data.sport.toLowerCase() : 'boxing';
+      const sportImage = require(`@/assets/img/exercise/${sport}.png`);
+      ev.target.src = sportImage;
+    },
+
     getSportImage(sport) {
       const sportImage = sport.toLowerCase();
       return require(`@/assets/img/sports/${sportImage}.png`);

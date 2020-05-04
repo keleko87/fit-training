@@ -76,7 +76,7 @@
               }}</span>
             </md-field>
           </div>
-  
+
           <div class="col-md-3">
             <!-- TARGET -->
             <md-field :class="getValidationClass('target')">
@@ -221,14 +221,20 @@
 
           <!-- VIDEO -->
           <div class="col-md-6">
-            <md-field>
+            <md-field :class="getValidationClass('videoUrl')">
               <!-- NAME -->
-              <label>Video (URL)</label>
+              <label>Youtube video (URL)</label>
               <md-input
                 type="url"
                 id="videoUrl"
                 v-model.trim="$v.form.videoUrl.$model"
               ></md-input>
+              <span class="md-error" v-if="!$v.form.videoUrl.url">{{
+                invalidUrl
+              }}</span>
+              <span class="md-error" v-else-if="!$v.form.videoUrl.youtubeUrl">{{
+                youtubeUrl
+              }}</span>
             </md-field>
           </div>
         </div>
@@ -294,7 +300,9 @@ import {
   LEVELS,
   BODY_PARTS,
   TARGETS,
-  MINUTES
+  MINUTES,
+  YOUTUBE_SHARE_URL,
+  YOUTUBE_EMBED_URL
 } from '../../common/constants';
 
 export default {
@@ -328,6 +336,8 @@ export default {
       },
       invalidField: 'Campo incorrecto',
       requiredField: 'Campo obligatorio',
+      invalidUrl: 'URL incorrecta',
+      youtubeUrl: 'No es una URL de Youtube',
       submitStatus: null,
       sports: SPORTS,
       targets: TARGETS,
@@ -400,14 +410,29 @@ export default {
       formData.append('series', this.form.series);
       formData.append('reps', this.form.reps);
       formData.append('imageUrl', this.form.imageUrl);
-      formData.append('videoUrl', this.form.videoUrl);
       formData.append('isWarmUp', this.form.isWarmUp);
 
       if (this.form.image) {
         formData.append('image', this.form.image);
       }
 
+      if (this.form.videoUrl) {
+        const videoUrl = this.setVideoUrl(this.form.videoUrl);
+        formData.append('videoUrl', videoUrl);
+      } else {
+        formData.append('videoUrl', '');
+      }
+
       return formData;
+    },
+
+    setVideoUrl(videoUrl) {
+      if (videoUrl.includes(YOUTUBE_SHARE_URL)) {
+        const videoId = videoUrl.split(YOUTUBE_SHARE_URL)[1];
+        return `${YOUTUBE_EMBED_URL}${videoId}`;
+      } else {
+        return videoUrl;
+      }
     }
   },
 
@@ -432,7 +457,6 @@ export default {
           maxLength: maxLength(500)
         },
         series: {
-          required,
           minValue: minValue(1),
           maxValue: maxValue(60)
         },
@@ -441,7 +465,6 @@ export default {
           maxValue: maxValue(60)
         },
         rest: {
-          required,
           minValue: minValue(this.minValueTime),
           maxValue: maxValue(this.maxValueTime)
         },
@@ -450,11 +473,19 @@ export default {
           maxValue: maxValue(this.maxValueTime)
         },
         image: {},
-        imageUrl: {
-          required
-        },
+        imageUrl: {},
         videoUrl: {
-          url
+          url,
+          youtubeUrl: url => {
+            if (url) {
+              return (
+                url.includes(YOUTUBE_SHARE_URL) ||
+                url.includes(YOUTUBE_EMBED_URL)
+              );
+            } else {
+              return true;
+            }
+          }
         },
         isWarmUp: {}
       }
