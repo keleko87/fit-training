@@ -21,69 +21,115 @@
             class="profile-img-card"
             alt="avatar"
           /> -->
-          <form name="form" @submit.prevent="handleRegister">
-            <div v-if="!successful">
-              <div class="form-group">
-                <label for="username">Nombre de usuario</label>
-                <input
-                  v-model="user.username"
-                  v-validate="'required|min:3|max:20'"
-                  type="text"
-                  class="form-control"
-                  name="username"
-                />
-                <div
-                  v-if="submitted && errors.has('username')"
-                  class="alert-danger"
-                >
-                  {{ errors.first('username') }}
-                </div>
+
+          <form name="form" novalidate @submit.prevent="handleRegister">
+            <div v-if="!successful" class="form-row">
+              <div class="col-12">
+                <md-field :class="getValidationClass('username')">
+                  <!-- USERNAME -->
+                  <label>Nombre de usuario</label>
+                  <md-input
+                    type="text"
+                    id="username"
+                    name="username"
+                    v-model.trim="$v.form.username.$model"
+                  ></md-input>
+                  <span class="md-error" v-if="!$v.form.username.alphaNum">
+                    Sólo puede contener letras y números
+                  </span>
+                  <span
+                    class="md-error"
+                    v-else-if="!$v.form.username.minlength"
+                  >
+                    Debe contener al menos 5 caracteres
+                  </span>
+                </md-field>
               </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                  v-model="user.email"
-                  v-validate="'required|email|max:50'"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                />
-                <div
-                  v-if="submitted && errors.has('email')"
-                  class="alert-danger"
-                >
-                  {{ errors.first('email') }}
-                </div>
+
+              <div class="col-12">
+                <md-field :class="getValidationClass('username')">
+                  <!-- EMAIL -->
+                  <label>Email</label>
+                  <md-input
+                    type="text"
+                    id="email"
+                    name="email"
+                    v-model.trim="$v.form.email.$model"
+                  ></md-input>
+                  <span class="md-error" v-if="!$v.form.email.email">
+                    Dirección de email no válida
+                  </span>
+                </md-field>
               </div>
-              <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input
-                  v-model="user.password"
-                  v-validate="'required|min:6|max:40'"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                />
-                <div
-                  v-if="submitted && errors.has('password')"
-                  class="alert-danger"
-                >
-                  {{ errors.first('password') }}
-                </div>
+
+              <div class="col-12">
+                <md-field :class="getValidationClass('password')">
+                  <!-- PASSWORD -->
+                  <label>Contraseña</label>
+                  <md-input
+                    type="password"
+                    id="password"
+                    name="password"
+                    v-model.trim="$v.form.password.$model"
+                  ></md-input>
+                  <span class="md-error" v-if="!$v.form.password.minLength">
+                    Debe contener al menos 6 caracteres
+                  </span>
+                  <span
+                    class="md-error"
+                    v-else-if="!$v.form.password.goodPassword"
+                  >
+                    Usa al menos una mayúscula, una minúscula, un número y un
+                    caracter especial.
+                  </span>
+                </md-field>
               </div>
-              <div class="form-group">
-                <button class="btn btn-primary btn-block">Crear cuenta</button>
+
+              <div class="col-12">
+                <md-field :class="getValidationClass('password')">
+                  <!-- PASSWORD -->
+                  <label>Repite contraseña</label>
+                  <md-input
+                    type="password"
+                    id="password2"
+                    name="password2"
+                    v-model.trim="$v.form.password2.$model"
+                  ></md-input>
+                  <span class="md-error" v-if="!$v.form.password2.sameAs">
+                    La contraseña no coincide
+                  </span>
+                </md-field>
               </div>
             </div>
-          </form>
 
-          <div
-            v-if="message"
-            class="alert"
-            :class="successful ? 'alert-success' : 'alert-danger'"
-          >
-            {{ message }}
-          </div>
+            <!-- CREAR CUENTA -->
+            <div v-if="!successful" class="form-group mt-4">
+              <button
+                class="ft-register__btn-session btn btn-default btn-block"
+                :disabled="loading"
+              >
+                <span
+                  v-show="loading"
+                  class="ft-register__btn-session--text spinner-border spinner-border-sm"
+                ></span>
+                <span v-show="!loading" class="ft-register__btn-session--text">
+                  Enviar
+                </span>
+              </button>
+            </div>
+
+            <div
+              v-if="message"
+              class="ft-register__register-successful form-group text-center"
+            >
+              <span
+                v-if="message"
+                :class="successful ? 'text-success' : 'text-danger'"
+              >
+                {{ message.message ? message.message : message }}
+              </span>
+            </div>
+          </form>
         </div>
 
         <div class="col-md-12 text-center">
@@ -98,16 +144,30 @@
 </template>
 
 <script>
-import User from '../../models/user';
+import { SPECIAL_CHARS_PATTERN } from '../../common/constants';
+import {
+  required,
+  minLength,
+  email,
+  alphaNum,
+  sameAs
+} from 'vuelidate/lib/validators';
 
 export default {
   name: 'FtRegister',
   data() {
     return {
-      user: new User('', '', ''),
+      form: {
+        username: '',
+        email: '',
+        password: '',
+        password2: ''
+      },
       submitted: false,
       successful: false,
-      message: ''
+      loading: false,
+      message: '',
+      specialCharsPattern: SPECIAL_CHARS_PATTERN
     };
   },
   computed: {
@@ -121,27 +181,76 @@ export default {
     }
   },
   methods: {
-    handleRegister() {
+    getValidationClass(fieldName) {
+      const field = this.$v.form[fieldName];
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        };
+      }
+    },
+
+    async handleRegister() {
       this.message = '';
       this.submitted = true;
-      this.$validator.validate().then(isValid => {
-        if (isValid) {
-          this.$store.dispatch('auth/register', this.user).then(
-            data => {
-              this.message = data.message;
-              this.successful = true;
-            },
-            error => {
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-              this.successful = false;
-            }
-          );
+      this.$v.form.$touch();
+
+      if (!this.$v.$invalid) {
+        try {
+          this.loading = true;
+          const { username, email, password } = this.form;
+          const data = await this.$store.dispatch('auth/REGISTER', {
+            username,
+            email,
+            password
+          });
+          this.message = data.message;
+          this.successful = true;
+        } catch (error) {
+          this.loading = false;
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
         }
-      });
+      }
     }
+  },
+
+  validations: function() {
+    return {
+      form: {
+        username: {
+          required,
+          minLength: minLength(5),
+          alphaNum
+        },
+        email: {
+          required: required,
+          email: email
+        },
+        password: {
+          required,
+          // a custom validator
+          minLength: minLength(6),
+          goodPassword: password => {
+            return (
+              /[a-z]/.test(password) &&
+              /[A-Z]/.test(password) &&
+              /[0-9]/.test(password) &&
+              this.specialCharsPattern.test(password)
+            );
+          },
+          sameAs: sameAs('password2')
+        },
+        password2: {
+          required,
+          sameAs: sameAs('password')
+        }
+      }
+    };
   }
 };
 </script>
@@ -159,37 +268,21 @@ export default {
       font-weight: bold;
     }
   }
-}
-label {
-  display: block;
-  margin-top: 10px;
-}
 
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
-}
+  &__btn-session {
+    box-shadow: none;
 
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
+    &--text {
+      color: $white !important;
+      letter-spacing: 0.5px;
+    }
+  }
 
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+  &__register-successful {
+    margin: 0;
+    .text-success {
+      font-weight: bold;
+    }
+  }
 }
 </style>

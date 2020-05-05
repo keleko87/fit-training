@@ -13,6 +13,6 @@ export default {
           'md-invalid': field.$invalid && field.$dirty
         };
       }
-    },
-
+    }
+  }
 };

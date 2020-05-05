@@ -3,6 +3,7 @@ const router = express.Router();
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const { verifySignUp } = require('../middlewares');
+const { AUTH } = require('../config/error-messages');
 const config = require('../config/auth.config');
 const db = require('../models');
 const User = db.user;
@@ -54,7 +55,7 @@ router.post('/signup',
                 return;
               }
   
-              res.send({ message: 'User was registered successfully!' });
+              res.send({ message: AUTH.USER_REGISTERED_SUCCESSFULLY });
             });
           }
         );
@@ -72,7 +73,7 @@ router.post('/signup',
               return;
             }
   
-            res.send({ message: 'User was registered successfully!' });
+            res.send({ message: AUTH.USER_REGISTERED_SUCCESSFULLY });
           });
         });
       }
@@ -93,7 +94,7 @@ router.post('/signin', (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: 'User Not found.' });
+        return res.status(404).send({ message: AUTH.USER_NOT_FOUND });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -104,7 +105,7 @@ router.post('/signin', (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: 'Invalid Password!'
+          message: AUTH.INVALID_PASSWORD
         });
       }
 

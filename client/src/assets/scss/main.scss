@@ -164,18 +164,58 @@ body {
     width: 100%;
   }
 
-}
-
-////// PROGRESS BAR ///////
-#nprogress {
-  .bar {
-    height: 4px;
-    background: $teal;
+  ////// PROGRESS BAR ///////
+  #nprogress {
+    .bar {
+      height: 4px;
+      background: $teal;
+    }
+    .spinner {
+      display: none;
+      // position: absolute;
+      // top: 15px;
+      // right: 45%;
+    }
   }
-  .spinner {
-    display: none;
-    // position: absolute;
-    // top: 15px;
-    // right: 45%;
+  
+  
+  /// ALERT BOOTSTRAP //////
+  .alert.alert-success {
+    margin-bottom: 0;
+  }
+  
+  
+  ///// CARD BOOTSTRAP ///////
+  .card {
+    background-color: $primary-dark-grey; // #f7f7f7;
+    padding: 20px 25px 30px;
+    margin: 0 auto 25px;
+    margin-top: 50px;
+    border: 1px solid $second-dark-grey;
+    border-radius: 0px;
+    box-shadow: 9px 8px 9px rgba(0, 0, 0, 0.3);
+  }
+
+  .card-container.card {
+    max-width: 350px !important;
+    padding: 40px 40px;
+
+    // Fix autocomplete styles in webkit browsers
+    .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
+    .md-field.md-theme-default.md-focused .md-textarea:-webkit-autofill, 
+    .md-field.md-theme-default.md-has-value .md-input:-webkit-autofill, 
+    .md-field.md-theme-default.md-has-value .md-textarea:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px $primary-dark-grey inset !important;
+    }
+  }
+
+  .profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
   }
 }

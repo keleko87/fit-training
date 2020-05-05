@@ -34,33 +34,32 @@ const getters = {
 };
 
 const actions = {
-  login({ commit }, user) {
-    return AuthService.login(user).then(
-      user => {
-        commit('loginSuccess', user);
-        return Promise.resolve(user);
-      },
-      error => {
-        commit('loginFailure');
-        return Promise.reject(error);
-      }
-    );
+  async ['LOGIN']({ commit }, user) {
+    try {
+      const res = await AuthService.login(user);
+      commit('LOGIN_SUCCESS', res);
+      return res;
+    } catch (error) {
+      console.log('error login failure', error);
+      commit('LOGIN_FAILURE');
+      throw error;
+    }
   },
-  logout({ commit }) {
-    AuthService.logout();
-    commit('logout');
+
+  async ['LOGOUT']({ commit }) {
+    await AuthService.logout();
+    commit('LOGOUT');
   },
-  register({ commit }, user) {
-    return AuthService.register(user).then(
-      response => {
-        commit('registerSuccess');
-        return Promise.resolve(response.data);
-      },
-      error => {
-        commit('registerFailure');
-        return Promise.reject(error);
-      }
-    );
+
+  async ['REGISTER']({ commit }, user) {
+    try {
+      const { data } = await AuthService.register(user);
+      commit('REGISTER_SUCCESS');
+      return data;
+    } catch (error) {
+      commit('REGISTER_FAILURE');
+      throw error;
+    }
   },
 
   async ['GET_USER_WORKOUTS_GO'](context, userId) {
@@ -77,22 +76,22 @@ const actions = {
 };
 
 const mutations = {
-  loginSuccess(state, user) {
+  ['LOGIN_SUCCESS'](state, user) {
     state.status.loggedIn = true;
     state.user = user;
   },
-  loginFailure(state) {
+  ['LOGIN_FAILURE'](state) {
     state.status.loggedIn = false;
     state.user = null;
   },
-  logout(state) {
+  ['LOGOUT'](state) {
     state.status.loggedIn = false;
     state.user = null;
   },
-  registerSuccess(state) {
+  ['REGISTER_SUCCESS'](state) {
     state.status.loggedIn = false;
   },
-  registerFailure(state) {
+  ['REGISTER_FAILURE'](state) {
     state.status.loggedIn = false;
   },
   ['SET_USER_WORKOUTS_GO'](state, workoutsGo) {
@@ -101,7 +100,7 @@ const mutations = {
 };
 
 export default {
-  namespaced: true,
+  namespaced: true, // to use -> dispatch('auth/REGISTER')
   state,
   getters,
   actions,

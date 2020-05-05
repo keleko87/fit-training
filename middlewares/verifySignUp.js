@@ -1,4 +1,5 @@
 const { roles } = require('../config/constants');
+const { AUTH } = require('../config/error-messages');
 const User = require('../models/User');
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
@@ -12,7 +13,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
     }
 
     if (user) {
-      res.status(400).send({ message: "Failed! Username is already in use!" });
+      res.status(400).send({ message: AUTH.USERNAME_IS_ALREADY_USE });
       return;
     }
 
@@ -26,7 +27,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
       }
 
       if (user) {
-        res.status(400).send({ message: "Failed! Email is already in use!" });
+        res.status(400).send({ message: AUTH.EMAIL_IS_ALREADY_USE });
         return;
       }
 
@@ -40,7 +41,7 @@ const checkRolesExisted = (req, res, next) => {
     for (let i = 0; i < req.body.roles.length; i++) {
       if (!roles.includes(req.body.roles[i])) {
         res.status(400).send({
-          message: `Failed! Role ${req.body.roles[i]} does not exist!`
+          message: `Error! Rol ${req.body.roles[i]} no existe!`
         });
         return;
       }

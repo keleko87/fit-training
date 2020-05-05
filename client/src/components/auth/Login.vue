@@ -10,59 +10,60 @@
         </p>
         <div class="card card-container">
           <!-- <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-        alt="profile image"
-      /> -->
-          <form name="form" @submit.prevent="handleLogin">
-            <div class="form-group">
-              <label for="username">Nombre de usuario</label>
-              <input
-                v-model="user.username"
-                v-validate="'required'"
-                type="text"
-                class="form-control"
-                name="username"
-              />
-              <div
-                v-if="errors.has('username')"
-                class="alert alert-danger"
-                role="alert"
-              >
-                Username is required!
+            id="profile-img"
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            class="profile-img-card"
+            alt="profile image"
+          /> -->
+          <form name="form" novalidate @submit.prevent="handleLogin">
+            <div class="form-row">
+              <div class="col-12">
+                <md-field :class="getValidationClass('username')">
+                  <!-- USERNAME -->
+                  <label>Nombre de usuario</label>
+                  <md-input
+                    type="text"
+                    id="username"
+                    name="username"
+                    v-model.trim="$v.form.username.$model"
+                  ></md-input>
+                </md-field>
+              </div>
+
+              <div class="col-12">
+                <md-field :class="getValidationClass('password')">
+                  <!-- PASSWORD -->
+                  <label>Contraseña</label>
+                  <md-input
+                    type="password"
+                    id="password"
+                    name="password"
+                    v-model.trim="$v.form.password.$model"
+                  ></md-input>
+                </md-field>
               </div>
             </div>
-            <div class="form-group">
-              <label for="password">Contraseña</label>
-              <input
-                v-model="user.password"
-                v-validate="'required'"
-                type="password"
-                class="form-control"
-                name="password"
-              />
-              <div
-                v-if="errors.has('password')"
-                class="alert alert-danger"
-                role="alert"
+
+            <!-- INICIAR SESION -->
+            <div class="form-group mt-4">
+              <button
+                class="ft-login__btn-session btn btn-default btn-block"
+                :disabled="loading"
               >
-                Password is required!
-              </div>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary btn-block" :disabled="loading">
                 <span
                   v-show="loading"
-                  class="spinner-border spinner-border-sm"
+                  class="ft-login__btn-session--text spinner-border spinner-border-sm"
                 ></span>
-                <span>Iniciar sesión</span>
+                <span v-show="!loading" class="ft-login__btn-session--text">
+                  Iniciar sesión
+                </span>
               </button>
             </div>
-            <div class="form-group">
-              <div v-if="message" class="alert alert-danger" role="alert">
-                {{ message }}
-              </div>
+
+            <div class="form-group text-center">
+              <span v-if="message" class="text-danger">
+                {{ message.message ? message.message : message }}
+              </span>
             </div>
           </form>
         </div>
@@ -80,50 +81,69 @@
 
 <script>
 import User from '../../models/user';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   name: 'FtLogin',
+
   data() {
     return {
-      user: new User('', ''),
+      form: new User('', ''),
       loading: false,
       message: ''
     };
   },
+
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     }
   },
+
   created() {
     if (this.loggedIn) {
       this.$router.push('/routine/new');
     }
   },
-  methods: {
-    handleLogin() {
-      this.loading = true;
-      this.$validator.validateAll().then(isValid => {
-        if (!isValid) {
-          this.loading = false;
-          return;
-        }
 
-        if (this.user.username && this.user.password) {
-          this.$store.dispatch('auth/login', this.user).then(
-            () => {
-              this.$router.push('/routine/new');
-            },
-            error => {
-              this.loading = false;
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-            }
-          );
+  methods: {
+    getValidationClass(fieldName) {
+      const field = this.$v.form[fieldName];
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        };
+      }
+    },
+
+    async handleLogin() {
+      this.$v.form.$touch();
+
+      if (!this.$v.$invalid) {
+        try {
+          this.loading = true;
+          await this.$store.dispatch('auth/LOGIN', this.form);
+          this.$router.push('/routine/new');
+        } catch (error) {
+          this.loading = false;
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
         }
-      });
+      }
+    }
+  },
+
+  validations: {
+    form: {
+      username: {
+        required
+      },
+      password: {
+        required
+      }
     }
   }
 };
@@ -142,38 +162,14 @@ export default {
       font-weight: bold;
     }
   }
-}
 
-label {
-  display: block;
-  margin-top: 10px;
-}
+  &__btn-session {
+    box-shadow: none;
 
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
-}
-
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+    &--text {
+      color: $white !important;
+      letter-spacing: 0.5px;
+    }
+  }
 }
 </style>

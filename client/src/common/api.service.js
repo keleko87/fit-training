@@ -24,12 +24,6 @@ const ApiService = {
     });
   },
 
-  setHeader() {
-    // Vue.axios.defaults.headers.common[
-    //   'Authorization'
-    // ] = `Token ${JwtService.getToken()}`;
-  },
-
   query(resource, params) {
     return Vue.axios.get(resource, params).catch(error => {
       throw new Error(`[RWV] ApiService ${error}`);

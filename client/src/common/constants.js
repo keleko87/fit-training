@@ -38,6 +38,7 @@ export const MINUTES = [
   '60'
 ];
 export const SERIES = ['1', '2', '3', '4', '5'];
-export const TIME_PATTERN = '/^([01]?[0-9]|2[0-5]):[0-5][0-9]$/';
+export const TIME_PATTERN = /^([01]?[0-9]|2[0-5]):[0-5][0-9]$/;
+export const SPECIAL_CHARS_PATTERN = /[!"·@#$%&()=?¿¡^{}\\_`\]['*+-.,/<>]/;
 export const YOUTUBE_SHARE_URL = 'https://youtu.be/';
 export const YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/';
