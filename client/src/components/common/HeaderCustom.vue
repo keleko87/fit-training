@@ -152,8 +152,8 @@ export default {
   margin: 0;
 
   &__icon {
-    font-size: 1.2em;
-    vertical-align: text-top;
+    // font-size: 1.2em;
+    vertical-align: baseline;
 
     &--avatar {
       vertical-align: sub;

@@ -2,8 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import Vuelidate from 'vuelidate'; // Use only one
-import VeeValidate from 'vee-validate'; // Use only one
+import Vuelidate from 'vuelidate';
 import VueMaterial from 'vue-material';
 import ApiService from './common/api.service';
 import DateFilter from './common/date.filter';
@@ -22,8 +21,7 @@ import './assets/scss/main.scss';
 import './registerServiceWorker';
 
 Vue.use(VueMaterial);
-Vue.use(Vuelidate); // Use only one
-Vue.use(VeeValidate); // Use only one
+Vue.use(Vuelidate);
 Vue.filter('date', DateFilter);
 
 Vue.config.productionTip = false;

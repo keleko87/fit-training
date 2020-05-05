@@ -250,12 +250,15 @@
               class="input-file"
               @change="onSelect($event)"
             />
+            <p class="text-danger mt-2" v-show="file.error">
+              {{ invalidFile }}
+            </p>
           </div>
         </div>
 
         <div class="form-row">
           <!-- IS WARM UP -->
-          <div class="col-md-6">
+          <div class="col-md-6 my-3">
             <md-checkbox
               id="is-warmup"
               v-model.trim="$v.form.isWarmUp.$model"
@@ -334,6 +337,12 @@ export default {
         videoUrl: '',
         isWarmUp: false
       },
+      file: {
+        format: 'image/',
+        maxSize: 5000000, // bytes -> 5MB
+        error: false
+      },
+      invalidFile: 'Formatos válidos: png, jpg, gif. Tamaño máximo 5MB',
       invalidField: 'Campo incorrecto',
       requiredField: 'Campo obligatorio',
       invalidUrl: 'URL incorrecta',
@@ -354,6 +363,11 @@ export default {
 
     isImageModelURL() {
       return this.isImageUrl(this.$v.form.imageUrl.$model);
+    },
+
+    isValidFile() {
+      const { type, size } = this.$refs.image.files[0];
+      return type.includes(this.file.format) && size < this.file.maxSize;
     }
   },
 
@@ -369,13 +383,20 @@ export default {
     },
 
     onSelect() {
+      this.file.error = false;
       this.$v.form.imageUrl.$reset();
-      const image = this.$refs.image.files[0];
-      const imageUrl = URL.createObjectURL(image);
-      this.form.image = image;
 
-      if (!this.isImageModelURL) {
-        this.$v.form.imageUrl.$model = imageUrl;
+      if (this.isValidFile) {
+        const image = this.$refs.image.files[0];
+        const imageUrl = URL.createObjectURL(image);
+        this.form.image = image;
+
+        if (!this.isImageModelURL) {
+          this.$v.form.imageUrl.$model = imageUrl;
+        }
+      } else {
+        this.$refs.image.value = '';
+        this.file.error = true;
       }
     },
 
