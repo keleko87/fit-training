@@ -19,6 +19,13 @@
             Nuevo ejercicio
           </a>
         </li>
+
+        <li class="nav-item mx-2">
+          <ft-search
+            :items="totalExercises"
+            @search="filterExercises($event)"
+          ></ft-search>
+        </li>
       </template>
     </ft-header>
 
@@ -29,20 +36,59 @@
       </div>
     </div>
 
-    <!-- EXERCISES LIST -->
     <div class="container">
       <div class="row mt-3">
         <div class="col-12">
           <h4>Ejercicios disponibles</h4>
         </div>
-        <div
-          class="col-12"
-          v-if="totalExercisesReversed && totalExercisesReversed.length"
-        >
-          <exercise-list
-            :list="totalExercisesReversed"
-            :type="'exercise'"
-          ></exercise-list>
+      </div>
+
+      <div
+        v-if="itemsPage.length > 0"
+        class="d-flex justify-content-between container"
+      >
+        <div class="row">
+          <!-- <p class="ft-exercise__total">
+            {{ itemsPage.length }} de {{ itemsCount }} resultados
+          </p> -->
+          <p class="ft-exercise__total">
+            De {{ currentRange.first }} a {{ currentRange.last }}
+            ({{ itemsCount }} resultados)
+          </p>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="row">
+          <ft-pagination
+            class="ft-exercise__pagination"
+            :total-pages="totalPages"
+            :total="itemsCount"
+            :current-page="pagination.currentPage"
+            :per-page="pagination.perPage"
+            @pagechanged="onPageChange($event)"
+          >
+          </ft-pagination>
+        </div>
+      </div>
+
+      <div
+        v-else
+        class="ft-exercise__not-found d-flex justify-content-center align-items-center"
+      >
+        <div>
+          <img
+            src="@/assets/img/fit-boxing-logo-white.png"
+            alt="not found results"
+            class="mx-auto"
+          />
+          <h3 class="text-center">No se encontraron resultados</h3>
+        </div>
+      </div>
+
+      <!-- EXERCISES LIST -->
+      <div class="row">
+        <div class="col-12" v-if="itemsPage && itemsPage.length">
+          <exercise-list :list="itemsPage" :type="'exercise'"></exercise-list>
         </div>
       </div>
     </div>
@@ -51,59 +97,104 @@
 
 <script>
 const FtHeader = () => import('../components/common/Header.vue');
+const FtSearch = () => import('../components/common/Search.vue');
+const FtPagination = () => import('../components/common/Pagination.vue');
 const ExerciseList = () => import('../components/exercise/ExerciseList.vue');
 const ExerciseNew = () => import('../components/exercise/ExerciseNew.vue');
 const ModalPoll = () => import('../components/common/ModalPoll.vue');
 
-import { mapGetters } from 'vuex';
+import pagination from '../mixins/pagination';
 
 export default {
   name: 'exercise',
 
   components: {
     FtHeader,
+    FtSearch,
     ExerciseList,
     ExerciseNew,
-    ModalPoll
+    ModalPoll,
+    FtPagination
   },
 
-  mounted() {
-    this.$store.dispatch('GET_EXERCISES');
+  async mounted() {
+    const exercises = await this.$store.dispatch('GET_EXERCISES');
+    this.exercisesFiltered = exercises;
   },
+
+  mixins: [pagination],
 
   data() {
     return {
-      form: {
-        title: '',
-        content: '',
-        tags: [''],
-        imageUrl: '',
-        photo: {}
-      },
-      photoUrl: '',
-      query: '',
+      exercisesFiltered: [],
       modalPoll: false
     };
   },
 
   computed: {
-    ...mapGetters(['totalExercisesReversed']),
+    totalExercises() {
+      return this.$store.state.exercise.totalExercises;
+    },
 
-    filteredExercises() {
-      if (this.query) {
-        return this.totalExercisesReversed.filter(item => {
-          return this.query
-            .toLowerCase()
-            .split(' ')
-            .every(v => item.title.toLowerCase().includes(v));
-        });
-      } else {
-        return this.totalExercisesReversed;
+    itemsPage() {
+      // Return just page of items needed
+      return this.pageItems(this.exercisesFiltered);
+    },
+
+    itemsCount() {
+      return this.exercisesFiltered.length;
+    },
+
+    totalPages() {
+      return this.getTotalPages(this.itemsCount);
+    },
+
+    currentRange() {
+      return this.rangeOfItems.filter(
+        (range, i) => i + 1 === this.pagination.currentPage
+      )[0];
+    },
+
+    // REFACTOR
+    rangeOfItems() {
+      const ranges = [];
+
+      for (let i = 0; i < this.totalPages; i++) {
+        let currentRange = [];
+
+        for (let j = 0; j < this.pagination.perPage; j++) {
+          const initItem = this.pagination.perPage * i + 1;
+          const currentItem = initItem + j;
+          currentRange.push(currentItem);
+
+          if (currentItem === this.itemsCount) {
+            ranges[i] = currentRange;
+            break;
+          }
+        }
+        ranges[i] = currentRange;
       }
+
+      const rangesMap = ranges.map(range => {
+        const [first, ...rest] = range;
+        const last = rest[rest.length - 1];
+
+        return {
+          first,
+          last
+        };
+      });
+
+      return rangesMap;
     }
   },
 
   methods: {
+    filterExercises(exercises) {
+      this.exercisesFiltered = exercises;
+      this.pagination.currentPage = 1;
+    },
+
     onCloseModal(ev) {
       this.modalPoll = ev;
     }
@@ -111,4 +202,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ft-exercise {
+  &__total {
+    font-size: 1rem;
+    margin: 8px 5px;
+  }
+
+  &__not-found {
+    height: 70vh;
+  }
+}
+</style>

@@ -197,8 +197,8 @@ body {
   .alert.alert-success {
     margin-bottom: 0;
   }
-  
-  
+
+
   ///// CARD BOOTSTRAP ///////
   .card {
     background-color: $primary-dark-grey; // #f7f7f7;
@@ -219,7 +219,7 @@ body {
     .md-field.md-theme-default.md-focused .md-textarea:-webkit-autofill, 
     .md-field.md-theme-default.md-has-value .md-input:-webkit-autofill, 
     .md-field.md-theme-default.md-has-value .md-textarea:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 30px $primary-dark-grey inset !important;
+      box-shadow: 0 0 0 30px $primary-dark-grey inset !important;
     }
   }
 

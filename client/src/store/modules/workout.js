@@ -130,7 +130,6 @@ const mutations = {
         ? exerciseUpdated
         : exercise
     );
-    console.log(exercises);
     state.data.exercises = exercises;
   },
   ['DELETE_EXERCISE'](state, exerciseIdGlobal) {

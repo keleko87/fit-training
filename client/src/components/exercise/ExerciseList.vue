@@ -1,33 +1,17 @@
 <template>
   <div class="ft-exercise-list container">
-    <div class="d-flex justify-content-between">
-      <div class="row">
-        <h5 class="ft-exercise-list__total">{{ itemsCount }} resultados</h5>
-      </div>
-      <div class="row">
-        <ft-pagination
-          :total-pages="totalPages"
-          :total="itemsCount"
-          :current-page="pagination.currentPage"
-          :per-page="pagination.perPage"
-          @pagechanged="onPageChange($event)"
-        >
-        </ft-pagination>
-      </div>
-    </div>
-
-    <div v-if="items && items.length > 0">
+    <div v-if="list && list.length > 0">
       <draggable
         class="dragArea row"
         handle=".draggable-handle"
-        :list="items"
+        :list="list"
         :group="{ name: 'workout', pull: 'clone', put: false }"
         :clone="cloneExercise"
         :sort="false"
         @change="log"
       >
         <div
-          v-for="item in items"
+          v-for="item in list"
           :key="item._id"
           class="col-xs-8 col-sm-6 col-lg-4 col-xl-3 p-1"
         >
@@ -43,7 +27,7 @@
       </draggable>
     </div>
 
-    <div v-if="items.length === 0" class="row">
+    <div v-if="list.length === 0" class="row">
       No se encontraron ejercicios...
     </div>
   </div>
@@ -52,10 +36,8 @@
 <script>
 const ExerciseCardAnimation = () => import('./ExerciseCardAnimation.vue');
 const WorkoutCardAnimation = () => import('../workout/WorkoutCardAnimation.vue');
-const FtPagination = () => import('../common/Pagination.vue');
 
 import { mapGetters } from 'vuex';
-import pagination from '../../mixins/pagination';
 import draggable from 'vuedraggable';
 
 export default {
@@ -64,7 +46,6 @@ export default {
   components: {
     ExerciseCardAnimation,
     WorkoutCardAnimation,
-    FtPagination,
     draggable
   },
 
@@ -74,28 +55,13 @@ export default {
       default: 'exercise'
     },
     list: {
-      type: Array
+      type: Array,
+      default: () => []
     }
   },
 
-  mixins: [pagination],
-
   computed: {
     ...mapGetters(['exercisesCount', 'workoutsCount']),
-
-    items() {
-      const itemsList = this.list;
-      // Return just page of items needed
-      return this.pageItems(itemsList);
-    },
-
-    itemsCount() {
-      return this.isExercise ? this.exercisesCount : this.workoutsCount;
-    },
-
-    totalPages() {
-      return this.getTotalPages(this.itemsCount);
-    },
 
     isExercise() {
       return this.type === 'exercise';
