@@ -46,7 +46,11 @@
             slot="toggle"
             class="ft-navbar__dropdown"
           >
-            <mdb-icon icon="user-circle" size="2x" class="ft-navbar__icon--avatar" />
+            <mdb-icon
+              icon="user-circle"
+              size="2x"
+              class="ft-navbar__icon--avatar"
+            />
             {{ currentUser.username }}
           </mdb-dropdown-toggle>
 

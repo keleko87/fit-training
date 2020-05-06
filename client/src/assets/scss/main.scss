@@ -121,15 +121,16 @@ body {
     }
 
     // Fix autocomplete styles in webkit browsers
+    .md-field .md-input:-webkit-autofill,
+    .md-field .md-textarea:-webkit-autofill,
     .md-field.md-theme-default.md-focused .md-input:-webkit-autofill, 
     .md-field.md-theme-default.md-focused .md-textarea:-webkit-autofill, 
     .md-field.md-theme-default.md-has-value .md-input:-webkit-autofill, 
     .md-field.md-theme-default.md-has-value .md-textarea:-webkit-autofill {
-      -webkit-text-fill-color: $white;
-      -webkit-box-shadow: 0 0 0 30px $gray-800 inset;
+      -webkit-text-fill-color: $white !important;
+      box-shadow: 0 0 0 30px $gray-800 inset !important;
     }
   }
-
   
   /// NAVBAR DROPDOWN //////
   .navbar {
@@ -162,6 +163,19 @@ body {
   ////// MD-AUTOCOMPLETE ////////
   .md-field .md-input {
     width: 100%;
+  }
+
+  ///// Fix AUTOCOMPLETE styles in WEBKIT browsers
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  .md-field .md-input:-webkit-autofill,
+  .md-field .md-textarea:-webkit-autofill  {
+    -webkit-text-fill-color: $white !important;
+    box-shadow: 0 0 0 30px $gray-800 inset !important;
   }
 
   ////// PROGRESS BAR ///////

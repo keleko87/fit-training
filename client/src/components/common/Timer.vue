@@ -1,8 +1,11 @@
 <template>
   <div class="ft-timer">
-
     <!-- MODAL FINISH -->
-    <ft-modal :size="'sm'" :modal="modalFinish" @close="onCloseModalFinish($event)">
+    <ft-modal
+      :size="'sm'"
+      :modal="modalFinish"
+      @close="onCloseModalFinish($event)"
+    >
       <template slot="header">
         <h4 class="mb-0">Buen trabajo</h4>
       </template>
@@ -34,7 +37,6 @@
 
     <div class="container">
       <div class="row">
-
         <div class="col-12 d-flex justify-content-center">
           <!-- AUTO TIMER -->
           <button
@@ -140,7 +142,6 @@
                   {{ time.display }}
                 </a>
               </div>
-
             </div>
           </div>
         </div>
@@ -167,29 +168,6 @@
             </div>
           </div>
         </div>
-
-
-        <!-- <div style="color: white">
-          currentExerciseTime {{currentExerciseTime}}
-          <br>
-          customTimeDisabled {{ customTimeDisabled }}
-          <br>
-          secondsLeft {{ secondsLeft }}
-          <br />
-          selectedTime {{ selectedTime }}
-          <br />
-          currentExercise {{ currentExercise }}
-          <br />
-          time {{ time }}
-          <br />
-          currentWorkoutSerie {{ currentWorkoutSerie }}
-          <br />
-          currentWorkoutSerieFinished {{ currentWorkoutSerieFinished }}
-          <br />
-          timerWorkoutSeries {{ timerWorkoutSeries }}
-          <br />
-          restBetweenExercise {{ restBetweenExercise }}
-        </div> -->
       </div>
     </div>
   </div>
@@ -294,7 +272,12 @@ export default {
     },
 
     autoStartDisabled() {
-      return !this.startDate || this.initAutoTimer || this.workoutExercisesAllDone || !this.currentExerciseTime;
+      return (
+        !this.startDate ||
+        this.initAutoTimer ||
+        this.workoutExercisesAllDone ||
+        !this.currentExerciseTime
+      );
     },
 
     stopDisabled() {
@@ -302,15 +285,26 @@ export default {
     },
 
     startDisabled() {
-      return !this.selectedTime || (this.secondsLeft > 0 && !this.isPaused) || this.timerAuto;
+      return (
+        !this.selectedTime ||
+        (this.secondsLeft > 0 && !this.isPaused) ||
+        this.timerAuto
+      );
     },
 
     pauseDisabled() {
-      return !this.selectedTime || this.secondsLeft === 0 || this.isPaused || this.timerAuto;
+      return (
+        !this.selectedTime ||
+        this.secondsLeft === 0 ||
+        this.isPaused ||
+        this.timerAuto
+      );
     },
 
     setTimeDisabled() {
-      return !this.currentExerciseTime || this.selectedTime !== 0 || this.timerAuto;
+      return (
+        !this.currentExerciseTime || this.selectedTime !== 0 || this.timerAuto
+      );
     },
 
     modalFinishText() {
@@ -336,14 +330,12 @@ export default {
       let index = 0;
 
       for (const exercise of this.timerWorkoutExercises) {
-
         // next exercise
         if (index > 0 && !this.intervalBeforeInit && !this.intervalTimer) {
           console.log('next exercise', exercise);
 
           if (this.restBetweenExercise > 0 && this.currentExercise.done) {
             await this.nextExercise();
-
           } else {
             this.setNextExercise();
             this.setTime(this.time.sec);
@@ -354,7 +346,6 @@ export default {
             const timeoutCountdown = (this.selectedTime + 1) * 1000; // 1 seconds to add margin between countdown rest
             await this.timeout(timeoutCountdown);
           }
-
         } else {
           // First Exercise Set time
           this.timeCountdownBeforeInit = 10;
@@ -480,11 +471,7 @@ export default {
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
-        console.log(
-          this.intervalTimer,
-          'COUNTDOWN exercise:',
-          this.secondsLeft
-        );
+        console.log(this.intervalTimer, 'COUNTDOWN:', this.secondsLeft);
 
         if (!this.isPaused) {
           this.secondsLeft = this.secondsLeft - 1;
@@ -519,7 +506,7 @@ export default {
       this.intervalBeforeInit = setInterval(() => {
         console.log(
           this.intervalBeforeInit,
-          'COUNTDOWNN BEFORE INIT:',
+          'COUNTDOWN BEFORE INIT:',
           this.timeCountdownBeforeInit
         );
 
@@ -600,7 +587,11 @@ export default {
     },
 
     openModalFinish() {
-      if (this.workoutFinish || this.currentWorkoutSerieFinished || this.workoutExercisesAllDone) {
+      if (
+        this.workoutFinish ||
+        this.currentWorkoutSerieFinished ||
+        this.workoutExercisesAllDone
+      ) {
         this.showModalFinish();
       }
     },
