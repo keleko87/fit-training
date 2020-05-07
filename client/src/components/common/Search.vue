@@ -5,7 +5,7 @@
       <md-input
         type="text"
         id="search"
-        :value="query"
+        :value="queryValue"
         @input.native="search($event)"
         placeholder=""
       ></md-input>
@@ -18,8 +18,11 @@ export default {
   name: 'FtSearch',
 
   props: {
-    items: Array,
-    default: () => []
+    items: {
+      type: Array,
+      default: () => []
+    },
+    resetValue: Boolean
   },
 
   data() {
@@ -28,7 +31,18 @@ export default {
     };
   },
 
+  computed: {
+    queryValue() {
+      return this.query !== '' && this.resetValue ? '' : this.query;
+    }
+  },
+
   methods: {
+    resetQuery(value) {
+      this.query = value;
+      console.log(value, 'this.query', this.query);
+    },
+
     search(ev) {
       let itemsFiltered;
       this.query = ev.target.value;

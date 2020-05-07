@@ -3,7 +3,7 @@
     <md-field class="ft-filter-tags__wrapper">
       <label>Filtrar</label>
       <md-select
-        :value="filterValues"
+        :value="getFilterValues"
         @md-selected="selectValues($event)"
         @md-closed="triggerFilter()"
         name="filter-tags"
@@ -32,7 +32,8 @@ export default {
       type: Array,
       default: () => []
     },
-    tagField: String
+    tagField: String,
+    value: Array
   },
 
   data() {
@@ -40,6 +41,12 @@ export default {
       itemsFiltered: [],
       filterValues: []
     };
+  },
+
+  computed: {
+    getFilterValues() {
+      return this.value ? this.value : this.filterValues;
+    }
   },
 
   methods: {
@@ -68,7 +75,7 @@ export default {
 
     triggerFilter() {
       this.itemsFiltered = this.filterItems(this.filterValues);
-      this.$emit('search', this.itemsFiltered);
+      this.$emit('filter', this.itemsFiltered);
     }
   }
 };

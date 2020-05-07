@@ -22,17 +22,21 @@
 
         <li class="nav-item mx-2">
           <ft-filter-tags
+            ref="filterBodyPart"
+            :value="filterBodyPartValues"
             :tagField="'bodyPart'"
             :tags="bodyParts"
             :items="totalExercises"
-            @search="filterExercises($event)"
+            @filter="filterExercises($event)"
           ></ft-filter-tags>
         </li>
 
         <li class="nav-item mx-2">
           <ft-search
+            ref="searchName"
+            :reset-value="resetSearchNameValue"
             :items="totalExercises"
-            @search="filterExercises($event)"
+            @search="searchExercisesByName($event)"
           ></ft-search>
         </li>
       </template>
@@ -145,6 +149,8 @@ export default {
     return {
       exercisesFiltered: [],
       modalPoll: false,
+      filterBodyPartValues: [],
+      resetSearchNameValue: false,
       sports: SPORTS,
       levels: LEVELS,
       bodyParts: BODY_PARTS,
@@ -211,7 +217,15 @@ export default {
   },
 
   methods: {
+    searchExercisesByName(exercises) {
+      this.filterBodyPartValues = [];
+      this.resetSearchNameValue = false;
+      this.exercisesFiltered = exercises;
+      this.pagination.currentPage = 1;
+    },
+
     filterExercises(exercises) {
+      this.resetSearchNameValue = true;
       this.exercisesFiltered = exercises;
       this.pagination.currentPage = 1;
     },
