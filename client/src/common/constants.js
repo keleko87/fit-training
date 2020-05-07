@@ -1,14 +1,14 @@
 export const SPORTS = ['Fitness', 'Boxing', 'HIIT', 'Core'];
 export const LEVELS = ['Principiante', 'Intermedio', 'Avanzado'];
 export const BODY_PARTS = [
+  'Full body',
   'Pectoral',
   'Espalda',
   'Hombro',
-  'Pierna',
-  'Abdominal',
   'Bíceps',
   'Tríceps',
-  'Full body'
+  'Pierna',
+  'Abdominal'
 ];
 export const TARGETS = [
   'Fuerza',

@@ -11,13 +11,22 @@
     </modal-poll>
 
     <!-- NAVBAR -->
-    <ft-header>
+    <ft-header class="ft-exercise__nav-header">
       <template slot="nav-list">
         <li class="nav-item mx-2">
           <!-- trigger modal button -->
           <a class="router-link" @click="modalPoll = true">
             Nuevo ejercicio
           </a>
+        </li>
+
+        <li class="nav-item mx-2">
+          <ft-filter-tags
+            :tagField="'bodyPart'"
+            :tags="bodyParts"
+            :items="totalExercises"
+            @search="filterExercises($event)"
+          ></ft-filter-tags>
         </li>
 
         <li class="nav-item mx-2">
@@ -30,11 +39,11 @@
     </ft-header>
 
     <!-- FILTER MENU-->
-    <div class="white">
+    <!-- <div class="white">
       <div class="col-6">
         filters options here
       </div>
-    </div>
+    </div> -->
 
     <div class="container">
       <div class="row mt-3">
@@ -52,8 +61,13 @@
             {{ itemsPage.length }} de {{ itemsCount }} resultados
           </p> -->
           <p class="ft-exercise__total">
-            De {{ currentRange.first }} a {{ currentRange.last }}
-            ({{ itemsCount }} resultados)
+            <span v-if="currentRange.first && currentRange.last">
+              {{ currentRange.first }} a {{ currentRange.last }} de
+            </span>
+            <span v-else-if="currentRange.first">
+              {{ currentRange.first }} de
+            </span>
+            <span>{{ itemsCount }} resultados</span>
           </p>
         </div>
 
@@ -98,12 +112,14 @@
 <script>
 const FtHeader = () => import('../components/common/Header.vue');
 const FtSearch = () => import('../components/common/Search.vue');
+const FtFilterTags = () => import('../components/common/FilterTags.vue');
 const FtPagination = () => import('../components/common/Pagination.vue');
 const ExerciseList = () => import('../components/exercise/ExerciseList.vue');
 const ExerciseNew = () => import('../components/exercise/ExerciseNew.vue');
 const ModalPoll = () => import('../components/common/ModalPoll.vue');
 
 import pagination from '../mixins/pagination';
+import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../common/constants';
 
 export default {
   name: 'exercise',
@@ -111,6 +127,7 @@ export default {
   components: {
     FtHeader,
     FtSearch,
+    FtFilterTags,
     ExerciseList,
     ExerciseNew,
     ModalPoll,
@@ -127,7 +144,11 @@ export default {
   data() {
     return {
       exercisesFiltered: [],
-      modalPoll: false
+      modalPoll: false,
+      sports: SPORTS,
+      levels: LEVELS,
+      bodyParts: BODY_PARTS,
+      targets: TARGETS
     };
   },
 
@@ -204,9 +225,17 @@ export default {
 
 <style lang="scss" scoped>
 .ft-exercise {
+  &__nav-header {
+    border-bottom: 1px solid $gray-600;
+  }
+
   &__total {
     font-size: 1rem;
     margin: 8px 5px;
+
+    span {
+      color: $gray-500 !important;
+    }
   }
 
   &__not-found {

@@ -1,13 +1,15 @@
 <template>
   <div class="ft-search">
-    <div class="ft-search__wrapper">
-      <input
+    <md-field class="ft-search__wrapper">
+      <label>Buscar</label>
+      <md-input
         type="text"
+        id="search"
         :value="query"
-        @input="search($event)"
-        placeholder="Buscar"
-      />
-    </div>
+        @input.native="search($event)"
+        placeholder=""
+      ></md-input>
+    </md-field>
   </div>
 </template>
 
@@ -48,4 +50,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ft-search {
+  &__wrapper.md-field {
+    margin: 0;
+  }
+
+  // &__wrapper.md-field:before {
+  //   bottom: 17px;
+  // }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <nav id="navbar-example2" class="ft-navbar navbar navbar-dark bg-dark">
+  <nav class="ft-navbar navbar navbar-dark bg-dark">
     <ul class="nav nav-pills">
       <slot name="nav-list">
         <li class="nav-item">
@@ -9,7 +9,7 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'routineNew' }">
-            <i class="ion-compose"></i>Nueva rutina
+            Nueva rutina
           </router-link>
         </li>
         <li class="nav-item dropdown">
@@ -36,26 +36,15 @@
 
 <script>
 export default {
-  name: 'ft-header',
-  computed: {},
-
-  methods: {
-    login() {
-      // this.$store.dispatch(LOGIN);
-    },
-
-    logout() {
-      // this.$store.dispatch(LOGOUT);
-    }
-  }
+  name: 'ft-header'
 };
 </script>
 <style lang="scss" scoped>
 .ft-navbar {
-  height: 45px;
+  height: auto;
 
   .nav-pills {
-    margin-top: 0;
+    margin: 0;
   }
 }
 </style>
