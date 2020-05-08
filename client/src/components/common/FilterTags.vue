@@ -72,7 +72,8 @@ export default {
       this.itemsFiltered = this.filterItems(this.filterValues);
       this.$emit('filter', {
         items: this.itemsFiltered,
-        filterValues: this.getFilterValues
+        filterValues: this.filterValues,
+        tagField: this.tagField
       });
     }
   }

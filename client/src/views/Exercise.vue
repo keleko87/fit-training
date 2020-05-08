@@ -20,12 +20,27 @@
           </a>
         </li>
 
+        <h6>filterValues {{ filterValues.length }}</h6>
+        <h6>filterSportValues {{ filterSportValues }}</h6>
+        <h6>filterBodyPartValues {{ filterBodyPartValues }}</h6>
+
         <li class="nav-item mx-2">
           <ft-filter-tags
             ref="filterBodyPart"
             :value="filterBodyPartValues"
             :tagField="'bodyPart'"
             :tags="bodyParts"
+            :items="totalExercises"
+            @filter="filterAllIn($event)"
+          ></ft-filter-tags>
+        </li>
+
+        <li class="nav-item mx-2">
+          <ft-filter-tags
+            ref="filterBodyPart"
+            :value="filterSportValues"
+            :tagField="'sport'"
+            :tags="sports"
             :items="totalExercises"
             @filter="filterAllIn($event)"
           ></ft-filter-tags>
@@ -149,9 +164,12 @@ export default {
     return {
       exercisesFiltered: [],
       modalPoll: false,
+      filterSportValues: [],
+      filterSportItems: [],
       filterBodyPartValues: [],
+      filterBodyPartItems: [],
       filterValues: [],
-      searchQuery: '',
+      // searchQuery: '',
       searchNameValues: [],
       resetSearchNameValue: false,
       sports: SPORTS,
@@ -233,25 +251,110 @@ export default {
       this.pagination.currentPage = 1;
     },
 
+    addFilterValues(ev) {
+      switch (ev.tagField) {
+        case 'sport':
+          this.filterSportValues = ev.filterValues;
+          this.filterSportItems = ev.items;
+          break;
+        case 'bodyPart':
+          this.filterBodyPartValues = ev.filterValues;
+          this.filterBodyPartItems = ev.items;
+          break;
+        default:
+          break;
+      }
+    },
+
     filterAllIn(ev) {
-      let exercises = [];
+      let exercises = this.totalExercises;
+      debugger;
+
+      if (!ev.items.length) {
+        exercises = [];
+        this.exercisesFiltered = exercises;
+
+        if (ev.filterValues) {
+          this.addFilterValues(ev);
+        }
+
+        return;
+      }
 
       if (ev.query !== undefined) {
         this.searchNameValues = ev.items;
-        this.searchQuery = ev.query;
+        // this.searchQuery = ev.query;
         exercises = ev.items;
 
         if (this.filterValues.length) {
           exercises = exercises.filter(item => {
             return this.filterValues.find(value => item._id === value._id);
           });
+        } else {
+          exercises = [];
         }
       }
 
       if (ev.filterValues) {
-        this.filterValues = ev.items;
-        this.filterBodyPartValues = ev.filterValues;
-        exercises = ev.items;
+        this.addFilterValues(ev);
+
+        if (ev.tagField === 'sport') {
+
+          if (!this.filterBodyPartItems && !this.filterBodyPartValues) {
+            exercises = exercises.filter(item => {
+              return this.filterSportItems.find(
+                value => item._id === value._id
+              );
+            });
+
+          } else if (!this.filterBodyPartItems || !this.filterBodyPartItems.length && this.filterBodyPartItems.length) {
+            exercises = [];
+
+          } else if (this.filterBodyPartItems.length) {
+            const exercises1 = exercises.filter(item => {
+              return this.filterSportItems.find(
+                value => item._id === value._id
+              );
+            });
+
+            exercises = exercises1.filter(item => {
+              return this.filterBodyPartItems.find(
+                value => item._id === value._id
+              );
+            });
+          }
+
+          this.filterValues = exercises;
+        }
+
+        if (ev.tagField === 'bodyPart') {
+          
+          if (!this.filterSportItems && !this.filterSportValues) {
+            exercises = exercises.filter(item => {
+              return this.filterBodyPartItems.find(
+                value => item._id === value._id
+              );
+            });
+
+          } else if (!this.filterSportItems || !this.filterSportItems.length && this.filterSportValues.length) {
+            exercises = [];
+
+          } else if (this.filterSportItems.length) {
+            const exercises1 = exercises.filter(item => {
+              return this.filterBodyPartItems.find(
+                value => item._id === value._id
+              );
+            });
+
+            exercises = exercises1.filter(item => {
+              return this.filterSportItems.find(
+                value => item._id === value._id
+              );
+            });
+          }
+
+          this.filterValues = exercises;
+        }
 
         if (this.searchNameValues.length) {
           exercises = exercises.filter(item => {
