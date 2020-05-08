@@ -58,7 +58,7 @@ export default {
         itemsFiltered = this.items;
       }
 
-      this.$emit('search', itemsFiltered);
+      this.$emit('search', { items: itemsFiltered, query: this.query });
     }
   }
 };

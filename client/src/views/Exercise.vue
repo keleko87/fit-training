@@ -27,7 +27,7 @@
             :tagField="'bodyPart'"
             :tags="bodyParts"
             :items="totalExercises"
-            @filter="filterExercises($event)"
+            @filter="filterAllIn($event)"
           ></ft-filter-tags>
         </li>
 
@@ -36,7 +36,7 @@
             ref="searchName"
             :reset-value="resetSearchNameValue"
             :items="totalExercises"
-            @search="searchExercisesByName($event)"
+            @search="filterAllIn($event)"
           ></ft-search>
         </li>
       </template>
@@ -150,6 +150,9 @@ export default {
       exercisesFiltered: [],
       modalPoll: false,
       filterBodyPartValues: [],
+      filterValues: [],
+      searchQuery: '',
+      searchNameValues: [],
       resetSearchNameValue: false,
       sports: SPORTS,
       levels: LEVELS,
@@ -217,16 +220,47 @@ export default {
   },
 
   methods: {
-    searchExercisesByName(exercises) {
+    searchExercisesByName(ev) {
       this.filterBodyPartValues = [];
       this.resetSearchNameValue = false;
-      this.exercisesFiltered = exercises;
+      this.exercisesFiltered = ev;
       this.pagination.currentPage = 1;
     },
 
-    filterExercises(exercises) {
+    filterExercises(ev) {
       this.resetSearchNameValue = true;
-      this.exercisesFiltered = exercises;
+      this.exercisesFiltered = ev;
+      this.pagination.currentPage = 1;
+    },
+
+    filterAllIn(ev) {
+      let exercises = [];
+
+      if (ev.query !== undefined) {
+        this.searchNameValues = ev.items;
+        this.searchQuery = ev.query;
+        exercises = ev.items;
+
+        if (this.filterValues.length) {
+          exercises = exercises.filter(item => {
+            return this.filterValues.find(value => item._id === value._id);
+          });
+        }
+      }
+
+      if (ev.filterValues) {
+        this.filterValues = ev.items;
+        this.filterBodyPartValues = ev.filterValues;
+        exercises = ev.items;
+
+        if (this.searchNameValues.length) {
+          exercises = exercises.filter(item => {
+            return this.searchNameValues.find(value => item._id === value._id);
+          });
+        }
+      }
+
+      this.exercisesFiltered = [...new Set(exercises)]; // new Set() will be remove duplicate values
       this.pagination.currentPage = 1;
     },
 

@@ -61,11 +61,6 @@ export default {
         return this.items;
       }
 
-      // const filter = item =>
-      //   item.name.toLowerCase().includes(filterValue) ||
-      //   item.state.toLowerCase().includes(filterValue) ||
-      //   item.tags.some(tag => tag.toLowerCase().includes(filterValue));
-
       return this.items.filter(item =>
         tags.some(tag =>
           item[this.tagField].toLowerCase().includes(tag.toLowerCase())
@@ -75,7 +70,10 @@ export default {
 
     triggerFilter() {
       this.itemsFiltered = this.filterItems(this.filterValues);
-      this.$emit('filter', this.itemsFiltered);
+      this.$emit('filter', {
+        items: this.itemsFiltered,
+        filterValues: this.getFilterValues
+      });
     }
   }
 };
