@@ -1,14 +1,14 @@
 <template>
   <div class="ft-filter-tags">
     <md-field class="ft-filter-tags__wrapper">
-      <label>Filtrar</label>
+      <label v-if="label">{{ label }}</label>
       <md-select
         :value="getFilterValues"
+        :placeholder="placeholder"
         @md-selected="selectValues($event)"
         @md-closed="triggerFilter()"
         name="filter-tags"
         id="filter-tags"
-        placeholder="Filtrar"
         multiple
       >
         <md-option v-for="tag in tags" :key="tag" :value="tag">
@@ -32,6 +32,11 @@ export default {
       type: Array,
       default: () => []
     },
+    placeholder: {
+      type: String,
+      default: 'Filtrar'
+    },
+    label: String,
     tagField: String,
     value: Array
   },
@@ -83,8 +88,8 @@ export default {
 <style lang="scss" scoped>
 .ft-filter-tags {
   &__wrapper.md-field {
-    // padding: 0;
     margin: 0;
+    width: 150px;
   }
 
   // &__wrapper.md-field:before {

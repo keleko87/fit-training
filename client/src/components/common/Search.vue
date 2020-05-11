@@ -1,13 +1,13 @@
 <template>
   <div class="ft-search">
     <md-field class="ft-search__wrapper">
-      <label>Buscar</label>
+      <label v-if="label">{{ label }}</label>
       <md-input
         type="text"
         id="search"
+        :placeholder="placeholder"
         :value="queryValue"
         @input.native="search($event)"
-        placeholder=""
       ></md-input>
     </md-field>
   </div>
@@ -22,7 +22,12 @@ export default {
       type: Array,
       default: () => []
     },
-    resetValue: Boolean
+    resetValue: Boolean,
+    label: String,
+    placeholder: {
+      type: String,
+      default: 'Buscar'
+    }
   },
 
   data() {
@@ -68,6 +73,7 @@ export default {
 .ft-search {
   &__wrapper.md-field {
     margin: 0;
+    width: 150px;
   }
 
   // &__wrapper.md-field:before {

@@ -10,64 +10,67 @@
       </template>
     </modal-poll>
 
-    <!-- NAVBAR -->
-    <ft-header class="ft-exercise__nav-header">
-      <template slot="nav-list">
-        <li class="nav-item mx-2">
-          <!-- trigger modal button -->
-          <a class="router-link" @click="modalPoll = true">
-            Nuevo ejercicio
-          </a>
-        </li>
-
-        <h6>filterValues {{ filterValues.length }}</h6>
-        <h6>sport.values {{ sport.filterValues }}</h6>
-        <h6>bodyPart.value {{ bodyPart.filterValues }}</h6>
-
-        <li class="nav-item mx-2">
+    <!-- FILTERS -->
+    <div class="ft-exercise__filters container d-flex justify-content-between">
+      <div class="d-flex">
+        <div class="mx-2">
           <ft-filter-tags
             ref="filterBodyPart"
+            :placeholder="'Parte del cuerpo'"
             :value="bodyPart.filterValues"
             :tagField="'bodyPart'"
             :tags="bodyParts"
             :items="totalExercises"
             @filter="filterAllIn($event)"
           ></ft-filter-tags>
-        </li>
+        </div>
 
-        <li class="nav-item mx-2">
+        <div class="mx-2">
           <ft-filter-tags
             ref="filterBodyPart"
+            :placeholder="'Actividad'"
             :value="sport.filterValues"
             :tagField="'sport'"
             :tags="sports"
             :items="totalExercises"
             @filter="filterAllIn($event)"
           ></ft-filter-tags>
-        </li>
+        </div>
+      </div>
 
-        <li class="nav-item mx-2">
+      <div class="">
+        <div class="nav-item mx-2">
           <ft-search
             ref="searchName"
             :reset-value="resetSearchNameValue"
             :items="totalExercises"
+            :placeholder="'Buscar'"
             @search="filterAllIn($event)"
           ></ft-search>
-        </li>
-      </template>
-    </ft-header>
+        </div>
+      </div>
+    </div>
+
 
     <!-- FILTER MENU-->
     <!-- <div class="white">
       <div class="col-6">
         filters options here
+        <a class="router-link" @click="modalPoll = true">
+          Nuevo ejercicio
+        </a>
       </div>
     </div> -->
 
     <div class="container">
-      <div class="row mt-3">
-        <div class="col-12">
+      <div class="d-flex justify-content-between my-3">
+        <div class="">
           <h4>Ejercicios disponibles</h4>
+        </div>
+         <div class="">
+           <button class="btn btn-primary btn-sm btn-block" @click="modalPoll = true">
+            Crear ejercicio
+          </button>
         </div>
       </div>
 
@@ -129,7 +132,6 @@
 </template>
 
 <script>
-const FtHeader = () => import('../components/common/Header.vue');
 const FtSearch = () => import('../components/common/Search.vue');
 const FtFilterTags = () => import('../components/common/FilterTags.vue');
 const FtPagination = () => import('../components/common/Pagination.vue');
@@ -144,7 +146,6 @@ export default {
   name: 'exercise',
 
   components: {
-    FtHeader,
     FtSearch,
     FtFilterTags,
     ExerciseList,
@@ -173,7 +174,6 @@ export default {
         items: []
       },
       filterValues: [],
-      // searchQuery: '',
       searchNameValues: [],
       resetSearchNameValue: false,
       sports: SPORTS,
@@ -242,6 +242,7 @@ export default {
   },
 
   methods: {
+    // Este metodo solo se utiliza cuando NO queremos que se sumen los filtros + buscador. Lo contrario a filterAllIn
     searchExercisesByName(ev) {
       this.bodyPart.filterValues = [];
       this.resetSearchNameValue = false;
@@ -249,9 +250,45 @@ export default {
       this.pagination.currentPage = 1;
     },
 
+    // Este metodo solo se utiliza cuando NO queremos que se sume el buscador + filtro. Lo contrario a filterAllIn
     filterExercises(ev) {
       this.resetSearchNameValue = true;
       this.exercisesFiltered = ev;
+      this.pagination.currentPage = 1;
+    },
+
+    filterAllIn(ev) {
+      let exercises = this.totalExercises;
+
+      // Not items found
+      if (!ev.items.length) {
+        exercises = [];
+        this.exercisesFiltered = exercises;
+        if (ev.filterValues) {
+          this.addFilterValues(ev);
+        }
+        return;
+      }
+
+      // Search input event
+      if (ev.query !== undefined) {
+        exercises = this.eventQuery(ev);
+      }
+
+      // Filter multiselect field event
+      if (ev.filterValues) {
+        this.addFilterValues(ev);
+
+        // Check tagField and filter values
+        exercises = this.filterItemsByTagField(ev.tagField, exercises);
+
+        // Search input has a value
+        if (this.searchNameValues.length) {
+          exercises = this.findFilterItems(exercises, this.searchNameValues);
+        }
+      }
+
+      this.exercisesFiltered = [...new Set(exercises)]; // new Set() will be remove duplicate values
       this.pagination.currentPage = 1;
     },
 
@@ -270,183 +307,65 @@ export default {
       }
     },
 
-    filterValuesByFieldsTags(currentEvField, prevField, exercises) {
+    filterByTags(currentEvField, prevField, exercises) {
       let result;
 
-      if (!prevField.items && !prevField.filterValues) {
-        result = exercises.filter(item => {
-          return currentEvField.items.find(value => item._id === value._id);
-        });
-      } else if (
-        !prevField.items ||
-        (!prevField.items.length && prevField.items.length)
-      ) {
-        result = [];
-      } else if (prevField.items.length) {
-        const exercises1 = exercises.filter(item => {
-          return currentEvField.items.find(value => item._id === value._id);
-        });
+      // 1 PrevField not set any value
+      if (!prevField.filterValues.length) {
+        result = this.findFilterItems(exercises, currentEvField.items);
 
-        result = exercises1.filter(item => {
-          return prevField.items.find(value => item._id === value._id);
-        });
+        // 2 PrevField set a value but not items found
+      } else if (prevField.filterValues.length && !prevField.items.length) {
+        result = [];
+
+        // 3 PrevField has a value and found items
+      } else if (prevField.items.length) {
+        const exers = this.findFilterItems(exercises, currentEvField.items);
+        result = this.findFilterItems(exers, prevField.items);
       }
 
       return result;
     },
 
-    
-    setExercisesByTagField(tagField, exercises) {
+    filterItemsByTagField(tagField, items) {
+      let result;
+
       switch (tagField) {
         case 'sport':
-          exercises = this.filterValuesByFieldsTags(this.sport, this.bodyPart, exercises);
+          result = this.filterByTags(this.sport, this.bodyPart, items);
           break;
         case 'bodyPart':
-          exercises = this.filterValuesByFieldsTags(this.bodyPart, this.sport, exercises);
+          result = this.filterByTags(this.bodyPart, this.sport, items);
           break;
         default:
           break;
       }
-      
-      return exercises;
+
+      this.filterValues = result;
+
+      return result;
     },
 
-    eventQuery(ev, filterValues) {
+    eventQuery(ev) {
       this.searchNameValues = ev.items;
-      // this.searchQuery = ev.query;
-      let exercises = ev.items;
+      let items = ev.items;
 
-      if (filterValues.length) {
-        exercises = ev.items.filter(item => {
-          return filterValues.find(value => item._id === value._id);
-        });
-      } else {
-        exercises = [];
+      if (
+        (this.bodyPart.filterValues.length && !this.bodyPart.items.length) ||
+        (this.sport.filterValues.length && !this.sport.items.length)
+      ) {
+        items = [];
+      } else if (this.filterValues.length) {
+        items = this.findFilterItems(items, this.filterValues);
       }
 
-      return exercises;
+      return items;
     },
 
-    newFilterAllIn(ev) {
-      let exercises = this.totalExercises;
-
-      if (!ev.items.length) {
-        exercises = [];
-        this.exercisesFiltered = exercises;
-        if (ev.filterValues) {
-          this.addFilterValues(ev);
-        }
-        return;
-      }
-
-      if (ev.query !== undefined) {
-        exercises = this.eventQuery(ev, this.filterValues);
-      }
-
-      if (ev.filterValues) {
-        this.addFilterValues(ev);
-
-        // Check tagField and filter values
-        exercises = this.setExercisesByTagField(ev.tagField, exercises);
-
-        if (this.searchNameValues.length) {
-          exercises = exercises.filter(item => {
-            return this.searchNameValues.find(value => item._id === value._id);
-          });
-        }
-      }
-
-      this.exercisesFiltered = [...new Set(exercises)]; // new Set() will be remove duplicate values
-      this.pagination.currentPage = 1;
-    },
-
-    // IT WORKS GOOD! BUT NEEDS REFACTOR!
-    filterAllIn(ev) {
-      let exercises = this.totalExercises;
-
-      if (!ev.items.length) {
-        exercises = [];
-        this.exercisesFiltered = exercises;
-
-        if (ev.filterValues) {
-          this.addFilterValues(ev);
-        }
-
-        return;
-      }
-
-      if (ev.query !== undefined) {
-        this.searchNameValues = ev.items;
-        // this.searchQuery = ev.query;
-        exercises = ev.items;
-
-        if (this.filterValues.length) {
-          exercises = exercises.filter(item => {
-            return this.filterValues.find(value => item._id === value._id);
-          });
-        } else {
-          exercises = [];
-        }
-      }
-
-      if (ev.filterValues) {
-        this.addFilterValues(ev);
-
-        if (ev.tagField === 'sport') {
-          if (!this.bodyPart.items && !this.bodyPart.filterValues) {
-            exercises = exercises.filter(item => {
-              return this.sport.items.find(value => item._id === value._id);
-            });
-          } else if (
-            !this.bodyPart.items ||
-            (!this.bodyPart.items.length && this.bodyPart.items.length)
-          ) {
-            exercises = [];
-          } else if (this.bodyPart.items.length) {
-            const exercises1 = exercises.filter(item => {
-              return this.sport.items.find(value => item._id === value._id);
-            });
-
-            exercises = exercises1.filter(item => {
-              return this.bodyPart.items.find(value => item._id === value._id);
-            });
-          }
-
-          this.filterValues = exercises;
-        }
-
-        if (ev.tagField === 'bodyPart') {
-          if (!this.sport.items && !this.sport.filterValues) {
-            exercises = exercises.filter(item => {
-              return this.bodyPart.items.find(value => item._id === value._id);
-            });
-          } else if (
-            !this.sport.items ||
-            (!this.sport.items.length && this.sport.filterValues.length)
-          ) {
-            exercises = [];
-          } else if (this.sport.items.length) {
-            const exercises1 = exercises.filter(item => {
-              return this.bodyPart.items.find(value => item._id === value._id);
-            });
-
-            exercises = exercises1.filter(item => {
-              return this.sport.items.find(value => item._id === value._id);
-            });
-          }
-
-          this.filterValues = exercises;
-        }
-
-        if (this.searchNameValues.length) {
-          exercises = exercises.filter(item => {
-            return this.searchNameValues.find(value => item._id === value._id);
-          });
-        }
-      }
-
-      this.exercisesFiltered = [...new Set(exercises)]; // new Set() will be remove duplicate values
-      this.pagination.currentPage = 1;
+    findFilterItems(items, filterField) {
+      return items.filter(item => {
+        return filterField.find(value => item._id === value._id);
+      });
     },
 
     onCloseModal(ev) {
@@ -458,8 +377,10 @@ export default {
 
 <style lang="scss" scoped>
 .ft-exercise {
-  &__nav-header {
+  &__filters {
     border-bottom: 1px solid $gray-600;
+    background-color: $gray-800;
+    padding: 0 10px 16px 10px;
   }
 
   &__total {
