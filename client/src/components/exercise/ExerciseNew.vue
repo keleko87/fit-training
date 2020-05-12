@@ -239,26 +239,29 @@
           </div>
         </div>
 
-        <div v-if="!isImageModelURL" class="form-row">
-          <!-- FILE UPLOAD -->
-          <div class="col-md-6">
-            <input
-              id="image"
-              type="file"
-              ref="image"
-              name="image"
-              class="input-file"
-              @change="onSelect($event)"
-            />
-            <p class="text-danger mt-2" v-show="file.error">
-              {{ invalidFile }}
-            </p>
-          </div>
-        </div>
-
         <div class="form-row">
+          <!-- FILE UPLOAD -->
+          <div
+            v-if="!isImageModelURL"
+            class="d-flex align-items-center col-md-6"
+          >
+            <div>
+              <input
+                id="image"
+                type="file"
+                ref="image"
+                name="image"
+                class="input-file"
+                @change="onSelect($event)"
+              />
+              <p class="text-danger mt-2" v-show="file.error">
+                {{ invalidFile }}
+              </p>
+            </div>
+          </div>
+
           <!-- IS WARM UP -->
-          <div class="col-md-6 my-3">
+          <div class="col-md-6">
             <md-checkbox
               id="is-warmup"
               v-model.trim="$v.form.isWarmUp.$model"
@@ -363,11 +366,6 @@ export default {
 
     isImageModelURL() {
       return this.isImageUrl(this.$v.form.imageUrl.$model);
-    },
-
-    isValidFile() {
-      const { type, size } = this.$refs.image.files[0];
-      return type.includes(this.file.format) && size < this.file.maxSize;
     }
   },
 
@@ -382,11 +380,20 @@ export default {
       }
     },
 
+    isValidFile() {
+      if (this.$refs.image.files[0]) {
+        const { type, size } = this.$refs.image.files[0];
+        return type.includes(this.file.format) && size < this.file.maxSize;
+      }
+
+      return false;
+    },
+
     onSelect() {
       this.file.error = false;
       this.$v.form.imageUrl.$reset();
 
-      if (this.isValidFile) {
+      if (this.isValidFile()) {
         const image = this.$refs.image.files[0];
         const imageUrl = URL.createObjectURL(image);
         this.form.image = image;
@@ -396,6 +403,7 @@ export default {
         }
       } else {
         this.$refs.image.value = '';
+        this.$v.form.imageUrl.$model = '';
         this.file.error = true;
       }
     },

@@ -89,7 +89,8 @@ export default {
 .ft-filter-tags {
   &__wrapper.md-field {
     margin: 0;
-    width: 150px;
+    min-width: 150px;
+    width: 100%;
   }
 
   // &__wrapper.md-field:before {

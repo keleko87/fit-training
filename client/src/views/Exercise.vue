@@ -11,78 +11,63 @@
     </modal-poll>
 
     <!-- FILTERS -->
-    <div class="ft-exercise__filters container d-flex justify-content-between">
-      <div class="d-flex">
-        <div class="mx-2">
-          <ft-filter-tags
-            ref="filterBodyPart"
-            :placeholder="'Parte del cuerpo'"
-            :value="bodyPart.filterValues"
-            :tagField="'bodyPart'"
-            :tags="bodyParts"
-            :items="totalExercises"
-            @filter="filterAllIn($event)"
-          ></ft-filter-tags>
-        </div>
-
-        <div class="mx-2">
-          <ft-filter-tags
-            ref="filterBodyPart"
-            :placeholder="'Actividad'"
-            :value="sport.filterValues"
-            :tagField="'sport'"
-            :tags="sports"
-            :items="totalExercises"
-            @filter="filterAllIn($event)"
-          ></ft-filter-tags>
-        </div>
+    <div class="ft-exercise__filters d-flex justify-content-start">
+      <div class="ft-exercise__filters--item mx-2">
+        <ft-filter-tags
+          ref="filterBodyPart"
+          :placeholder="'Parte del cuerpo'"
+          :value="bodyPart.filterValues"
+          :tagField="'bodyPart'"
+          :tags="bodyParts"
+          :items="totalExercises"
+          @filter="filterAllIn($event)"
+        ></ft-filter-tags>
       </div>
 
-      <div class="">
-        <div class="nav-item mx-2">
-          <ft-search
-            ref="searchName"
-            :reset-value="resetSearchNameValue"
-            :items="totalExercises"
-            :placeholder="'Buscar'"
-            @search="filterAllIn($event)"
-          ></ft-search>
-        </div>
+      <div class="ft-exercise__filters--item mx-2">
+        <ft-filter-tags
+          ref="filterBodyPart"
+          :placeholder="'Actividad'"
+          :value="sport.filterValues"
+          :tagField="'sport'"
+          :tags="sports"
+          :items="totalExercises"
+          @filter="filterAllIn($event)"
+        ></ft-filter-tags>
+      </div>
+
+      <div class="ft-exercise__filters--item mx-2">
+        <ft-search
+          ref="searchName"
+          :reset-value="resetSearchNameValue"
+          :items="totalExercises"
+          :placeholder="'Buscar'"
+          @search="filterAllIn($event)"
+        ></ft-search>
       </div>
     </div>
 
-
-    <!-- FILTER MENU-->
-    <!-- <div class="white">
-      <div class="col-6">
-        filters options here
-        <a class="router-link" @click="modalPoll = true">
-          Nuevo ejercicio
-        </a>
-      </div>
-    </div> -->
-
     <div class="container">
-      <div class="d-flex justify-content-between my-3">
+      <div class="d-flex justify-content-between my-3 p-1">
         <div class="">
           <h4>Ejercicios disponibles</h4>
         </div>
-         <div class="">
-           <button class="btn btn-primary btn-sm btn-block" @click="modalPoll = true">
+        <div class="ft-exercise__create">
+          <a class="btn btn-primary btn-sm btn-block" @click="modalPoll = true">
             Crear ejercicio
-          </button>
+          </a>
         </div>
       </div>
 
       <div
         v-if="itemsPage.length > 0"
-        class="d-flex justify-content-between container"
+        class="row d-flex justify-content-between"
       >
-        <div class="row">
+        <div class="ft-exercise__total col-md-6">
           <!-- <p class="ft-exercise__total">
             {{ itemsPage.length }} de {{ itemsCount }} resultados
           </p> -->
-          <p class="ft-exercise__total">
+          <p class="ft-exercise__total--paragraph">
             <span v-if="currentRange.first && currentRange.last">
               {{ currentRange.first }} a {{ currentRange.last }} de
             </span>
@@ -94,9 +79,9 @@
         </div>
 
         <!-- PAGINATION -->
-        <div class="row">
+        <div class="ft-exercise__pagination col-md-6">
           <ft-pagination
-            class="ft-exercise__pagination"
+            class="mr-1"
             :total-pages="totalPages"
             :total="itemsCount"
             :current-page="pagination.currentPage"
@@ -378,17 +363,49 @@ export default {
 <style lang="scss" scoped>
 .ft-exercise {
   &__filters {
-    border-bottom: 1px solid $gray-600;
-    background-color: $gray-800;
+    // border-bottom: 1px solid $gray-700;
+    background-color: $bg-filters-section;
     padding: 0 10px 16px 10px;
+
+    @media (max-width: 575px) {
+      flex-direction: column;
+      padding: 14px 50px 40px 50px;
+
+      &--item {
+        padding-bottom: 10px;
+      }
+    }
+  }
+
+  &__create {
+    &--link {
+      color: $mandarine !important;
+      font-size: 1.3em;
+    }
+  }
+
+  &__pagination {
+    justify-content: flex-end;
   }
 
   &__total {
-    font-size: 1rem;
-    margin: 8px 5px;
+    &--paragraph {
+      font-size: 1rem;
+      margin: 8px 5px;
 
-    span {
-      color: $gray-500 !important;
+      span {
+        color: $gray-500 !important;
+      }
+    }
+  }
+
+  &__pagination,
+  &__total {
+    display: flex;
+    margin-bottom: 1em;
+
+    @media (max-width: 575px) {
+      justify-content: center;
     }
   }
 
