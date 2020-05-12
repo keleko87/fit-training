@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["npm.fortawesome"],{becf:function(n,o,w){}}]);

@@ -8,8 +8,6 @@ import ApiService from './common/api.service';
 import DateFilter from './common/date.filter';
 import 'nprogress/nprogress.css';
 
-// Bootswatch theme
-// import '../src/assets/css/bootstrap-darkly.min.css';
 // MDBVue
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';

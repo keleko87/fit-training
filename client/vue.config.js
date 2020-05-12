@@ -3,25 +3,27 @@ const manifestJSON = require('./public/manifest.json');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
+  productionSourceMap: false, // Exclude js.map in production build
+
   configureWebpack: {
     plugins: [new BundleAnalyzerPlugin()],
 
     // Performance optimization
     optimization: {
-      // runtimeChunk: 'single',
+      runtimeChunk: 'single',
       splitChunks: {
-        chunks: 'all'
-        // maxInitialRequests: Infinity,
-        // minSize: 0,
-        // cacheGroups: {
-        //   vendor: {
-        //     test: /[\\/]node_modules[\\/]/,
-        //     name(module) {
-        //       const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-        //       return `npm.${packageName.replace('@', '')}`;
-        //     }
-        //   }
-        // }
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+              return `npm.${packageName.replace('@', '')}`;
+            }
+          }
+        }
       }
     }
   },
