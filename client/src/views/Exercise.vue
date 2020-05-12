@@ -63,7 +63,7 @@
         v-if="itemsPage.length > 0"
         class="row d-flex justify-content-between"
       >
-        <div class="ft-exercise__total col-md-6">
+        <div class="ft-exercise__total col-md-6 m-0">
           <!-- <p class="ft-exercise__total">
             {{ itemsPage.length }} de {{ itemsCount }} resultados
           </p> -->
@@ -125,7 +125,7 @@ const ExerciseNew = () => import('../components/exercise/ExerciseNew.vue');
 const ModalPoll = () => import('../components/common/ModalPoll.vue');
 
 import pagination from '../mixins/pagination';
-import { SPORTS, LEVELS, BODY_PARTS, TARGETS } from '../common/constants';
+import { SPORTS, BODY_PARTS } from '../common/constants';
 
 export default {
   name: 'exercise',
@@ -162,9 +162,7 @@ export default {
       searchNameValues: [],
       resetSearchNameValue: false,
       sports: SPORTS,
-      levels: LEVELS,
-      bodyParts: BODY_PARTS,
-      targets: TARGETS
+      bodyParts: BODY_PARTS
     };
   },
 
@@ -363,7 +361,6 @@ export default {
 <style lang="scss" scoped>
 .ft-exercise {
   &__filters {
-    // border-bottom: 1px solid $gray-700;
     background-color: $bg-filters-section;
     padding: 0 10px 16px 10px;
 

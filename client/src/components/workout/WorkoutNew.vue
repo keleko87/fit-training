@@ -3,7 +3,7 @@
     <div class="container">
       <form novalidate @submit.prevent="onSubmit">
         <div class="row d-flex align-items-center">
-          <div class="col-10">
+          <div class="col-11">
             <md-field :class="getValidationClass('name')">
               <!-- NAME -->
               <label>Nuevo Entrenamiento</label>
@@ -20,7 +20,7 @@
               }}</span>
             </md-field>
           </div>
-          <div class="col-2">
+          <div class="col-1 pl-0">
             <a @click.prevent="toggleShowFields()">
               <mdb-icon class="ft-workout-new__icon" icon="edit" size="2x" />
             </a>
