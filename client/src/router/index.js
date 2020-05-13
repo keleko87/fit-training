@@ -88,12 +88,12 @@ const router = new Router({
         list: () => import(/* webpackChunkName: "routines" */ '../components/routine/RoutineList.vue'),
         create: () => import(/* webpackChunkName: "routines" */ '../views/Home.vue')
       }
-    },
-    // NOT FOUND
-    {
-      path: '*',
-      redirect: '/'
     }
+    // NOT FOUND
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }
   ]
 });
 

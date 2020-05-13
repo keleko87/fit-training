@@ -7,8 +7,10 @@ const RoutineSchema = mongoose.Schema({
   target: String,
   startDate: Date,
   endDate: Date,
+  totalDays: Number,
   workoutsPerWeek: Number,
-  workouts: []
+  finish: Boolean,
+  workouts: Array,
 }, {
   timestamps: {
     createdAt: "created_at",

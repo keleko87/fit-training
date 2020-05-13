@@ -145,7 +145,7 @@ export default {
 
   async mounted() {
     const exercises = await this.$store.dispatch('GET_EXERCISES');
-    this.exercisesFiltered = exercises;
+    this.exercisesFiltered = this.sortItems(exercises);
   },
 
   mixins: [pagination],
@@ -192,6 +192,21 @@ export default {
       return this.rangeOfItems.filter(
         (range, i) => i + 1 === this.pagination.currentPage
       )[0];
+    },
+
+    bodyPartValueNotResult() {
+      return this.bodyPart.filterValues.length && !this.bodyPart.items.length;
+    },
+
+    sportValueNotResult() {
+      return this.sport.filterValues.length && !this.sport.items.length;
+    },
+
+    filterValuesNotResult() {
+      return (
+        (this.bodyPart.filterValues.length || this.sport.filterValues.length) &&
+        !this.filterValues.length
+      );
     },
 
     // REFACTOR
@@ -337,10 +352,9 @@ export default {
       this.searchNameValues = ev.items;
       let items = ev.items;
 
-      if (
-        (this.bodyPart.filterValues.length && !this.bodyPart.items.length) ||
-        (this.sport.filterValues.length && !this.sport.items.length)
-      ) {
+      if (this.bodyPartValueNotResult || this.sportValueNotResult) {
+        items = [];
+      } else if (this.filterValuesNotResult) {
         items = [];
       } else if (this.filterValues.length) {
         items = this.findFilterItems(items, this.filterValues);
@@ -355,8 +369,16 @@ export default {
       });
     },
 
+    resetSearchFilterValues() {
+      this.resetSearchNameValue = true;
+      this.bodyPart.filterValues = [];
+      this.sport.filterValues = [];
+    },
+
     onCloseModal(ev) {
       this.modalPoll = ev;
+      this.exercisesFiltered = this.sortItems(this.totalExercises);
+      this.resetSearchFilterValues();
     }
   }
 };

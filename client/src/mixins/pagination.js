@@ -16,14 +16,25 @@ export default {
         this.pagination.currentPage * this.pagination.perPage
       );
     },
+
     getTotalPages(totalItems) {
       const pages = totalItems / this.pagination.perPage;
       const rest = totalItems % this.pagination.perPage;
 
       return rest !== 0 ? Math.ceil(pages) : pages;
     },
+
     onPageChange(page) {
       this.pagination.currentPage = page;
+    },
+
+    sortItems(items) {
+      return items.sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+
+        return 0; // a must be equal to b
+      });
     }
   }
 };
