@@ -11,39 +11,43 @@
     </modal-poll>
 
     <!-- FILTERS -->
-    <div class="ft-exercise__filters d-flex justify-content-start">
-      <div class="ft-exercise__filters--item mx-2">
-        <ft-filter-tags
-          ref="filterBodyPart"
-          :placeholder="'Parte del cuerpo'"
-          :value="bodyPart.filterValues"
-          :tagField="'bodyPart'"
-          :tags="bodyParts"
-          :items="totalExercises"
-          @filter="filterAllIn($event)"
-        ></ft-filter-tags>
-      </div>
+    <div class="ft-exercise__section d-flex justify-content-start">
+      <div class="container">
+        <div class="ft-exercise__filters d-flex justify-content-start">
+          <div class="ft-exercise__filters--item mx-2">
+            <ft-filter-tags
+              ref="filterBodyPart"
+              :placeholder="'Parte del cuerpo'"
+              :value="bodyPart.filterValues"
+              :tagField="'bodyPart'"
+              :tags="bodyParts"
+              :items="totalExercises"
+              @filter="filterAllIn($event)"
+            ></ft-filter-tags>
+          </div>
 
-      <div class="ft-exercise__filters--item mx-2">
-        <ft-filter-tags
-          ref="filterBodyPart"
-          :placeholder="'Actividad'"
-          :value="sport.filterValues"
-          :tagField="'sport'"
-          :tags="sports"
-          :items="totalExercises"
-          @filter="filterAllIn($event)"
-        ></ft-filter-tags>
-      </div>
+          <div class="ft-exercise__filters--item mx-2">
+            <ft-filter-tags
+              ref="filterBodyPart"
+              :placeholder="'Actividad'"
+              :value="sport.filterValues"
+              :tagField="'sport'"
+              :tags="sports"
+              :items="totalExercises"
+              @filter="filterAllIn($event)"
+            ></ft-filter-tags>
+          </div>
 
-      <div class="ft-exercise__filters--item mx-2">
-        <ft-search
-          ref="searchName"
-          :reset-value="resetSearchNameValue"
-          :items="totalExercises"
-          :placeholder="'Buscar'"
-          @search="filterAllIn($event)"
-        ></ft-search>
+          <div class="ft-exercise__filters--item mx-2">
+            <ft-search
+              ref="searchName"
+              :reset-value="resetSearchNameValue"
+              :items="totalExercises"
+              :placeholder="'Buscar'"
+              @search="filterAllIn($event)"
+            ></ft-search>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -360,16 +364,19 @@ export default {
 
 <style lang="scss" scoped>
 .ft-exercise {
-  &__filters {
+  &__section {
     background-color: $bg-filters-section;
-    padding: 0 10px 16px 10px;
+    padding: 0 0 18px 0;
+  }
 
+  &__filters {
     @media (max-width: 575px) {
       flex-direction: column;
-      padding: 14px 50px 40px 50px;
+      padding: 20px 60px;
 
       &--item {
         padding-bottom: 10px;
+        margin-left: 0.5em !important;
       }
     }
   }
