@@ -332,7 +332,6 @@ export default {
       for (const exercise of this.timerWorkoutExercises) {
         // next exercise
         if (index > 0 && !this.intervalBeforeInit && !this.intervalTimer) {
-          console.log('next exercise', exercise);
 
           if (this.restBetweenExercise > 0 && this.currentExercise.done) {
             await this.nextExercise();
@@ -471,7 +470,6 @@ export default {
       this.secondsLeft = selectedTime;
 
       this.intervalTimer = setInterval(() => {
-        console.log(this.intervalTimer, 'COUNTDOWN:', this.secondsLeft);
 
         if (!this.isPaused) {
           this.secondsLeft = this.secondsLeft - 1;
@@ -504,11 +502,6 @@ export default {
       this.timeCountdownBeforeInit = seconds;
 
       this.intervalBeforeInit = setInterval(() => {
-        console.log(
-          this.intervalBeforeInit,
-          'COUNTDOWN BEFORE INIT:',
-          this.timeCountdownBeforeInit
-        );
 
         // 10 seconds countdown audio
         if (this.timeCountdownBeforeInit <= 10) {
@@ -606,7 +599,6 @@ export default {
     clearInterval(this.intervalBeforeInit);
     this.intervalTimer = null;
     this.intervalBeforeInit = null;
-    console.log('timers destroyed');
   }
 };
 </script>

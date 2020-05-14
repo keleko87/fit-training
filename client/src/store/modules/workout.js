@@ -55,7 +55,6 @@ const actions = {
       const { data } = await WorkoutsService.getWorkout(id);
       context.commit('SET_WORKOUT', data);
     } catch (err) {
-      window.console.log('error', err);
       context.commit('SET_WORKOUT', workoutNewMock);
     }
   },

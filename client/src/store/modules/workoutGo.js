@@ -127,7 +127,6 @@ const actions = {
       const res = await WorkoutGoService.saveWorkoutGo(form);
       return res;
     } catch (err) {
-      window.console.log('error', err);
       return err;
     }
   }

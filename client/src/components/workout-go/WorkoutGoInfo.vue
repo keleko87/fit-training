@@ -221,7 +221,6 @@ export default {
         return this.$store.state.workoutGo.timer.auto;
       },
       set(val) {
-        console.log('set timer mode', val);
         this.$store.commit('SET_TIMER_AUTO', val);
       }
     },
@@ -231,7 +230,6 @@ export default {
         return this.$store.state.workoutGo.timer.workout.restBetweenExercise;
       },
       set(val) {
-        console.log('set Rest between exercise ', val);
         const workout = { restBetweenExercise: val };
         this.$store.commit('SET_TIMER_WORKOUT', workout);
       }
@@ -242,7 +240,6 @@ export default {
         return this.$store.state.workoutGo.timer.workout.series;
       },
       set(val) {
-        console.log('set Workout series ', val);
         this.$store.commit('SET_WORKOUT_SERIES', val);
       }
     },
@@ -354,7 +351,6 @@ export default {
 
   beforeDestroy() {
     this.$store.dispatch('RESET_WORKOUT_NOT_FINISH');
-    console.log('RESET_WORKOUT_NOT_FINISH', this.timerWorkoutExercises);
   }
 };
 </script>

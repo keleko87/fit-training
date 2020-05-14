@@ -298,7 +298,6 @@ export default {
     },
 
     changeExercises(ev) {
-      window.console.log('DRAG event', ev);
       if (ev.added) {
         const { element } = ev.added;
         this.$store.commit('ADD_EXERCISE', element);

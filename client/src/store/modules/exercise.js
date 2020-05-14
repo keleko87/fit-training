@@ -61,7 +61,6 @@ const actions = {
       await ExercisesService.saveExercise(form);
       context.commit('SET_EXERCISE', form);
     } catch (err) {
-      console.log('error', err);
       return err;
     }
   }

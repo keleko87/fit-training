@@ -40,7 +40,6 @@ const actions = {
       commit('LOGIN_SUCCESS', res);
       return res;
     } catch (error) {
-      console.log('error login failure', error);
       commit('LOGIN_FAILURE');
       throw error;
     }

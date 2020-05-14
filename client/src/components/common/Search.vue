@@ -45,7 +45,6 @@ export default {
   methods: {
     resetQuery(value) {
       this.query = value;
-      console.log(value, 'this.query', this.query);
     },
 
     search(ev) {
