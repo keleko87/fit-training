@@ -1,8 +1,6 @@
 # Fit Training 
 Create your own fitness workouts and exercises. 
 
-## Url
-https://fit-training.herokuapp.com
 
 
 ## Technologies
